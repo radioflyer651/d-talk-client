@@ -1,0 +1,16 @@
+p-button:not(:first-child),
+p-splitbutton:not(:first-child),
+button:not(:first-child) {
+    margin-left: 1em;
+}
+
+.control-cell {
+    display: flex;
+    justify-content: end;
+
+    p-button:not(:first-child),
+    p-splitbutton:not(:first-child),
+    button:not(:first-child) {
+        margin: 0 0.5em;
+    }
+}

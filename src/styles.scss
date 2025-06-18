@@ -1,0 +1,48 @@
+@import "primeicons/primeicons.css";
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    font-size: 10pt;
+    color: #333;
+    line-height: 1.4;
+}
+
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.p-floatlabel {
+    margin-top: 2em;
+}
+
+.v-align-base {
+    align-items: baseline;
+}
+
+@media print {
+    .site-content-container * {
+        visibility: collapse;
+        display: none;
+    }
+
+    .printable,
+    .printable * {
+        visibility: visible !important;
+        display: revert !important;
+    }
+
+    .not-printable {
+        visibility: collapse;
+        display: none;
+    }
+}
+
+.checkbox-container {
+    display: flex;
+
+    p-checkbox {
+        margin-right: 1em;
+    }
+}
