@@ -1,0 +1,20 @@
+.project-list-component {
+    height: 100%;
+}
+
+.project-control-panel {
+    display: flex;
+
+    justify-content: space-evenly;
+    align-content: center;
+}
+
+.project-card-container {
+    display: flex;
+
+    .project-card-content {
+        flex: 1 1 auto;
+    }
+    .project-card-controls {
+    }
+}

@@ -3,7 +3,7 @@ import { switchMap, of, Observable, EMPTY } from 'rxjs';
 import { io } from 'socket.io-client';
 import { environment } from '../../environments/environment';
 import { ReadonlySubject } from '../../utils/readonly-subject';
-import { ClientApiService } from './client-api.service';
+import { ClientApiService } from './api-client.service';
 import { TokenService } from './token.service';
 import { IoSocketType } from '../../model/io-sockets.model';
 import { SocketEvent } from '../../model/socket-event.model';

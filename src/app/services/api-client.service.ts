@@ -5,6 +5,9 @@ import { EMPTY, Observable, tap } from 'rxjs';
 import { TokenService } from './token.service';
 import { LoginRequest } from '../../model/shared-models/login-request.model';
 import { TokenPayload } from '../../model/shared-models/token-payload.model';
+import { ProjectListing } from '../../model/shared-models/chat-core/project-listing.model';
+import { Project } from '../../model/shared-models/chat-core/project.model';
+import { ObjectId } from 'mongodb';
 
 // Extract the type of the `post` method from `HttpClient`
 type HttpClientPostMethod = HttpClient['post'];
@@ -123,4 +126,38 @@ export class ClientApiService {
     return EMPTY;
   }
 
+  /**
+   * Gets the list of project listings for the current user.
+   */
+  getProjectListings() {
+    return this.http.get<ProjectListing[]>(this.constructUrl('project-listings'), this.optionsBuilder.withAuthorization());
+  }
+
+  /**
+   * Creates a new project for the current user.
+   */
+  createProject(name: string) {
+    return this.http.post<Project>(this.constructUrl('project'), { name }, this.optionsBuilder.withAuthorization());
+  }
+
+  /**
+   * Updates the name of a project by its ID (must belong to the authenticated user).
+   */
+  updateProject(id: ObjectId, name: string) {
+    return this.http.put<{ success: boolean }>(this.constructUrl(`project/${id}`), { name }, this.optionsBuilder.withAuthorization());
+  }
+
+  /**
+   * Deletes a project by its ID (must belong to the authenticated user).
+   */
+  deleteProject(id: ObjectId) {
+    return this.http.delete<{ success: boolean }>(this.constructUrl(`project/${id}`), this.optionsBuilder.withAuthorization());
+  }
+
+  /**
+   * Gets a project by its ID (must belong to the authenticated user).
+   */
+  getProjectById(id: ObjectId) {
+    return this.http.get<Project>(this.constructUrl(`project/${id}`), this.optionsBuilder.withAuthorization());
+  }  
 }

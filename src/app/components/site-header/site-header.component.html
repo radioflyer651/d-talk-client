@@ -1,0 +1,34 @@
+<header class="not-printable text-center header">
+  <div class="header-gutter">
+    <div class="button-panel">
+
+      <!-- <p-button (click)="toggleMenu()" icon="pi pi-bars" severity="contrast"></p-button> -->
+
+      <!-- <p-button *ngIf="(userService.isUserLoggedIn$ | async) && !(pageSizeService.isSkinnyPage$ | async)"
+        (click)="logout()">Log Out</p-button> -->
+    </div>
+  </div>
+
+  <div class="header-center">
+    <h1>Richard Olson</h1>
+    <h3> AI Resume </h3>
+    <nav *ngIf="isMenuVisible">
+
+      <a (click)="login()" *ngIf="isMenuLoginVisible">Login</a>
+
+      <ng-container *ngIf="isNavigationVisible">
+        <a routerLink="/">Home</a>
+        <a routerLink="/tarot-game">Tarot Games</a>
+        <ng-container *ngIf="isAdminUser">
+          <a routerLink="/admin/companies/list">Company List</a>
+          <a routerLink="/admin/jobs/list">Jobs List</a>
+        </ng-container>
+        <a (click)="logout()">Log Out</a>
+      </ng-container>
+
+    </nav>
+  </div>
+
+  <div class="header-gutter">
+  </div>
+</header>

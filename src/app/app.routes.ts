@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { ResumeStaticComponent } from './components/resume-static/resume-static.component';
 import { AppHomeComponent } from './components/app-home/app-home.component';
-import { TestPageComponent } from './components/test-page/test-page.component';
+import { ProjectsComponent } from './components/projects/projects.component';
+import { LoginPageComponent } from './components/login-page/login-page.component';
 
 export const routes: Routes = [
     {
@@ -13,25 +13,16 @@ export const routes: Routes = [
                 component: AppHomeComponent,
                 children: [
                     {
-                        path: '',
-                        pathMatch: 'full',
-                        component: ResumeStaticComponent
-                    },
-                    {
-                        path: 'test',
-                        component: TestPageComponent
-                    },
+                        path: 'projects',
+                        component: ProjectsComponent,
+                    }
                 ]
-            }
+            },
+            {
+                path: 'login',
+                component: LoginPageComponent
+            },
         ]
-    },
-    {
-        path: 'admin',
-        loadChildren: () => import('./admin.routes').then(m => m.adminRoutes)
-    },
-    {
-        path: 'tarot-game',
-        loadChildren: () => import('./components/tarot-game/tarot-game.routes').then(m => m.tarotRoutes)
     },
     {
         path: '**',

@@ -7,6 +7,7 @@ import { IftaLabelModule } from 'primeng/iftalabel';
 import { ButtonModule } from 'primeng/button';
 import { UserService } from '../../services/user.service';
 import { DialogModule } from 'primeng/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -25,6 +26,7 @@ export class LoginComponent extends ComponentBase {
   constructor(
     readonly formBuilder: FormBuilder,
     readonly userService: UserService,
+    readonly router: Router,
   ) {
     super();
   }
@@ -34,12 +36,17 @@ export class LoginComponent extends ComponentBase {
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
       userName: ['', [Validators.required]],
-      website: ['', [Validators.required, Validators.pattern(/(https?:\/\/)?(www\.)?([\w\d\-_])(\.[\w]{2,})/i)]]
+      password: ['', [Validators.required]]
     });
   }
 
   submit() {
-    this.userService.login(this.loginForm.value);
+    try {
+      this.userService.login(this.loginForm.value);
+      this.router.navigate(['/projects']);
+    } catch (err) {
+
+    }
   }
 
   /** Controls the help dialog box. */

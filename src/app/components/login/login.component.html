@@ -2,21 +2,16 @@
     <p-panel header="User Login">
         <div [formGroup]="loginForm">
             <p-iftalabel>
-                <input pSize="large" pInputText id="user-name" formControlName="userName">
+                <input pSize="large" autocomplete="off" pInputText id="user-name" formControlName="userName">
                 <label for="user-name">Your Name</label>
             </p-iftalabel>
             <p-iftalabel>
-                <input pSize="large" pInputText id="website" formControlName="website">
-                <label for="website">Company Website</label>
+                <input pSize="large" autocomplete="off" pInputText type="password" id="password" formControlName="password">
+                <label for="website">Password</label>
             </p-iftalabel>
         </div>
 
         <ng-template #footer>
-            <div>
-                If you got here from Richard's resume or application, enter your name
-                and your company's website to login to enable the AI. Anyone else should
-                contact Richard directly for details.
-            </div>
             <div class="button-container">
                 <p-button severity="info" label="?" (click)="showHelp()"></p-button>
                 <p-button type="primary" label="OK" (click)="submit()"></p-button>
@@ -27,26 +22,7 @@
 
 <p-dialog [(visible)]="isHelpDialogVisible" header="Login Info">
     <div class="login-explained">
-        <h5> Why Login?? </h5>
-        <div>
-            Simple - AI isn't free. I'd like to limit people playing with the AI
-            to those who are supposed to be on the site, and not someone who randomly found it.
-        </div>
-
-        <h5>Why Website?</h5>
-        <div>
-            I don't want to require user registration. I only know the sites I've applied for a job at, which
-            you should also know if you're here. If not, email me, and I'd be happy to help you out!
-        </div>
-        <div>
-            When it comes to your name, I don't care. You can use a fake name - that's fine.
-        </div>
-
-        <h5>Data Collection</h5>
-        <div>
-            Be aware, whatever you type goes into the database. It's required to keep an ongoing conversation
-            with the AI.
-        </div>
+        I have nothing for this right now.
     </div>
     <ng-template #footer>
         <div class="button-container">

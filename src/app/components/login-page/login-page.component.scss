@@ -1,0 +1,48 @@
+.login-page {
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+    background: linear-gradient(120deg, #f5f7fa 0%, #c3cfe2 100%);
+
+    .login-image-panel {
+        flex: 2;
+        background: url("/ash__00004_.png") center center no-repeat;
+        background-size: cover;
+        min-height: 100vh;
+        border-top-left-radius: 12px;
+        border-bottom-left-radius: 12px;
+        box-shadow: 2px 0 16px 0 rgba(0, 0, 0, 0.08);
+    }
+
+    .login-control-panel {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fff;
+        min-height: 100vh;
+        box-shadow: -2px 0 16px 0 rgba(0, 0, 0, 0.04);
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+    }
+
+    @media (max-width: 900px) {
+        flex-direction: column;
+        .login-image-panel,
+        .login-control-panel {
+            min-height: 40vh;
+            border-radius: 0;
+            box-shadow: none;
+        }
+        .login-image-panel {
+            flex: none;
+            height: 200px;
+            background-position: top center;
+        }
+        .login-control-panel {
+            flex: none;
+            min-height: 60vh;
+            border-radius: 0 0 12px 12px;
+        }
+    }
+}

@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { ClientApiService } from './client-api.service';
-import { BehaviorSubject, map, Observable, shareReplay, takeUntil } from 'rxjs';
+import { ClientApiService } from './api-client.service';
+import { map, Observable } from 'rxjs';
 import { LoginRequest } from '../../model/shared-models/login-request.model';
-import { MessagingService } from './messaging.service';
 import { TokenPayload } from '../../model/shared-models/token-payload.model';
-import { SiteUser } from '../../model/site-user.model';
 import { TokenService } from './token.service';
 import { ReadonlySubject } from '../../utils/readonly-subject';
 import { Router } from '@angular/router';
 import { ComponentBase } from '../components/component-base/component-base.component';
+import { SiteUser } from '../../model/site-user.model';
+import { MessagingService } from './messaging.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,8 +16,8 @@ import { ComponentBase } from '../components/component-base/component-base.compo
 export class UserService extends ComponentBase {
   constructor(
     readonly clientApiService: ClientApiService,
-    readonly messagingService: MessagingService,
     readonly tokenService: TokenService,
+    readonly messagingService: MessagingService,
     readonly router: Router,
   ) {
     super();

@@ -1,0 +1,11 @@
+.project-component {
+    display: flex;
+
+    .project-list {
+        width: 25%;
+    }
+
+    .project-detail {
+        flex: 1 1 auto;
+    }
+}

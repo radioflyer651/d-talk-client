@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ClientApiService } from './services/client-api.service';
+import { ClientApiService } from './services/api-client.service';
 import { Router } from '@angular/router';
 import { QuickJobSetupRequest } from '../model/shared-models/quick-job-setup-request.model';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';

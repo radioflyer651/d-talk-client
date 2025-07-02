@@ -1,0 +1,44 @@
+<div class="project-list-component">
+    <p-card class="">
+        <p-panel>
+            <p-floatlabel>
+                <input id="project-search" autocomplete="off" pInputText [(ngModel)]="searchText" />
+                <label for="project-search">Search</label>
+            </p-floatlabel>
+
+            <p-button icon="fa fa-plus" label="New Project" (click)="createNewProject()"></p-button>
+        </p-panel>
+
+
+        <ng-container *ngIf="!!(projectList$ | async)">
+            <p-dataview [value]="(projectList$ | async)!">
+                <ng-template #list let-items>
+                    <p-card *ngFor="let project of items" [header]="project.name" (click)="selectProject(project)">
+                        <div class="project-card-container">
+                            <div class="project-card-content">
+                                {{ project.description }}
+                            </div>
+                            <div class="project-card-controls">
+                                <p-button icon="fa fa-trash" (click)="deleteProject(project)"></p-button>
+                            </div>
+                        </div>
+                    </p-card>
+                </ng-template>
+            </p-dataview>
+        </ng-container>
+    </p-card>
+</div>
+
+<p-dialog [(visible)]="isNewProjectDialogVisible">
+    <p-floatlabel>
+        <input id="new-project-name" autocomplete="off" pInputText [(ngModel)]="newProjectName" />
+        <label for="new-project-name">Project Name</label>
+    </p-floatlabel>
+
+    <ng-template #footer>
+        <div class="contorl-panel">
+            <p-button label="OK" (onClick)="onNeProjectComplete(false)"></p-button>
+            <p-button label="Cancel" (onClick)="onNeProjectComplete(true)"></p-button>
+        </div>
+    </ng-template>
+</p-dialog>
