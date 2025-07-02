@@ -4,7 +4,6 @@ import { io } from 'socket.io-client';
 import { environment } from '../../environments/environment';
 import { ReadonlySubject } from '../../utils/readonly-subject';
 import { ClientApiService } from './client-api.service';
-import { MessagingService } from './messaging.service';
 import { TokenService } from './token.service';
 import { IoSocketType } from '../../model/io-sockets.model';
 import { SocketEvent } from '../../model/socket-event.model';
@@ -18,7 +17,6 @@ export class SocketService {
 
   constructor(
     readonly tokenService: TokenService,
-    readonly messagingService: MessagingService,
     readonly apiClientService: ClientApiService,
   ) {
     this.initializeService();
