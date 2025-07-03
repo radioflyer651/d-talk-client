@@ -11,28 +11,28 @@
 
 <div class="project-detail-component">
     <div *ngIf="project; else noProject" class="project-detail-container">
-        <p-card>
+        <p-panel [showHeader]="false">
             <h2>
                 Project: {{project.name}}
             </h2>
-        </p-card>
+        </p-panel>
 
-        <p-card>
+        <p-panel [showHeader]="false">
             <div class="project-tabs">
                 <ng-container
                     *ngTemplateOutlet="projectTab; context:{ title: 'Overview', selectionIndex: 0, icon: 'fa-square-list'}"></ng-container>
                 <ng-container
-                    *ngTemplateOutlet="projectTab; context:{ title: 'Chat Rooms', selectionIndex: 1, icon: 'fa-users-between-lines'}"></ng-container>
-                <ng-container
                     *ngTemplateOutlet="projectTab; context:{ title: 'Agents', selectionIndex: 2, icon: 'fa-address-book'}"></ng-container>
+                <ng-container
+                    *ngTemplateOutlet="projectTab; context:{ title: 'Plugins', selectionIndex: 4, icon: 'fa-plug'}"></ng-container>
                 <ng-container
                     *ngTemplateOutlet="projectTab; context:{ title: 'Jobs', selectionIndex: 3, icon: 'fa-timeline-arrow'}"></ng-container>
                 <ng-container
-                    *ngTemplateOutlet="projectTab; context:{ title: 'Plugins', selectionIndex: 4, icon: 'fa-plug'}"></ng-container>
+                    *ngTemplateOutlet="projectTab; context:{ title: 'Chat Rooms', selectionIndex: 1, icon: 'fa-users-between-lines'}"></ng-container>
             </div>
-        </p-card>
+        </p-panel>
 
-        <p-card class="project-tab-content" *ngIf="selectedTab===0">
+        <p-panel class="project-tab-content" *ngIf="selectedTab===0" [showHeader]="false">
             <h3>Overview</h3>
 
             <p-floatlabel>
@@ -48,32 +48,31 @@
             <ng-container #footer>
                 <p-panel [showHeader]="false">
                     <div class="footer-button-controls">
-                        <p-button icon="fa fa-x"></p-button>
                         <p-button icon="fa fa-floppy-disk" (click)="saveProject()"></p-button>
                     </div>
                 </p-panel>
             </ng-container>
-        </p-card>
+        </p-panel>
 
-        <p-card class="project-tab-content" *ngIf="selectedTab===1">
+        <p-panel class="project-tab-content" *ngIf="selectedTab===1" [showHeader]="false">
             <h3>Chat Rooms</h3>
             Tab content goes here.
-        </p-card>
+        </p-panel>
 
-        <p-card class="project-tab-content" *ngIf="selectedTab===2">
+        <p-panel class="project-tab-content" *ngIf="selectedTab===2" [showHeader]="false">
             <h3>Agents</h3>
             Tab content goes here.
-        </p-card>
+        </p-panel>
 
-        <p-card class="project-tab-content" *ngIf="selectedTab===3">
+        <p-panel class="project-tab-content" *ngIf="selectedTab===3" [showHeader]="false">
             <h3>Jobs</h3>
             Tab content goes here.
-        </p-card>
+        </p-panel>
 
-        <p-card class="project-tab-content" *ngIf="selectedTab===4">
+        <p-panel class="project-tab-content" *ngIf="selectedTab===4" [showHeader]="false">
             <h3>Plugins</h3>
             Tab content goes here.
-        </p-card>
+        </p-panel>
     </div>
 
 </div>
