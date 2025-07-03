@@ -20,11 +20,15 @@ export class ProjectsService extends ComponentBase {
     this.initialize();
   }
 
-  reloadProjectList = new Subject<void>();
+  private _reloadProjectList = new Subject<void>();
+
+  reloadProjectList() {
+    this._reloadProjectList.next();
+  }
 
   initialize() {
     this._projectListing = new ReadonlySubject<ProjectListing[]>(this.ngDestroy$,
-      this.reloadProjectList.pipe(
+      this._reloadProjectList.pipe(
         startWith(undefined),
         switchMap(() => {
           return this.client.getProjectListings();
@@ -56,7 +60,6 @@ export class ProjectsService extends ComponentBase {
     return this._projectListing.value;
   }
   // #endregion
-
 
   // #region currentProjectId
   private readonly _currentProjectId = new BehaviorSubject<ObjectId | undefined>(undefined);
@@ -91,7 +94,7 @@ export class ProjectsService extends ComponentBase {
     return this.client.createProject(name).pipe(
       // On success, trigger a reload of the project list
       switchMap(result => {
-        this.reloadProjectList.next();
+        this._reloadProjectList.next();
         return of(result);
       })
     );
@@ -107,7 +110,7 @@ export class ProjectsService extends ComponentBase {
         if (this.currentProjectId && this.currentProjectId === id.toString()) {
           this.currentProjectId = undefined;
         }
-        this.reloadProjectList.next();
+        this._reloadProjectList.next();
         return of(result);
       })
     );

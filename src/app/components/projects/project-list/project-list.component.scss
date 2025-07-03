@@ -1,5 +1,13 @@
 .project-list-component {
     height: 100%;
+
+    p-card {
+        .p-card.p-component {
+            background-color: yellow !important;
+            display: block !important;
+            height: 100% !important;
+        }
+    }
 }
 
 .project-control-panel {
@@ -10,11 +18,24 @@
 }
 
 .project-card-container {
-    display: flex;
+    padding: 0.5em;
+    margin-bottom: 2em;
 
-    .project-card-content {
-        flex: 1 1 auto;
+    .project-title {
+        cursor: pointer;
+        margin: 0.25em;
+        margin-left: 0.75em;
     }
-    .project-card-controls {
+
+    .project-card-wrapper {
+        display: flex;
+
+        .project-card-content {
+            flex: 1 1 auto;
+        }
+        .project-card-controls {
+            display: flex;
+            justify-content: start;
+        }
     }
 }

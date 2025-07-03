@@ -143,15 +143,15 @@ export class ClientApiService {
   /**
    * Updates the name of a project by its ID (must belong to the authenticated user).
    */
-  updateProject(id: ObjectId, name: string) {
-    return this.http.put<{ success: boolean }>(this.constructUrl(`project/${id}`), { name }, this.optionsBuilder.withAuthorization());
+  updateProject(id: ObjectId, project: Project) {
+    return this.http.put<{ success: boolean; }>(this.constructUrl(`project/${id}`), project, this.optionsBuilder.withAuthorization());
   }
 
   /**
    * Deletes a project by its ID (must belong to the authenticated user).
    */
   deleteProject(id: ObjectId) {
-    return this.http.delete<{ success: boolean }>(this.constructUrl(`project/${id}`), this.optionsBuilder.withAuthorization());
+    return this.http.delete<{ success: boolean; }>(this.constructUrl(`project/${id}`), this.optionsBuilder.withAuthorization());
   }
 
   /**
@@ -159,5 +159,5 @@ export class ClientApiService {
    */
   getProjectById(id: ObjectId) {
     return this.http.get<Project>(this.constructUrl(`project/${id}`), this.optionsBuilder.withAuthorization());
-  }  
+  }
 }

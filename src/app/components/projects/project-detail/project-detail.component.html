@@ -1,0 +1,83 @@
+<ng-template #projectTab let-title="title" let-icon="icon" let-selectionIndex="selectionIndex">
+    <div class="project-tab" (click)="tabClicked(selectionIndex)" [ngClass]="{
+                selected: selectionIndex === selectedTab
+            }">
+        <i *ngIf="icon" [class]="'project-icon fa-regular ' + icon"></i>
+        <div class="project-tab-title">
+            {{title}}
+        </div>
+    </div>
+</ng-template>
+
+<div class="project-detail-component">
+    <div *ngIf="project; else noProject" class="project-detail-container">
+        <p-card>
+            <h2>
+                Project: {{project.name}}
+            </h2>
+        </p-card>
+
+        <p-card>
+            <div class="project-tabs">
+                <ng-container
+                    *ngTemplateOutlet="projectTab; context:{ title: 'Overview', selectionIndex: 0, icon: 'fa-square-list'}"></ng-container>
+                <ng-container
+                    *ngTemplateOutlet="projectTab; context:{ title: 'Chat Rooms', selectionIndex: 1, icon: 'fa-users-between-lines'}"></ng-container>
+                <ng-container
+                    *ngTemplateOutlet="projectTab; context:{ title: 'Agents', selectionIndex: 2, icon: 'fa-address-book'}"></ng-container>
+                <ng-container
+                    *ngTemplateOutlet="projectTab; context:{ title: 'Jobs', selectionIndex: 3, icon: 'fa-timeline-arrow'}"></ng-container>
+                <ng-container
+                    *ngTemplateOutlet="projectTab; context:{ title: 'Plugins', selectionIndex: 4, icon: 'fa-plug'}"></ng-container>
+            </div>
+        </p-card>
+
+        <p-card class="project-tab-content" *ngIf="selectedTab===0">
+            <h3>Overview</h3>
+
+            <p-floatlabel>
+                <input id="project-name" autocomplete="off" pInputText [(ngModel)]="project.name" />
+                <label for="project-name">Project Name</label>
+            </p-floatlabel>
+
+            <p-floatlabel>
+                <label for="project-description">Project Description</label>
+                <textarea id="project-description" pTextarea [rows]="6" [(ngModel)]="project.description"></textarea>
+            </p-floatlabel>
+
+            <ng-container #footer>
+                <p-panel [showHeader]="false">
+                    <div class="footer-button-controls">
+                        <p-button icon="fa fa-x"></p-button>
+                        <p-button icon="fa fa-floppy-disk" (click)="saveProject()"></p-button>
+                    </div>
+                </p-panel>
+            </ng-container>
+        </p-card>
+
+        <p-card class="project-tab-content" *ngIf="selectedTab===1">
+            <h3>Chat Rooms</h3>
+            Tab content goes here.
+        </p-card>
+
+        <p-card class="project-tab-content" *ngIf="selectedTab===2">
+            <h3>Agents</h3>
+            Tab content goes here.
+        </p-card>
+
+        <p-card class="project-tab-content" *ngIf="selectedTab===3">
+            <h3>Jobs</h3>
+            Tab content goes here.
+        </p-card>
+
+        <p-card class="project-tab-content" *ngIf="selectedTab===4">
+            <h3>Plugins</h3>
+            Tab content goes here.
+        </p-card>
+    </div>
+
+</div>
+
+<ng-template #noProject>
+    <h2>No project has been selected.</h2>
+</ng-template>

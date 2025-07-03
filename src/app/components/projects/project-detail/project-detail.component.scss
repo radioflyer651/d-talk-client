@@ -1,0 +1,54 @@
+.project-detail-component {
+    height: 100%;
+
+    .project-detail-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        > p-card {
+            margin-bottom: 2em;
+        }
+
+        .project-tab-content {
+            flex: 1 1 auto;
+            height: 100%;
+
+            textarea {
+                width: 100%;
+            }
+
+            ::ng-deep.p-card {
+                height: 100% !important;
+            }
+        }
+    }
+
+    .project-tabs {
+        display: flex;
+        justify-content: space-between;
+        cursor: pointer;
+
+        .project-tab {
+            display: flex;
+
+            > * {
+                align-self: baseline;
+                font-size: 1.5em;
+            }
+
+            .project-icon {
+                margin-right: 0.5em;
+            }
+
+            .project-tab-title {
+                flex: 1 1 auto;
+            }
+
+            &.selected {
+                font-weight: bold;
+                text-decoration-line: underline;
+            }
+        }
+    }
+}

@@ -2,6 +2,8 @@
 
 %container-page-layout {
     width: 100%;
+    height: $free-content-height;
+
     display: flex;
     flex-direction: row;
 
