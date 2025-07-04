@@ -13,8 +13,11 @@
 
         <ng-template #footer>
             <div class="button-container">
-                <p-button severity="info" label="?" (click)="showHelp()"></p-button>
+                <!-- <p-button severity="info" label="?" (click)="showHelp()"></p-button> -->
                 <p-button type="primary" label="OK" (click)="submit()"></p-button>
+            </div>
+            <div>
+                Don't have an account?  Head over to the <a routerLink="../register">registration</a> page!
             </div>
         </ng-template>
     </p-panel>

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { ComponentBase } from '../components/component-base/component-base.component';
 import { SiteUser } from '../../model/site-user.model';
 import { MessagingService } from './messaging.service';
+import { UserRegistration } from '../../model/shared-models/user-registration.model';
 
 @Injectable({
   providedIn: 'root'
@@ -97,6 +98,36 @@ export class UserService extends ComponentBase {
               title: 'Login Unsuccessful'
             }
           );
+
+          rej(err);
+        }
+      });
+    });
+  }
+
+  /**
+   * Registers a new user and sets the user upon successful registration.
+   */
+  register(registration: UserRegistration): Promise<void> {
+    return new Promise((res, rej) => {
+      this.clientApiService.registerNewUser(registration).subscribe({
+        next: () => {
+          if (this.user) {
+            this.messagingService.sendUserMessage({
+              title: 'Registration Success',
+              content: `Welcome ${this.user.name} !`,
+              level: 'success'
+            });
+          }
+          res();
+        },
+        error: err => {
+          this.messagingService.sendUserMessage({
+            level: 'error',
+            content: `Sorry, we could not register you at this time.`,
+            title: 'Registration Unsuccessful'
+          });
+          rej(err);
         }
       });
     });

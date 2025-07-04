@@ -1,0 +1,47 @@
+<div class="registration-container">
+    <p-panel header="User Registration">
+        <form [formGroup]="registrationForm" (ngSubmit)="submit()">
+            <p-iftalabel>
+                <input pSize="large" autocomplete="off" pInputText id="user-name" formControlName="userName">
+                <label for="user-name">Username</label>
+            </p-iftalabel>
+
+            <p-iftalabel>
+                <input pSize="large" autocomplete="off" pInputText id="display-name" formControlName="displayName">
+                <label for="display-name">Display Name</label>
+            </p-iftalabel>
+
+            <p-iftalabel>
+                <input pSize="large" autocomplete="off" pInputText id="email" formControlName="email">
+                <label for="email">Email</label>
+            </p-iftalabel>
+
+            <p-iftalabel>
+                <input pSize="large" autocomplete="off" pInputText type="password" id="password1"
+                    formControlName="password1">
+                <label for="password1">Password</label>
+            </p-iftalabel>
+
+            <p-iftalabel>
+                <input pSize="large" autocomplete="off" pInputText type="password" id="password2"
+                    formControlName="password2">
+                <label for="password2">Confirm Password</label>
+            </p-iftalabel>
+
+            <div *ngIf="registrationForm.errors?.['passwordsMismatch'] && registrationForm.touched"
+                class="error-message">
+                Passwords do not match.
+            </div>
+        </form>
+
+        <ng-template #footer>
+            <div class="button-container">
+                <p-button type="submit" label="Register" (click)="submit()"
+                    [disabled]="submitting || registrationForm.invalid"></p-button>
+            </div>
+            <div>
+                Already have an account? Head over to the <a routerLink="../login">login</a> page!
+            </div>
+        </ng-template>
+    </p-panel>
+</div>

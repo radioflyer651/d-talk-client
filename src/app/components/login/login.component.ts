@@ -7,7 +7,8 @@ import { IftaLabelModule } from 'primeng/iftalabel';
 import { ButtonModule } from 'primeng/button';
 import { UserService } from '../../services/user.service';
 import { DialogModule } from 'primeng/dialog';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { MessagingService } from '../../services/messaging.service';
 
 @Component({
   selector: 'app-login',
@@ -18,6 +19,7 @@ import { Router } from '@angular/router';
     IftaLabelModule,
     ButtonModule,
     DialogModule,
+    RouterModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -27,6 +29,7 @@ export class LoginComponent extends ComponentBase {
     readonly formBuilder: FormBuilder,
     readonly userService: UserService,
     readonly router: Router,
+    readonly messagingService: MessagingService,
   ) {
     super();
   }
@@ -40,12 +43,16 @@ export class LoginComponent extends ComponentBase {
     });
   }
 
-  submit() {
+  async submit() {
     try {
-      this.userService.login(this.loginForm.value);
+      await this.userService.login(this.loginForm.value);
       this.router.navigate(['/projects']);
     } catch (err) {
-
+      console.log(`Error: ${err?.toString()}`);
+      this.messagingService.sendUserMessage({
+        level: 'error',
+        content: `There was an error logging in: ${err?.toString()}`
+      });
     }
   }
 

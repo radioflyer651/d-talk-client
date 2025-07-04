@@ -1,0 +1,26 @@
+.registration-container {
+    max-width: 400px;
+    margin: 40px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+input {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: end;
+
+    button, p-button{
+        margin-left:15px;
+    }
+}
+
+.registration-explained{
+    > div{
+        margin-bottom: 20px;
+    }
+}

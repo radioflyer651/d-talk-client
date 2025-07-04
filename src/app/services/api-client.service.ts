@@ -8,6 +8,7 @@ import { TokenPayload } from '../../model/shared-models/token-payload.model';
 import { ProjectListing } from '../../model/shared-models/chat-core/project-listing.model';
 import { Project } from '../../model/shared-models/chat-core/project.model';
 import { ObjectId } from 'mongodb';
+import { UserRegistration } from '../../model/shared-models/user-registration.model';
 
 // Extract the type of the `post` method from `HttpClient`
 type HttpClientPostMethod = HttpClient['post'];
@@ -113,10 +114,22 @@ export class ClientApiService {
 
   /** Makes a call to attempt to login the user with their credentials. */
   login(loginInfo: LoginRequest) {
-    return this.http.post<string>(this.constructUrl('login'), loginInfo)
+    return this.http.post<{ token: string; }>(this.constructUrl('login'), loginInfo)
       .pipe(
         tap(response => {
-          this.tokenService.token = response;
+          this.tokenService.token = response.token;
+        })
+      );
+  }
+
+  /**
+   * Registers a new user and sets the token on success.
+   */
+  registerNewUser(registration: UserRegistration) {
+    return this.http.post<{ token: string; }>(this.constructUrl('register'), registration)
+      .pipe(
+        tap(response => {
+          this.tokenService.token = response.token;
         })
       );
   }
