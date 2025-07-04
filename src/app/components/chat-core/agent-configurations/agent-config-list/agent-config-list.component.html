@@ -1,0 +1,51 @@
+<div class="agent-config-list-component">
+    <p-card class="h-100 d-block">
+        <p-panel showHeader="false">
+            <p-floatlabel>
+                <input id="agent-config-search" autocomplete="off" pInputText [(ngModel)]="searchText" />
+                <label for="agent-config-search">Search</label>
+            </p-floatlabel>
+
+            <p-button icon="fa fa-plus" label="New Agent Config" (click)="createNewAgentConfig()"></p-button>
+        </p-panel>
+
+        <ng-container *ngIf="!!(agentConfigList$ | async)">
+            <p-dataview [value]="(agentConfigList$ | async)!">
+                <ng-template #header>
+                </ng-template>
+
+                <ng-template #list let-items>
+                    <div *ngFor="let config of items" class="agent-config-card-container">
+                        <p-card>
+                            <ng-template #header>
+                                <h5 class="agent-config-title" (click)="selectAgentConfig(config)">{{config.name}}</h5>
+                            </ng-template>
+
+                            <div class="agent-config-card-wrapper">
+                                <pre class="agent-config-card-content">{{config.description?.trim()}}</pre>
+                                <div class="agent-config-card-controls">
+                                    <p-button icon="fa fa-trash" severity="danger"
+                                        (click)="deleteAgentConfig(config)"></p-button>
+                                </div>
+                            </div>
+                        </p-card>
+                    </div>
+                </ng-template>
+            </p-dataview>
+        </ng-container>
+    </p-card>
+</div>
+
+<p-dialog [(visible)]="isNewAgentConfigDialogVisible">
+    <p-floatlabel>
+        <input id="new-agent-config-name" autocomplete="off" pInputText [(ngModel)]="newAgentConfigName" />
+        <label for="new-agent-config-name">Agent Config Name</label>
+    </p-floatlabel>
+
+    <ng-template #footer>
+        <div class="contorl-panel">
+            <p-button label="OK" (onClick)="onNewAgentConfigComplete(false)"></p-button>
+            <p-button label="Cancel" (onClick)="onNewAgentConfigComplete(true)"></p-button>
+        </div>
+    </ng-template>
+</p-dialog>

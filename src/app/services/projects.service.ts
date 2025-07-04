@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ClientApiService as ApiClientService } from './api-client.service';
-import { BehaviorSubject, Observable, of, startWith, Subject, switchMap } from 'rxjs';
+import { BehaviorSubject, of, startWith, Subject, switchMap } from 'rxjs';
 import { Project } from '../../model/shared-models/chat-core/project.model';
 import { ProjectListing } from '../../model/shared-models/chat-core/project-listing.model';
 import { ReadonlySubject } from '../../utils/readonly-subject';
-import { BaseComponent } from 'primeng/basecomponent';
 import { ComponentBase } from '../components/component-base/component-base.component';
 import { ObjectId } from 'mongodb';
 

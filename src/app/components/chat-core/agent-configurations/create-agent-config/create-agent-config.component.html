@@ -1,0 +1,38 @@
+<p-panel header="Create Agent Configuration">
+    <form #agentConfigForm="ngForm" (ngSubmit)="onOk()">
+        <div class="form-group">
+            <p-floatlabel>
+                <input pInputText id="agent-name" name="name" [(ngModel)]="agentConfig.name" required
+                    autocomplete="off" />
+                <label for="agent-name">Name</label>
+            </p-floatlabel>
+        </div>
+        <div class="form-group">
+            <p-floatlabel>
+                <input pInputText id="chat-name" name="chatName" [(ngModel)]="agentConfig.chatName" required
+                    autocomplete="off" />
+                <label for="chat-name">Chat Name</label>
+            </p-floatlabel>
+        </div>
+        <div class="form-group">
+            <p-floatlabel>
+                <textarea class="agent-description-fullwidth" pInputTextarea id="description" name="description"
+                    [(ngModel)]="agentConfig.description" autocomplete="off"></textarea>
+                <label for="description">Description</label>
+            </p-floatlabel>
+        </div>
+        <div class="form-group">
+            <p-floatlabel>
+                <input pInputText id="llm-service" name="llmService" [(ngModel)]="agentConfig.modelInfo.llmService"
+                    required autocomplete="off" />
+                <label for="llm-service">LLM Service</label>
+            </p-floatlabel>
+        </div>
+        <!-- Add more fields as needed for identityStatements, baseInstructions, plugins, etc. -->
+         
+        <div class="footer-button-controls">
+            <button pButton type="submit" label="OK" [disabled]="agentConfigForm.invalid"></button>
+            <button pButton type="button" label="Cancel" (click)="onCancel()" class="p-button-secondary"></button>
+        </div>
+    </form>
+</p-panel>

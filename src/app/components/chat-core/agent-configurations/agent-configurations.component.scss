@@ -1,0 +1,50 @@
+.agent-configurations-container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  min-height: 0;
+}
+
+.agent-config-list-panel {
+  flex: 0 0 340px;
+  min-width: 260px;
+  max-width: 400px;
+  background: #f7f7fa;
+  border-right: 1px solid #e0e0e0;
+  height: 100%;
+  overflow-y: auto;
+  box-shadow: 2px 0 8px 0 rgba(0,0,0,0.03);
+}
+
+.agent-config-detail-panel {
+  flex: 1 1 0%;
+  min-width: 0;
+  height: 100%;
+  background: #fff;
+  padding: 2em 2em 2em 2em;
+  overflow-y: auto;
+  box-shadow: none;
+}
+
+@media (max-width: 900px) {
+  .agent-configurations-container {
+    flex-direction: column;
+  }
+  .agent-config-list-panel,
+  .agent-config-detail-panel {
+    min-width: 0;
+    max-width: none;
+    box-shadow: none;
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 1em;
+  }
+  .agent-config-list-panel {
+    flex: none;
+    min-height: 180px;
+  }
+  .agent-config-detail-panel {
+    flex: 1 1 0%;
+    min-height: 300px;
+  }
+}

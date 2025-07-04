@@ -3,7 +3,7 @@ import { BehaviorSubject, combineLatest, map, Observable, shareReplay, Subscript
 
 export class ReadonlySubject<T> {
     constructor(takeUntilObservable: Observable<any>, source: Observable<T>) {
-        if (takeUntil) {
+        if (takeUntilObservable) {
             this.observable$ = source.pipe(takeUntil(takeUntilObservable), shareReplay({ bufferSize: 1, refCount: true }));
         } else {
             this.observable$ = source.pipe(shareReplay(1));

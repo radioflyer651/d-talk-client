@@ -9,6 +9,7 @@ import { ProjectListing } from '../../model/shared-models/chat-core/project-list
 import { Project } from '../../model/shared-models/chat-core/project.model';
 import { ObjectId } from 'mongodb';
 import { UserRegistration } from '../../model/shared-models/user-registration.model';
+import { ChatAgentIdentityConfiguration } from '../../model/shared-models/chat-core/agent-configuration.model';
 
 // Extract the type of the `post` method from `HttpClient`
 type HttpClientPostMethod = HttpClient['post'];
@@ -172,5 +173,57 @@ export class ClientApiService {
    */
   getProjectById(id: ObjectId) {
     return this.http.get<Project>(this.constructUrl(`project/${id}`), this.optionsBuilder.withAuthorization());
+  }
+
+  /**
+   * Gets all agent configurations for a project.
+   */
+  getAgentConfigurations(projectId: ObjectId) {
+    return this.http.get<ChatAgentIdentityConfiguration[]>(
+      this.constructUrl(`project/${projectId}/agent-configurations`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Gets a single agent configuration by its ID.
+   */
+  getAgentConfigurationById(agentConfigId: ObjectId) {
+    return this.http.get<ChatAgentIdentityConfiguration>(
+      this.constructUrl(`agent-configuration/${agentConfigId}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Creates a new agent configuration for a project.
+   */
+  createAgentConfiguration(projectId: ObjectId, config: ChatAgentIdentityConfiguration) {
+    return this.http.post<ChatAgentIdentityConfiguration>(
+      this.constructUrl(`project/${projectId}/agent-configurations`),
+      config,
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Updates an existing agent configuration.
+   */
+  updateAgentConfiguration(agentConfigId: ObjectId, config: ChatAgentIdentityConfiguration) {
+    return this.http.put<{ success: boolean }>(
+      this.constructUrl(`agent-configuration/${agentConfigId}`),
+      config,
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Deletes an agent configuration by its ID.
+   */
+  deleteAgentConfiguration(agentConfigId: ObjectId) {
+    return this.http.delete<{ success: boolean }>(
+      this.constructUrl(`agent-configuration/${agentConfigId}`),
+      this.optionsBuilder.withAuthorization()
+    );
   }
 }

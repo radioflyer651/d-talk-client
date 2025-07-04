@@ -12,6 +12,7 @@ import { ComponentBase } from '../../../component-base/component-base.component'
 import { Project } from '../../../../../model/shared-models/chat-core/project.model';
 import { ClientApiService } from '../../../../services/api-client.service';
 import { ProjectsService } from '../../../../services/projects.service';
+import { AgentConfigurationsComponent } from "../../agent-configurations/agent-configurations.component";
 
 @Component({
   selector: 'app-project-detail',
@@ -22,9 +23,10 @@ import { ProjectsService } from '../../../../services/projects.service';
     PanelModule,
     InputTextModule,
     FloatLabelModule,
-    TextareaModule,
     ButtonModule,
-  ],
+    TextareaModule,
+    AgentConfigurationsComponent
+],
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss'
 })
