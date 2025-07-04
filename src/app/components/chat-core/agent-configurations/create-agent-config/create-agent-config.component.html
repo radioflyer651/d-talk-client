@@ -1,4 +1,4 @@
-<p-panel header="Create Agent Configuration">
+<p-dialog [(visible)]="isVisible" header="New Agent Configuration" [style]="{minWidth: '600px'}">
     <form #agentConfigForm="ngForm" (ngSubmit)="onOk()">
         <div class="form-group">
             <p-floatlabel>
@@ -11,7 +11,7 @@
             <p-floatlabel>
                 <input pInputText id="chat-name" name="chatName" [(ngModel)]="agentConfig.chatName" required
                     autocomplete="off" />
-                <label for="chat-name">Chat Name</label>
+                <label for="chat-name">Display Name</label>
             </p-floatlabel>
         </div>
         <div>
@@ -24,11 +24,12 @@
                 <label for="description">Description</label>
             </p-floatlabel>
         </div>
-        <!-- Add more fields as needed for identityStatements, baseInstructions, plugins, etc. -->
-
-        <div class="footer-button-controls">
-            <button pButton type="submit" label="OK" [disabled]="agentConfigForm.invalid"></button>
-            <button pButton type="button" label="Cancel" (click)="onCancel()" class="p-button-secondary"></button>
-        </div>
     </form>
-</p-panel>
+
+    <ng-template #footer>
+        <div class="footer-button-controls">
+            <button pButton type="button" label="Cancel" (click)="onCancel()" class="p-button-secondary"></button>
+            <button pButton type="submit" label="OK" [disabled]="agentConfigForm.invalid" (click)="onOk()"></button>
+        </div>
+    </ng-template>
+</p-dialog>

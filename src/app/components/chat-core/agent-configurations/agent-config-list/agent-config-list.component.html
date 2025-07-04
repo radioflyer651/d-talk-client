@@ -36,16 +36,4 @@
     </p-card>
 </div>
 
-<p-dialog [(visible)]="isNewAgentConfigDialogVisible">
-    <p-floatlabel>
-        <input id="new-agent-config-name" autocomplete="off" pInputText [(ngModel)]="newAgentConfigName" />
-        <label for="new-agent-config-name">Agent Config Name</label>
-    </p-floatlabel>
-
-    <ng-template #footer>
-        <div class="contorl-panel">
-            <p-button label="OK" (onClick)="onNewAgentConfigComplete(false)"></p-button>
-            <p-button label="Cancel" (onClick)="onNewAgentConfigComplete(true)"></p-button>
-        </div>
-    </ng-template>
-</p-dialog>
+<app-create-agent-config [(isVisible)]="isNewAgentConfigDialogVisible"></app-create-agent-config>

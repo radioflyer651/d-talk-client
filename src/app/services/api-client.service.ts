@@ -10,6 +10,7 @@ import { Project } from '../../model/shared-models/chat-core/project.model';
 import { ObjectId } from 'mongodb';
 import { UserRegistration } from '../../model/shared-models/user-registration.model';
 import { ChatAgentIdentityConfiguration } from '../../model/shared-models/chat-core/agent-configuration.model';
+import { NewDbItem } from '../../model/shared-models/db-operation-types.model';
 
 // Extract the type of the `post` method from `HttpClient`
 type HttpClientPostMethod = HttpClient['post'];
@@ -180,7 +181,7 @@ export class ClientApiService {
    */
   getAgentConfigurations(projectId: ObjectId) {
     return this.http.get<ChatAgentIdentityConfiguration[]>(
-      this.constructUrl(`project/${projectId}/agent-configurations`),
+      this.constructUrl(`agent-configurations/${projectId}`),
       this.optionsBuilder.withAuthorization()
     );
   }
@@ -198,9 +199,9 @@ export class ClientApiService {
   /**
    * Creates a new agent configuration for a project.
    */
-  createAgentConfiguration(projectId: ObjectId, config: ChatAgentIdentityConfiguration) {
+  createAgentConfiguration(projectId: ObjectId, config: NewDbItem<ChatAgentIdentityConfiguration>) {
     return this.http.post<ChatAgentIdentityConfiguration>(
-      this.constructUrl(`project/${projectId}/agent-configurations`),
+      this.constructUrl(`agent-configuration`),
       config,
       this.optionsBuilder.withAuthorization()
     );
@@ -210,7 +211,7 @@ export class ClientApiService {
    * Updates an existing agent configuration.
    */
   updateAgentConfiguration(agentConfigId: ObjectId, config: ChatAgentIdentityConfiguration) {
-    return this.http.put<{ success: boolean }>(
+    return this.http.put<{ success: boolean; }>(
       this.constructUrl(`agent-configuration/${agentConfigId}`),
       config,
       this.optionsBuilder.withAuthorization()
@@ -221,7 +222,7 @@ export class ClientApiService {
    * Deletes an agent configuration by its ID.
    */
   deleteAgentConfiguration(agentConfigId: ObjectId) {
-    return this.http.delete<{ success: boolean }>(
+    return this.http.delete<{ success: boolean; }>(
       this.constructUrl(`agent-configuration/${agentConfigId}`),
       this.optionsBuilder.withAuthorization()
     );

@@ -19,6 +19,7 @@ import { lastValueFrom } from 'rxjs';
 import { ConfirmationService } from 'primeng/api';
 import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-models/chat-core/agent-configuration.model';
 import { ReadonlySubject } from '../../../../../utils/readonly-subject';
+import { CreateAgentConfigComponent } from "../create-agent-config/create-agent-config.component";
 
 @Component({
   selector: 'app-agent-config-list',
@@ -34,6 +35,7 @@ import { ReadonlySubject } from '../../../../../utils/readonly-subject';
     DataViewModule,
     ConfirmDialogModule,
     DialogModule,
+    CreateAgentConfigComponent
   ],
   templateUrl: './agent-config-list.component.html',
   styleUrl: './agent-config-list.component.scss'
@@ -91,7 +93,7 @@ export class AgentConfigListComponent extends ComponentBase {
     this.confirmationService.confirm({
       message: `Are you sure you wish to delete the ${config.name} agent configuration?`,
       accept: async () => {
-        return await lastValueFrom(this.agentConfigService.deleteAgentConfiguration(config.projectId));
+        return await lastValueFrom(this.agentConfigService.deleteAgentConfiguration(config._id));
       }
     });
   }
@@ -108,30 +110,4 @@ export class AgentConfigListComponent extends ComponentBase {
 
   newAgentConfigName: string = '';
 
-  async onNewAgentConfigComplete(cancelled: boolean): Promise<void> {
-    this.isNewAgentConfigDialogVisible = false;
-    if (cancelled) {
-      return;
-    }
-    if (!this.newAgentConfigName.trim()) {
-      // You may want to use a messaging service here
-      return;
-    }
-    // Minimal config for creation; you may want to expand this
-    const newConfig: ChatAgentIdentityConfiguration = {
-      modelInfo: { llmService: '', serviceParams: {} },
-      projectId: this.projectService.currentProjectId!,
-      name: this.newAgentConfigName,
-      chatName: this.newAgentConfigName,
-      description: '',
-      identityStatements: [],
-      baseInstructions: [],
-      plugins: []
-    };
-    const created = await lastValueFrom(this.agentConfigService.createAgentConfiguration(newConfig));
-    // If the API returns the new config with an _id, select it. Otherwise, do nothing.
-    if (created && (created as any)._id) {
-      this.agentConfigService.selectedAgentConfigId = (created as any)._id;
-    }
-  }
 }

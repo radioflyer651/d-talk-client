@@ -5,6 +5,7 @@ import { ProjectsService } from './projects.service';
 import { ClientApiService } from './api-client.service';
 import { ObjectId } from 'mongodb';
 import { ReadonlySubject } from '../../utils/readonly-subject';
+import { NewDbItem } from '../../model/shared-models/db-operation-types.model';
 
 @Injectable({
   providedIn: 'root'
@@ -87,7 +88,7 @@ export class AgentConfigurationService implements OnDestroy {
   }
 
   // CRUD operations
-  createAgentConfiguration(config: ChatAgentIdentityConfiguration) {
+  createAgentConfiguration(config: NewDbItem<ChatAgentIdentityConfiguration>) {
     const projectId = this.projectService.currentProjectId;
     if (!projectId) {
       return of(undefined);
