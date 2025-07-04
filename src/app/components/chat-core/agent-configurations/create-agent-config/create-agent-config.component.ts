@@ -14,6 +14,7 @@ import { ComponentBase } from '../../../component-base/component-base.component'
 import { AgentConfigurationService } from '../../../../services/agent-configuration.service';
 import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-models/chat-core/agent-configuration.model';
 import { ObjectId } from 'mongodb';
+import { AgentTypeSelectorComponent } from "../agent-type-selector/agent-type-selector.component";
 
 @Component({
   selector: 'app-create-agent-config',
@@ -27,24 +28,12 @@ import { ObjectId } from 'mongodb';
     PanelModule,
     CardModule,
     ButtonModule,
+    AgentTypeSelectorComponent
   ],
   templateUrl: './create-agent-config.component.html',
   styleUrl: './create-agent-config.component.scss'
 })
 export class CreateAgentConfigComponent extends ComponentBase {
-  isDialogVisible = false;
-
-  agentConfig: ChatAgentIdentityConfiguration = {
-    modelInfo: { llmService: '', serviceParams: {} },
-    projectId: undefined as unknown as ObjectId,
-    name: '',
-    chatName: '',
-    description: '',
-    identityStatements: [],
-    baseInstructions: [],
-    plugins: []
-  };
-
   constructor(
     readonly projectsService: ProjectsService,
     readonly agentConfigService: AgentConfigurationService
@@ -54,6 +43,19 @@ export class CreateAgentConfigComponent extends ComponentBase {
       this.agentConfig.projectId = this.projectsService.currentProjectId;
     }
   }
+
+  isDialogVisible = false;
+
+  agentConfig: ChatAgentIdentityConfiguration = {
+    modelInfo: undefined as any, // We'll fill this in with the editor.
+    projectId: undefined as unknown as ObjectId,
+    name: '',
+    chatName: '',
+    description: '',
+    identityStatements: [],
+    baseInstructions: [],
+    plugins: []
+  };
 
   async onOk() {
     if (!this.agentConfig.name || !this.agentConfig.chatName) {
@@ -77,5 +79,9 @@ export class CreateAgentConfigComponent extends ComponentBase {
 
   onCancel() {
     this.isDialogVisible = false;
+  }
+
+  get outthingy() {
+    return JSON.stringify(this.agentConfig?.modelInfo, undefined, 2);
   }
 }
