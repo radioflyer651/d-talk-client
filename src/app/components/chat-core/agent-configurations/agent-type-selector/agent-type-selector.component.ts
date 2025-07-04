@@ -8,6 +8,7 @@ import { ComponentBase } from '../../../component-base/component-base.component'
 import { ChatModelConfigService } from '../../../../services/chat-model-config.service';
 import { ModelServiceParams } from '../../../../../model/shared-models/chat-core/model-service-params.model';
 import { ILlmModelServiceBase } from '../../../../chat-core-services/model-services/llm-model-service-base';
+import { AgentConfigEditorComponent } from "../agent-config-editors/agent-config-editor/agent-config-editor.component";
 
 type ItemSelection = {
   label: string;
@@ -23,7 +24,8 @@ type ItemSelection = {
     FloatLabelModule,
     SelectModule,
     PanelModule,
-  ],
+    AgentConfigEditorComponent
+],
   templateUrl: './agent-type-selector.component.html',
   styleUrl: './agent-type-selector.component.scss'
 })

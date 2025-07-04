@@ -1,0 +1,2 @@
+<app-ollama-config-editor *ngIf="modelType==='ollama'" [params]="$any(params)"></app-ollama-config-editor>
+<app-openai-config-editor *ngIf="modelType==='open-ai'" [params]="$any(params)"></app-openai-config-editor>

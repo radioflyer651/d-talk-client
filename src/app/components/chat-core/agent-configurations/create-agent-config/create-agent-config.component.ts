@@ -15,6 +15,7 @@ import { AgentConfigurationService } from '../../../../services/agent-configurat
 import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-models/chat-core/agent-configuration.model';
 import { ObjectId } from 'mongodb';
 import { AgentTypeSelectorComponent } from "../agent-type-selector/agent-type-selector.component";
+import { AgentConfigEditorComponent } from "../agent-config-editors/agent-config-editor/agent-config-editor.component";
 
 @Component({
   selector: 'app-create-agent-config',
@@ -28,8 +29,9 @@ import { AgentTypeSelectorComponent } from "../agent-type-selector/agent-type-se
     PanelModule,
     CardModule,
     ButtonModule,
-    AgentTypeSelectorComponent
-  ],
+    AgentTypeSelectorComponent,
+    AgentConfigEditorComponent
+],
   templateUrl: './create-agent-config.component.html',
   styleUrl: './create-agent-config.component.scss'
 })
@@ -39,23 +41,24 @@ export class CreateAgentConfigComponent extends ComponentBase {
     readonly agentConfigService: AgentConfigurationService
   ) {
     super();
-    if (this.projectsService.currentProjectId) {
-      this.agentConfig.projectId = this.projectsService.currentProjectId;
-    }
   }
 
   isDialogVisible = false;
 
-  agentConfig: ChatAgentIdentityConfiguration = {
-    modelInfo: undefined as any, // We'll fill this in with the editor.
-    projectId: undefined as unknown as ObjectId,
-    name: '',
-    chatName: '',
-    description: '',
-    identityStatements: [],
-    baseInstructions: [],
-    plugins: []
-  };
+  ngOnInit() {
+    this.agentConfig = {
+      modelInfo: undefined as any, // We'll fill this in with the editor.
+      projectId: this.projectsService.currentProjectId!,
+      name: '',
+      chatName: '',
+      description: '',
+      identityStatements: [],
+      baseInstructions: [],
+      plugins: []
+    };
+  }
+
+  agentConfig!: ChatAgentIdentityConfiguration;
 
   async onOk() {
     if (!this.agentConfig.name || !this.agentConfig.chatName) {
@@ -81,7 +84,4 @@ export class CreateAgentConfigComponent extends ComponentBase {
     this.isDialogVisible = false;
   }
 
-  get outthingy() {
-    return JSON.stringify(this.agentConfig?.modelInfo, undefined, 2);
-  }
 }
