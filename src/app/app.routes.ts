@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AppHomeComponent } from './components/app-home/app-home.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
+import { authenticatedGuard } from './routing/authenticated.guard';
 
 export const routes: Routes = [
     {
@@ -11,6 +12,7 @@ export const routes: Routes = [
             {
                 path: '',
                 component: AppHomeComponent,
+                canActivate: [authenticatedGuard],
                 children: [
                     {
                         path: 'projects',
@@ -23,6 +25,11 @@ export const routes: Routes = [
                 component: LoginPageComponent
             },
         ]
+    },
+    {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: '/projects'
     },
     {
         path: '**',

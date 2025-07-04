@@ -45,13 +45,13 @@
                 <textarea id="project-description" pTextarea [rows]="6" [(ngModel)]="project.description"></textarea>
             </p-floatlabel>
 
-            <ng-container #footer>
+            <ng-template #footer>
                 <p-panel [showHeader]="false">
                     <div class="footer-button-controls">
                         <p-button icon="fa fa-floppy-disk" (click)="saveProject()"></p-button>
                     </div>
                 </p-panel>
-            </ng-container>
+            </ng-template>
         </p-panel>
 
         <p-panel class="project-tab-content" *ngIf="selectedTab===1" [showHeader]="false">
@@ -74,7 +74,6 @@
             Tab content goes here.
         </p-panel>
     </div>
-
 </div>
 
 <ng-template #noProject>

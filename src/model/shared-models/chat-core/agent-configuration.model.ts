@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
-import { PluginSpecification } from "../../../chat-core/agent-plugin/plugin-specification.model";
 import { ModelServiceParams } from "./model-service-params.model";
+import { PluginSpecification } from "./plugin-specification.model";
 
 /** The configurable items that make up a chat agent. */
 export interface ChatAgentIdentityConfiguration {
@@ -15,6 +15,9 @@ export interface ChatAgentIdentityConfiguration {
 
     /** A name to show in chat for this agent. */
     chatName: string;
+
+    /** A longer description to explain details about the agent. */
+    description: string;
 
     /** This is provided as a system message to the agent.  This should inform the agent of its identity
      *   in a way of "You are XX and you are an expert with YY."  It should not include instructions, but
