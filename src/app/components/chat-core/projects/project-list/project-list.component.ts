@@ -1,23 +1,22 @@
 import { Component } from '@angular/core';
-import { BaseComponent } from 'primeng/basecomponent';
 import { CardModule } from 'primeng/card';
-import { ProjectsService } from '../../../services/projects.service';
 import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FloatLabel } from 'primeng/floatlabel';
-import { ProjectListing } from '../../../../model/shared-models/chat-core/project-listing.model';
-import { ReadonlySubject } from '../../../../utils/readonly-subject';
-import { ComponentBase } from '../../component-base/component-base.component';
 import { BehaviorSubject, lastValueFrom, map, switchMap } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
-import { MessagingService } from '../../../services/messaging.service';
+import { ProjectListing } from '../../../../../model/shared-models/chat-core/project-listing.model';
+import { ReadonlySubject } from '../../../../../utils/readonly-subject';
+import { MessagingService } from '../../../../services/messaging.service';
+import { ProjectsService } from '../../../../services/projects.service';
+import { ComponentBase } from '../../../component-base/component-base.component';
 
 @Component({
   selector: 'app-project-list',

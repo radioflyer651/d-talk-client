@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 import { AppHomeComponent } from './components/app-home/app-home.component';
-import { ProjectsComponent } from './components/projects/projects.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { authenticatedGuard } from './routing/authenticated.guard';
 import { RegistrationPageComponent } from './components/registration-page/registration-page.component';
+import { ProjectsComponent } from './components/chat-core/projects/projects.component';
 
 export const routes: Routes = [
     {

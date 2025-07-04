@@ -1,8 +1,4 @@
 import { Component } from '@angular/core';
-import { ComponentBase } from '../../component-base/component-base.component';
-import { ProjectsService } from '../../../services/projects.service';
-import { ReadonlySubject } from '../../../../utils/readonly-subject';
-import { Project } from '../../../../model/shared-models/chat-core/project.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
@@ -12,7 +8,10 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { lastValueFrom, takeUntil } from 'rxjs';
 import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
-import { ClientApiService } from '../../../services/api-client.service';
+import { ComponentBase } from '../../../component-base/component-base.component';
+import { Project } from '../../../../../model/shared-models/chat-core/project.model';
+import { ClientApiService } from '../../../../services/api-client.service';
+import { ProjectsService } from '../../../../services/projects.service';
 
 @Component({
   selector: 'app-project-detail',
