@@ -1,0 +1,30 @@
+.agent-config-list-component {
+    p-floatlabel {
+        width: 100%;
+        display: block;
+        margin-bottom: 1em;
+    }
+
+    #agent-config-search {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .new-agent-config-btn {
+        width: 100%;
+        display: block;
+        margin-bottom: 1em;
+    }
+
+    .agent-config-title {
+        margin: 1em;
+    }
+
+    .agent-config-card-wrapper {
+        display: flex;
+        
+        .agent-config-card-content {
+            flex: 1 1 auto;
+        }
+    }
+}

@@ -6,7 +6,7 @@
                 <label for="agent-config-search">Search</label>
             </p-floatlabel>
 
-            <p-button icon="fa fa-plus" label="New Agent Config" (click)="createNewAgentConfig()"></p-button>
+            <p-button class="new-agent-config-btn" icon="fa fa-plus" label="New Agent Config" (click)="createNewAgentConfig()"></p-button>
         </p-panel>
 
         <ng-container *ngIf="!!(agentConfigList$ | async)">
