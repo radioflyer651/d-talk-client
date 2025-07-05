@@ -7,7 +7,6 @@ import { SelectModule } from 'primeng/select';
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { ChatModelConfigService } from '../../../../services/chat-model-config.service';
 import { ModelServiceParams } from '../../../../../model/shared-models/chat-core/model-service-params.model';
-import { ILlmModelServiceBase } from '../../../../chat-core-services/model-services/llm-model-service-base';
 import { AgentConfigEditorComponent } from "../agent-config-editors/agent-config-editor/agent-config-editor.component";
 
 type ItemSelection = {

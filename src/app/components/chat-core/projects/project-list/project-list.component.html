@@ -22,7 +22,9 @@
                             </ng-template>
 
                             <div class="project-card-wrapper">
-                                <pre class="project-card-content">{{project.description?.trim()}}</pre>
+                                <div class="project-card-content" [innerHtml]="getProjectDescription(project)">
+                                </div>
+
                                 <div class="project-card-controls">
                                     <p-button icon="fa fa-trash" severity="danger"
                                         (click)="deleteProject(project)"></p-button>

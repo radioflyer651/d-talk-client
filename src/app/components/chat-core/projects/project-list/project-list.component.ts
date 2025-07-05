@@ -17,6 +17,7 @@ import { ReadonlySubject } from '../../../../../utils/readonly-subject';
 import { MessagingService } from '../../../../services/messaging.service';
 import { ProjectsService } from '../../../../services/projects.service';
 import { ComponentBase } from '../../../component-base/component-base.component';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-project-list',
@@ -41,6 +42,7 @@ export class ProjectListComponent extends ComponentBase {
     readonly projectsService: ProjectsService,
     readonly confirmationService: ConfirmationService,
     readonly messagingService: MessagingService,
+    readonly sanitizer: DomSanitizer,
   ) {
     super();
   }
@@ -131,5 +133,10 @@ export class ProjectListComponent extends ComponentBase {
 
     // Set this as the current project.
     this.projectsService.currentProjectId = newProject._id;
+  }
+
+  getProjectDescription(agent: ProjectListing) {
+    const result = this.sanitizer.bypassSecurityTrustHtml(agent.description?.replaceAll('\n', '<br/>') ?? '');
+    return result;
   }
 }

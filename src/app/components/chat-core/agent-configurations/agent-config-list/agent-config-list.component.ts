@@ -20,6 +20,7 @@ import { ConfirmationService } from 'primeng/api';
 import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-models/chat-core/agent-configuration.model';
 import { ReadonlySubject } from '../../../../../utils/readonly-subject';
 import { CreateAgentConfigComponent } from "../create-agent-config/create-agent-config.component";
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-agent-config-list',
@@ -46,6 +47,7 @@ export class AgentConfigListComponent extends ComponentBase {
     readonly projectService: ProjectsService,
     readonly userService: UserService,
     readonly confirmationService: ConfirmationService,
+    readonly sanitizer: DomSanitizer,
   ) {
     super();
   }
@@ -109,5 +111,10 @@ export class AgentConfigListComponent extends ComponentBase {
   }
 
   newAgentConfigName: string = '';
+
+  getAgentDescription(agent: ChatAgentIdentityConfiguration) {
+    const result = this.sanitizer.bypassSecurityTrustHtml(agent.description?.replaceAll('\n', '<br/>') ?? '');
+    return result;
+  }
 
 }
