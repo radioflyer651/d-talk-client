@@ -1,4 +1,3 @@
-import { BaseMessage } from "@langchain/core/messages";
 
 /** Enumerates the locations that plugin messages can be placed within a chat message history. */
 export enum MessagePositionTypes {

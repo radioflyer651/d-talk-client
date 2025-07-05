@@ -11,6 +11,7 @@ import { ObjectId } from 'mongodb';
 import { UserRegistration } from '../../model/shared-models/user-registration.model';
 import { ChatAgentIdentityConfiguration } from '../../model/shared-models/chat-core/agent-configuration.model';
 import { NewDbItem } from '../../model/shared-models/db-operation-types.model';
+import { ChatJobConfiguration } from '../../model/shared-models/chat-core/chat-job-data.model';
 
 // Extract the type of the `post` method from `HttpClient`
 type HttpClientPostMethod = HttpClient['post'];
@@ -223,6 +224,60 @@ export class ClientApiService {
   deleteAgentConfiguration(agentConfigId: ObjectId) {
     return this.http.delete<{ success: boolean; }>(
       this.constructUrl(`agent-configuration/${agentConfigId}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Gets all jobs for a project.
+   */
+  getJobsForProject(projectId: ObjectId) {
+    return this.http.get<ChatJobConfiguration[]>(
+      this.constructUrl(`jobs/${projectId}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Gets a single job by its ID.
+   */
+  getJobById(jobId: ObjectId) {
+    return this.http.get<ChatJobConfiguration>(
+      this.constructUrl(`job/${jobId}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Creates a new job.
+   * The backend expects the full ChatJobConfiguration object, including projectId, but _id should be omitted for creation.
+   */
+  createJob(job: Omit<ChatJobConfiguration, '_id'>) {
+    return this.http.post<ChatJobConfiguration>(
+      this.constructUrl('job'),
+      job,
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Updates a job by its ID (ID in body).
+   * The backend expects _id and projectId in the body.
+   */
+  updateJob(update: Partial<ChatJobConfiguration> & { _id: ObjectId }) {
+    return this.http.put<{ success: boolean; }>(
+      this.constructUrl('job'),
+      update,
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Deletes a job by its ID.
+   */
+  deleteJob(jobId: ObjectId) {
+    return this.http.delete<{ success: boolean; }>(
+      this.constructUrl(`job/${jobId}`),
       this.optionsBuilder.withAuthorization()
     );
   }

@@ -1,5 +1,4 @@
 import { ObjectId } from "mongodb";
-import { ChatAgentIdentityConfiguration } from "./agent-configuration.model";
 import { PluginInstanceReference } from "./plugin-instance-reference.model";
 
 
@@ -15,6 +14,7 @@ export interface AgentInstanceConfiguration {
 
     /** An optional name to give to this instance of an agent. */
     name?: string;
+    
     /** The instance IDs of the plugins that the agent has available to them. 
      *   These plugins are made available through the agent identity only.    */
     permanentPlugins: PluginInstanceReference[];
