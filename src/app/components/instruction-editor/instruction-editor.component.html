@@ -1,0 +1,4 @@
+<div>
+    <app-instruction-item *ngFor="let instruction of instructions; let i = index" [(value)]="instructions[i]"
+        [id]="i"></app-instruction-item>
+</div>

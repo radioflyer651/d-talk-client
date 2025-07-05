@@ -1,0 +1,24 @@
+<div class="instruction-container">
+    <p-card [ngClass]="{'inactive': !isActive}">
+        <div class="content-container" [ngClass]="{active: isActive}">
+            <div *ngIf="isActive">
+                <textarea pTextarea [(ngModel)]="editValue"></textarea>
+            </div>
+
+            <div *ngIf="!isActive" class="inactive-container" (click)="setActive(true)" [innerHTML]="inactiveValue">
+            </div>
+        </div>
+
+        <div class="footer-button-controls">
+            <p-button *ngIf="!isActive" icon="fa fa-message-pen" size="small" [rounded]="true" severity="primary"
+                (click)="setActive(true)"></p-button>
+            <p-button *ngIf="!isActive" icon="fa fa-trash" size="small" [rounded]="true" severity="danger"
+                (click)="delete()"></p-button>
+
+            <p-button *ngIf="isActive" icon="fa fa-trash-can-xmark" size="small" [rounded]="true" severity="secondary"
+                (click)="onComplete(true)"></p-button>
+            <p-button *ngIf="isActive" icon="fa fa-message-check" size="small" [rounded]="true" severity="primary"
+                (click)="onComplete(false)"></p-button>
+        </div>
+    </p-card>
+</div>

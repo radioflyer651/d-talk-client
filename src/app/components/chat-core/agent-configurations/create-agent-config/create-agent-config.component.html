@@ -1,21 +1,25 @@
 <p-dialog [(visible)]="isVisible" header="New Agent Configuration" [style]="{minWidth: '600px'}">
     <form #agentConfigForm="ngForm" (ngSubmit)="onOk()">
-        <div class="form-group">
-            <p-floatlabel>
-                <input pInputText id="agent-name" name="name" [(ngModel)]="agentConfig.name" required
-                    autocomplete="off" />
-                <label for="agent-name">Name</label>
-            </p-floatlabel>
-        </div>
-        <div class="form-group">
-            <p-floatlabel>
-                <input pInputText id="chat-name" name="chatName" [(ngModel)]="agentConfig.chatName" required
-                    autocomplete="off" />
-                <label for="chat-name">Display Name</label>
-            </p-floatlabel>
-        </div>
         <div>
             <app-agent-type-selector [(value)]="agentConfig.modelInfo"></app-agent-type-selector>
+        </div>
+        <div class="grid">
+            <div class="row">
+                <div class="form-group col-6 full-width">
+                    <p-floatlabel>
+                        <input pInputText id="agent-name" class="full-width" name="name" [(ngModel)]="agentConfig.name" required
+                            autocomplete="off" />
+                        <label for="agent-name">Configuration Name</label>
+                    </p-floatlabel>
+                </div>
+                <div class="form-group col-6 full-width">
+                    <p-floatlabel>
+                        <input pInputText id="chat-name" class="full-width" name="chatName" [(ngModel)]="agentConfig.chatName" required
+                            autocomplete="off" />
+                        <label for="chat-name">Display Name</label>
+                    </p-floatlabel>
+                </div>
+            </div>
         </div>
         <div class="form-group">
             <p-floatlabel>

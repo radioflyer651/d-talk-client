@@ -1,0 +1,29 @@
+.instruction-container {
+    ::ng-deep.p-card.inactive {
+        background-color: rgb(169, 194, 231);
+    }
+
+    .content-container {
+        max-height: 4em;
+        overflow: hidden;
+        transition: 0.75s all;
+    }
+
+    .inactive-container {
+        font-size: 0.75rem;
+        overflow-y: scroll;
+        cursor: pointer;
+    }
+
+    textarea {
+        display: block;
+        width: 100%;
+        min-height: 20em;
+        transition: 0.75s all;
+    }
+
+    .content-container:hover,
+    .content-container.active {
+        max-height: 50em;
+    }
+}

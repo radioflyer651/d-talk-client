@@ -1,0 +1,84 @@
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { DialogModule } from 'primeng/dialog';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
+import { PanelModule } from 'primeng/panel';
+import { TextareaModule } from 'primeng/textarea';
+
+import { ProjectsService } from '../../../../services/projects.service';
+import { ComponentBase } from '../../../component-base/component-base.component';
+import { AgentConfigurationService } from '../../../../services/agent-configuration.service';
+import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-models/chat-core/agent-configuration.model';
+import { ObjectId } from 'mongodb';
+import { AgentTypeSelectorComponent } from "../agent-type-selector/agent-type-selector.component";
+import { AgentConfigEditorComponent } from "../agent-config-editors/agent-config-editor/agent-config-editor.component";
+import { NewDbItem } from '../../../../../model/shared-models/db-operation-types.model';
+
+@Component({
+  selector: 'app-edit-agent-config',
+  imports: [
+    CommonModule,
+    FormsModule,
+    DialogModule,
+    InputTextModule,
+    TextareaModule,
+    FloatLabelModule,
+    PanelModule,
+    CardModule,
+    ButtonModule,
+    AgentTypeSelectorComponent,
+    AgentConfigEditorComponent
+  ],
+  templateUrl: './edit-agent-config.component.html',
+  styleUrl: './edit-agent-config.component.scss'
+})
+export class EditAgentConfigComponent extends ComponentBase {
+  constructor(
+    readonly projectsService: ProjectsService,
+    readonly agentConfigService: AgentConfigurationService
+  ) {
+    super();
+  }
+
+
+  private _isVisible: boolean = false;
+  @Input()
+  get isVisible(): boolean {
+    return this._isVisible;
+  }
+  set isVisible(value: boolean) {
+    this._isVisible = value;
+    this.isVisibleChange.next(value);
+  }
+
+  @Output()
+  isVisibleChange = new EventEmitter<boolean>();
+
+  ngOnInit() {
+    this.agentConfig = {
+      modelInfo: undefined as any, // We'll fill this in with the editor.
+      projectId: this.projectsService.currentProjectId!,
+      name: '',
+      chatName: '',
+      description: '',
+      identityStatements: [],
+      baseInstructions: [],
+      plugins: []
+    };
+  }
+
+  agentConfig!: NewDbItem<ChatAgentIdentityConfiguration>;
+
+  async onOk() {
+
+  }
+
+  onCancel() {
+    this.isVisible = false;
+  }
+
+}
