@@ -51,19 +51,21 @@
                         in life.
                         This is NOT the place to give instructions of things to do (such as call plugin tools).
                     </div>
-                    <app-instruction-editor [instructions]="agentConfig.identityStatements"></app-instruction-editor>
+                    <app-positionable-message-list
+                        [messages]="agentConfig.identityStatements"></app-positionable-message-list>
                 </div>
             </p-tabpanel>
 
             <p-tabpanel [value]="2">
                 <div class="tab-panel-container">
                     <div>
-                        Instructions should define the behavior of the agent.  These are things they should do.
+                        Instructions should define the behavior of the agent. These are things they should do.
                     </div>
-                    <app-instruction-editor [instructions]="agentConfig.baseInstructions"></app-instruction-editor>
+                    <app-positionable-message-list
+                        [messages]="agentConfig.baseInstructions"></app-positionable-message-list>
                 </div>
             </p-tabpanel>
-            
+
             <p-tabpanel [value]="3">
                 <div class="tab-panel-container">
                     <h3>Plugins are not implemented yet.</h3>

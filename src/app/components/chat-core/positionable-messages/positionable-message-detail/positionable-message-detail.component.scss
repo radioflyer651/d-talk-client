@@ -1,0 +1,31 @@
+.control-container {
+    margin-bottom: 1em;
+
+    .content-container {
+        display: flex;
+        width: 100%;
+
+        .controls-container {
+            input,
+            p-select {
+                width: 100%;
+            }
+            min-width: 10em;
+            width: auto;
+            margin: 0 0.75em;
+        }
+
+        .footer-button-controls {
+            margin-top: 0.75em;
+        }
+
+        .message-container {
+            flex: 1 1 auto;
+
+            textarea {
+                height: 100%;
+                width: 100%;
+            }
+        }
+    }
+}

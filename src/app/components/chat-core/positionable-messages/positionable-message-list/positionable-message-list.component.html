@@ -1,0 +1,10 @@
+<div *ngIf="!!messages" class="control-container">
+    <div class="message-container">
+        <app-positionable-message-detail *ngFor="let message of messages; let i = index" [message]="message"
+            [messageIndex]="i"></app-positionable-message-detail>
+    </div>
+
+    <div class="footer-button-controls">
+        <p-button icon="fa fa-message-plus" (click)="addMessage()"></p-button>
+    </div>
+</div>

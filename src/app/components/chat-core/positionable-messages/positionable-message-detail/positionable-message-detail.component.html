@@ -1,0 +1,33 @@
+<div class="control-container">
+    <p-panel *ngIf="!!message && !!messageController" [showHeader]="false">
+        <div class="content-container">
+            <div class="controls-container">
+                <p-floatlabel>
+                    <p-select [options]="positioningTypeOptions" [(ngModel)]="message.location"
+                        id="position-type"></p-select>
+                    <label for="position-type">Position Type</label>
+                </p-floatlabel>
+
+                <p-floatlabel *ngIf="showOffset">
+                    <p-inputnumber id="offset" autocomplete="off" [(ngModel)]="message.offset" />
+                    <label for="offset">Offset</label>
+                </p-floatlabel>
+
+                <p-floatlabel>
+                    <p-select [options]="agentTypeOptions" [(ngModel)]="messageController.agent"
+                        id="position-type"></p-select>
+                    <label for="position-type">Agent Type</label>
+                </p-floatlabel>
+
+                <div class="footer-button-controls">
+                    <p-button icon="fa fa-x" severity="danger" size="small" [rounded]="true"
+                        (click)="onDeleteClicked()"></p-button>
+                    <!-- <p-button icon="fa fa-add" severity="primary" size="small" [rounded]="true"></p-button> -->
+                </div>
+            </div>
+            <div class="message-container">
+                <textarea pTextarea [(ngModel)]="messageController.content"></textarea>
+            </div>
+        </div>
+    </p-panel>
+</div>

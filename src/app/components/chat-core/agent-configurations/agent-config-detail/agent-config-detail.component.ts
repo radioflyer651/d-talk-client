@@ -19,6 +19,7 @@ import { NewDbItem } from '../../../../../model/shared-models/db-operation-types
 import { lastValueFrom, takeUntil } from 'rxjs';
 import { TabsModule } from 'primeng/tabs';
 import { InstructionEditorComponent } from "../../../instruction-editor/instruction-editor.component";
+import { PositionableMessageListComponent } from "../../positionable-messages/positionable-message-list/positionable-message-list.component";
 
 @Component({
   selector: 'app-agent-config-detail',
@@ -33,9 +34,8 @@ import { InstructionEditorComponent } from "../../../instruction-editor/instruct
     CardModule,
     ButtonModule,
     AgentTypeSelectorComponent,
-    AgentConfigEditorComponent,
     TabsModule,
-    InstructionEditorComponent
+    PositionableMessageListComponent
 ],
   templateUrl: './agent-config-detail.component.html',
   styleUrl: './agent-config-detail.component.scss'
