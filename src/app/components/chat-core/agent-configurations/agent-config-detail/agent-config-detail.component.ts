@@ -16,9 +16,12 @@ import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-mode
 import { AgentTypeSelectorComponent } from "../agent-type-selector/agent-type-selector.component";
 import { AgentConfigEditorComponent } from "../agent-config-editors/agent-config-editor/agent-config-editor.component";
 import { NewDbItem } from '../../../../../model/shared-models/db-operation-types.model';
+import { lastValueFrom, takeUntil } from 'rxjs';
+import { TabsModule } from 'primeng/tabs';
+import { InstructionEditorComponent } from "../../../instruction-editor/instruction-editor.component";
 
 @Component({
-  selector: 'app-edit-agent-config',
+  selector: 'app-agent-config-detail',
   imports: [
     CommonModule,
     FormsModule,
@@ -30,19 +33,22 @@ import { NewDbItem } from '../../../../../model/shared-models/db-operation-types
     CardModule,
     ButtonModule,
     AgentTypeSelectorComponent,
-    AgentConfigEditorComponent
-  ],
-  templateUrl: './edit-agent-config.component.html',
-  styleUrl: './edit-agent-config.component.scss'
+    AgentConfigEditorComponent,
+    TabsModule,
+    InstructionEditorComponent
+],
+  templateUrl: './agent-config-detail.component.html',
+  styleUrl: './agent-config-detail.component.scss'
 })
-export class EditAgentConfigComponent extends ComponentBase {
+export class AgentConfigDetailComponent extends ComponentBase {
   constructor(
     readonly projectsService: ProjectsService,
-    readonly agentConfigService: AgentConfigurationService,
+    readonly agentConfigService: AgentConfigurationService
   ) {
     super();
   }
 
+  tabIndex = 0;
 
   private _isVisible: boolean = false;
   @Input()
@@ -58,26 +64,25 @@ export class EditAgentConfigComponent extends ComponentBase {
   isVisibleChange = new EventEmitter<boolean>();
 
   ngOnInit() {
-    this.agentConfig = {
-      modelInfo: undefined as any, // We'll fill this in with the editor.
-      projectId: this.projectsService.currentProjectId!,
-      name: '',
-      chatName: '',
-      description: '',
-      identityStatements: [],
-      baseInstructions: [],
-      plugins: []
-    };
+    this.agentConfigService.selectedAgentConfig$.pipe(
+      takeUntil(this.ngDestroy$),
+    ).subscribe(config => {
+      this.agentConfig = config;
+    });
   }
 
-  agentConfig!: NewDbItem<ChatAgentIdentityConfiguration>;
+  agentConfig: NewDbItem<ChatAgentIdentityConfiguration> | undefined;
 
   async onOk() {
-
+    const value = this.agentConfigService.selectedAgentConfig;
+    await lastValueFrom(this.agentConfigService.updateAgentConfiguration(value!));
   }
 
   onCancel() {
-    this.isVisible = false;
+    // This shouldn't work.  On first attempt, it does, so we'll keep it until it stops working! :)
+    const id = this.agentConfigService.selectedAgentConfigId;
+    this.agentConfigService.selectedAgentConfigId = undefined;
+    this.agentConfigService.selectedAgentConfigId = id;
   }
 
 }

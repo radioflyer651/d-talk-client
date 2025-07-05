@@ -99,7 +99,7 @@ export class AgentConfigListComponent extends ComponentBase {
   }
 
   selectAgentConfig(config: ChatAgentIdentityConfiguration) {
-    this.agentConfigService.selectedAgentConfigId = config.projectId;
+    this.agentConfigService.selectedAgentConfigId = config._id;
   }
 
   isNewAgentConfigDialogVisible: boolean = false;

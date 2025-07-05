@@ -1,4 +1,4 @@
-import { Subject, BehaviorSubject, of, startWith, switchMap } from 'rxjs';
+import { Subject, BehaviorSubject, of, startWith, switchMap, distinctUntilChanged } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { ChatAgentIdentityConfiguration } from '../../model/shared-models/chat-core/agent-configuration.model';
 import { ProjectsService } from './projects.service';
@@ -52,10 +52,17 @@ export class AgentConfigurationService implements OnDestroy {
       )
     );
 
+    // When the project changes, we want the selected agent to reset.
+    this.projectService.currentProjectId$.pipe(
+      distinctUntilChanged()
+    ).subscribe(() => {
+      this.selectedAgentConfigId = undefined;
+    });
+
     this._selectedAgentConfig = new ReadonlySubject<ChatAgentIdentityConfiguration | undefined>(
       this._destroy$,
       this._selectedAgentConfigId.asObservable().pipe(
-        switchMap(id => {
+        switchMap((id) => {
           if (!id) {
             return of(undefined);
           }
@@ -101,8 +108,8 @@ export class AgentConfigurationService implements OnDestroy {
     );
   }
 
-  updateAgentConfiguration(id: ObjectId, config: ChatAgentIdentityConfiguration) {
-    return this.apiClient.updateAgentConfiguration(id, config).pipe(
+  updateAgentConfiguration(config: ChatAgentIdentityConfiguration) {
+    return this.apiClient.updateAgentConfiguration(config).pipe(
       switchMap(result => {
         this.reloadAgentConfigurations();
         return of(result);

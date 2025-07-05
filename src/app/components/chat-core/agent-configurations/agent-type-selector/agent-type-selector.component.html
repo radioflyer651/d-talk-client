@@ -1,7 +1,9 @@
 <p-panel header="LLM Selection">
-    <div class="control-container">
-        <p-select [(ngModel)]="internalValue" [options]="this.chatModelConfigService.modelServiceProviders"
-            optionValue="identifier" optionLabel="name"></p-select>
-    </div>
-    <app-agent-config-editor [params]="value"></app-agent-config-editor>
+    <ng-container *ngIf="!!internalValue">
+        <div class="control-container">
+            <p-select [(ngModel)]="internalValue" [options]="this.chatModelConfigService.modelServiceProviders"
+                optionValue="identifier" optionLabel="name"></p-select>
+        </div>
+        <app-agent-config-editor [params]="value"></app-agent-config-editor>
+    </ng-container>
 </p-panel>

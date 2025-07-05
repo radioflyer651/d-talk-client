@@ -25,7 +25,7 @@ type ItemSelection = {
     SelectModule,
     PanelModule,
     AgentConfigEditorComponent
-],
+  ],
   templateUrl: './agent-type-selector.component.html',
   styleUrl: './agent-type-selector.component.scss'
 })
@@ -62,12 +62,14 @@ export class AgentTypeSelectorComponent extends ComponentBase {
     return this._value;
   }
   set value(value: ModelServiceParams | undefined) {
+    this.initializeOptions();
     this._value = value;
     this.valueChange.next(value);
 
     if (value) {
       this.externalValues[value.llmService] = value;
     }
+    this.internalValue = value?.llmService;
   }
 
   @Output()
@@ -78,12 +80,15 @@ export class AgentTypeSelectorComponent extends ComponentBase {
     return this._internalValue;
   }
   set internalValue(value: string | undefined) {
+    if (this._internalValue === value) {
+      return;
+    }
+
     this._internalValue = value;
 
     if (value) {
       this._value = this.externalValues[value];
       if (!this._value.serviceParams) {
-
         this.chatModelConfigService.getNewParams(value).then(params => {
           this.externalValues[value] = params;
           this._value = params;

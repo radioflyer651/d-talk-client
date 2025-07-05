@@ -13,7 +13,7 @@
             <p-button *ngIf="!isActive" icon="fa fa-message-pen" size="small" [rounded]="true" severity="primary"
                 (click)="setActive(true)"></p-button>
             <p-button *ngIf="!isActive" icon="fa fa-trash" size="small" [rounded]="true" severity="danger"
-                (click)="delete()"></p-button>
+                (click)="onDeleteClicked()"></p-button>
 
             <p-button *ngIf="isActive" icon="fa fa-trash-can-xmark" size="small" [rounded]="true" severity="secondary"
                 (click)="onComplete(true)"></p-button>

@@ -67,11 +67,8 @@ export class InstructionItemComponent {
   isActive: boolean = false;
 
   @Output()
-  deleteClicked = new EventEmitter<void>();
+  deleteClicked = new EventEmitter<number>();
 
-  delete(): void {
-    this.deleteClicked.next();
-  }
 
   setActive(isActive: boolean) {
     this.isActive = isActive;
@@ -85,6 +82,10 @@ export class InstructionItemComponent {
     }
 
     this.value = this.editValue;
+  }
+
+  onDeleteClicked() {
+    this.deleteClicked.next(this.id);
   }
 
 }

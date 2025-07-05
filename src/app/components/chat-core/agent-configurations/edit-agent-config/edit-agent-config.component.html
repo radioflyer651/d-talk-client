@@ -27,11 +27,8 @@
             <label for="description">Description</label>
         </p-floatlabel>
     </div>
-</form>
-
-<ng-template #footer>
     <div class="footer-button-controls">
         <button pButton type="button" label="Cancel" (click)="onCancel()" class="p-button-secondary"></button>
         <button pButton type="submit" label="OK" [disabled]="agentConfigForm.invalid" (click)="onOk()"></button>
     </div>
-</ng-template>
+</form>

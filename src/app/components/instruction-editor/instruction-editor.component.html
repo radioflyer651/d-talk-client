@@ -1,4 +1,8 @@
 <div>
     <app-instruction-item *ngFor="let instruction of instructions; let i = index" [(value)]="instructions[i]"
-        [id]="i"></app-instruction-item>
+        [id]="i" (deleteClicked)="onDeleteClicked($event)" ></app-instruction-item>
+
+    <div class="footer-button-controls">
+        <p-button icon="fa fa-message-plus" (click)="addInstruction()"></p-button>
+    </div>
 </div>

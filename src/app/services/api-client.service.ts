@@ -77,7 +77,6 @@ class OptionsBuilderInternal {
     return this;
   }
 
-
   build(): HttpCallOptions {
     return this._optionsBuilder;
   }
@@ -210,9 +209,9 @@ export class ClientApiService {
   /**
    * Updates an existing agent configuration.
    */
-  updateAgentConfiguration(agentConfigId: ObjectId, config: ChatAgentIdentityConfiguration) {
+  updateAgentConfiguration(config: ChatAgentIdentityConfiguration) {
     return this.http.put<{ success: boolean; }>(
-      this.constructUrl(`agent-configuration/${agentConfigId}`),
+      this.constructUrl(`agent-configuration`),
       config,
       this.optionsBuilder.withAuthorization()
     );
