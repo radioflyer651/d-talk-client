@@ -13,7 +13,6 @@ import { ProjectsService } from '../../../../services/projects.service';
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { AgentConfigurationService } from '../../../../services/agent-configuration.service';
 import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-models/chat-core/agent-configuration.model';
-import { ObjectId } from 'mongodb';
 import { AgentTypeSelectorComponent } from "../agent-type-selector/agent-type-selector.component";
 import { AgentConfigEditorComponent } from "../agent-config-editors/agent-config-editor/agent-config-editor.component";
 import { NewDbItem } from '../../../../../model/shared-models/db-operation-types.model';
