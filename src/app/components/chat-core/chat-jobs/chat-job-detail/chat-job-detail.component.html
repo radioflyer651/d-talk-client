@@ -1,0 +1,55 @@
+<form #jobConfigForm="ngForm" *ngIf="jobConfig">
+    <div class="grid">
+        <div class="row">
+            <div class="form-group col-6 full-width">
+                <p-floatlabel>
+                    <input pInputText id="job-name" class="full-width" name="name" [(ngModel)]="jobConfig.name" required
+                        autocomplete="off" />
+                    <label for="job-name">Job Name</label>
+                </p-floatlabel>
+            </div>
+            <div class="form-group col-6 full-width">
+                <p-floatlabel>
+                    <input pInputText id="job-order" class="full-width" name="order" type="number"
+                        [(ngModel)]="jobConfig.order" required autocomplete="off" />
+                    <label for="job-order">Order</label>
+                </p-floatlabel>
+            </div>
+        </div>
+    </div>
+
+    <p-tabs [value]="tabIndex">
+        <p-tablist>
+            <p-tab [value]="0">Instructions</p-tab>
+            <p-tab [value]="1">Plugins</p-tab>
+        </p-tablist>
+
+        <p-tabpanels>
+            <p-tabpanel [value]="0">
+                <div class="tab-panel-container">
+                    <div>
+                        Instructions for the agent to fulfill this job.
+                    </div>
+                    <!-- Placeholder for instructions editor -->
+                    <div>
+                        <app-positionable-message-list
+                            [messages]="jobConfig.instructions"></app-positionable-message-list>
+                    </div>
+                </div>
+            </p-tabpanel>
+
+            <p-tabpanel [value]="1">
+                <div class="tab-panel-container">
+                    <h3>Plugins are not implemented yet.</h3>
+                </div>
+            </p-tabpanel>
+        </p-tabpanels>
+    </p-tabs>
+
+    <p-panel [showHeader]="false">
+        <div class="footer-button-controls">
+            <button pButton type="button" label="Cancel" (click)="onCancel()" class="p-button-secondary"></button>
+            <button pButton type="submit" label="OK" [disabled]="jobConfigForm.invalid" (click)="onOk()"></button>
+        </div>
+    </p-panel>
+</form>

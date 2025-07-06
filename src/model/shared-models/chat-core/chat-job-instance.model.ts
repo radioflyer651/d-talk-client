@@ -13,6 +13,9 @@ export interface ChatJobInstance {
      *   job is disabled, skipping its turn in the process. */
     disabled: boolean;
 
+    /** The ID of the agent that must fulfill this job. */
+    agentId: ObjectId | undefined;
+
     /** References to plugins that were implemented by this chat job. */
     pluginReferences: PluginInstanceReference[];
 }
