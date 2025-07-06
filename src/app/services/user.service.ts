@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ClientApiService } from './api-client.service';
+import { ClientApiService } from './chat-core/api-client.service';
 import { map, Observable } from 'rxjs';
 import { LoginRequest } from '../../model/shared-models/login-request.model';
 import { TokenPayload } from '../../model/shared-models/token-payload.model';

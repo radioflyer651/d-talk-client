@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ComponentBase } from '../../../component-base/component-base.component';
-import { AgentConfigurationService } from '../../../../services/agent-configuration.service';
-import { ProjectsService } from '../../../../services/projects.service';
+import { AgentConfigurationService } from '../../../../services/chat-core/agent-configuration.service';
+import { ProjectsService } from '../../../../services/chat-core/projects.service';
 import { UserService } from '../../../../services/user.service';
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
@@ -14,13 +14,14 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { IftaLabelModule } from 'primeng/iftalabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
-import { BehaviorSubject, map, switchMap } from 'rxjs';
+import { BehaviorSubject, map, switchMap, takeUntil } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
 import { ConfirmationService } from 'primeng/api';
 import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-models/chat-core/agent-configuration.model';
 import { ReadonlySubject } from '../../../../../utils/readonly-subject';
 import { CreateAgentConfigComponent } from "../create-agent-config/create-agent-config.component";
 import { DomSanitizer } from '@angular/platform-browser';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-agent-config-list',
@@ -48,11 +49,19 @@ export class AgentConfigListComponent extends ComponentBase {
     readonly userService: UserService,
     readonly confirmationService: ConfirmationService,
     readonly sanitizer: DomSanitizer,
+    readonly route: ActivatedRoute,
+    readonly router: Router,
   ) {
     super();
   }
 
   ngOnInit() {
+    this.route.params.pipe(
+      takeUntil(this.ngDestroy$)
+    ).subscribe(params => {
+      // this.agentConfigService.selectedAgentConfigId = params['agentConfigId'];
+    });
+
     this._agentConfigList = new ReadonlySubject(this.ngDestroy$,
       this.searchText$.pipe(
         switchMap((searchText) => {
@@ -101,7 +110,9 @@ export class AgentConfigListComponent extends ComponentBase {
   }
 
   selectAgentConfig(config: ChatAgentIdentityConfiguration) {
-    this.agentConfigService.selectedAgentConfigId = config._id;
+    console.log(this.router.url, config._id);
+    this.router.navigate([config._id], { relativeTo: this.route });
+    //this.agentConfigService.selectedAgentConfigId = config._id;
   }
 
   isNewAgentConfigDialogVisible: boolean = false;

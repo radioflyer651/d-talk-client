@@ -3,9 +3,9 @@ import { BehaviorSubject, Subject, of, startWith, switchMap, distinctUntilChange
 import { ProjectsService } from './projects.service';
 import { ClientApiService } from './api-client.service';
 import { ObjectId } from 'mongodb';
-import { ReadonlySubject } from '../../utils/readonly-subject';
-import { ChatJobConfiguration } from '../../model/shared-models/chat-core/chat-job-data.model';
-import { NewDbItem } from '../../model/shared-models/db-operation-types.model';
+import { ChatJobConfiguration } from '../../../model/shared-models/chat-core/chat-job-data.model';
+import { ReadonlySubject } from '../../../utils/readonly-subject';
+import { NewDbItem } from '../../../model/shared-models/db-operation-types.model';
 
 @Injectable({
   providedIn: 'root'

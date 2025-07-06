@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject, of, startWith, switchMap, distinctUntilChanged } from 'rxjs';
 import { ClientApiService } from './api-client.service';
 import { ObjectId } from 'mongodb';
-import { ReadonlySubject } from '../../utils/readonly-subject';
+import { ReadonlySubject } from '../../../utils/readonly-subject';
 
 @Injectable({
   providedIn: 'root'
@@ -76,7 +76,7 @@ export class ChatRoomsService {
     );
   }
 
-  updateChatRoom(update: Partial<any> & { _id: ObjectId }) {
+  updateChatRoom(update: Partial<any> & { _id: ObjectId; }) {
     return this.apiClient.updateChatRoom(update).pipe(
       switchMap(result => {
         this.reloadChatRooms();

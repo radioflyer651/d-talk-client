@@ -18,7 +18,8 @@
                     <div *ngFor="let project of items" class="project-card-container">
                         <p-card>
                             <ng-template #header>
-                                <h5 class="project-title" (click)="selectProject(project)">{{project.name}}</h5>
+                                <!-- <h5 class="project-title" (click)="selectProject(project)">{{project.name}}</h5> -->
+                                <h5 class="project-title" [routerLink]="project._id">{{project.name}}</h5>
                             </ng-template>
 
                             <div class="project-card-wrapper">

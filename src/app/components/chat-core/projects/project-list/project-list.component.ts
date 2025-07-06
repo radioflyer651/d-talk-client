@@ -15,15 +15,17 @@ import { DialogModule } from 'primeng/dialog';
 import { ProjectListing } from '../../../../../model/shared-models/chat-core/project-listing.model';
 import { ReadonlySubject } from '../../../../../utils/readonly-subject';
 import { MessagingService } from '../../../../services/messaging.service';
-import { ProjectsService } from '../../../../services/projects.service';
+import { ProjectsService } from '../../../../services/chat-core/projects.service';
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { DomSanitizer } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-project-list',
   imports: [
     FormsModule,
     CommonModule,
+    RouterModule,
     CardModule,
     PanelModule,
     InputTextModule,
@@ -90,13 +92,13 @@ export class ProjectListComponent extends ComponentBase {
     this.confirmationService.confirm({
       message: `Are you sure you wish to delete the ${project.name} project?`,
       accept: async () => {
-        return await lastValueFrom(this.projectsService.deleteProject(project._id));
+        // return await lastValueFrom(this.projectsService.deleteProject(project._id));
       }
     });
   }
 
   selectProject(project: ProjectListing) {
-    this.projectsService.currentProjectId = project._id;
+    // this.projectsService.currentProjectId = project._id;
   }
 
   isNewProjectDialogVisible: boolean = false;
@@ -132,7 +134,7 @@ export class ProjectListComponent extends ComponentBase {
     const newProject = await lastValueFrom(this.projectsService.createProject(this.newProjectName));
 
     // Set this as the current project.
-    this.projectsService.currentProjectId = newProject._id;
+    // this.projectsService.currentProjectId = newProject._id;
   }
 
   getProjectDescription(agent: ProjectListing) {

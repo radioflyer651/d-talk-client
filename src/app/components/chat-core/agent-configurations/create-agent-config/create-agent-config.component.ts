@@ -9,9 +9,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 import { TextareaModule } from 'primeng/textarea';
 
-import { ProjectsService } from '../../../../services/projects.service';
+import { ProjectsService } from '../../../../services/chat-core/projects.service';
 import { ComponentBase } from '../../../component-base/component-base.component';
-import { AgentConfigurationService } from '../../../../services/agent-configuration.service';
+import { AgentConfigurationService } from '../../../../services/chat-core/agent-configuration.service';
 import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-models/chat-core/agent-configuration.model';
 import { AgentTypeSelectorComponent } from "../agent-type-selector/agent-type-selector.component";
 import { AgentConfigEditorComponent } from "../agent-config-editors/agent-config-editor/agent-config-editor.component";

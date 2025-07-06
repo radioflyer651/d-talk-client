@@ -1,21 +1,18 @@
 import { Injectable } from '@angular/core';
 import { ClientApiService as ApiClientService } from './api-client.service';
-import { BehaviorSubject, of, startWith, Subject, switchMap } from 'rxjs';
-import { Project } from '../../model/shared-models/chat-core/project.model';
-import { ProjectListing } from '../../model/shared-models/chat-core/project-listing.model';
-import { ReadonlySubject } from '../../utils/readonly-subject';
-import { ComponentBase } from '../components/component-base/component-base.component';
+import { BehaviorSubject, EMPTY, of, startWith, Subject, switchMap } from 'rxjs';
 import { ObjectId } from 'mongodb';
+import { ProjectListing } from '../../../model/shared-models/chat-core/project-listing.model';
+import { Project } from '../../../model/shared-models/chat-core/project.model';
+import { ReadonlySubject } from '../../../utils/readonly-subject';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProjectsService extends ComponentBase {
+export class ProjectsService {
   constructor(
     readonly client: ApiClientService
   ) {
-    super();
-
     this.initialize();
   }
 
@@ -26,7 +23,7 @@ export class ProjectsService extends ComponentBase {
   }
 
   initialize() {
-    this._projectListing = new ReadonlySubject<ProjectListing[]>(this.ngDestroy$,
+    this._projectListing = new ReadonlySubject<ProjectListing[]>(EMPTY,
       this._reloadProjectList.pipe(
         startWith(undefined),
         switchMap(() => {
@@ -35,7 +32,7 @@ export class ProjectsService extends ComponentBase {
       )
     );
 
-    this._currentProject = new ReadonlySubject<Project | undefined>(this.ngDestroy$,
+    this._currentProject = new ReadonlySubject<Project | undefined>(EMPTY,
       this.currentProjectId$.pipe(
         switchMap(id => {
           if (!id) {

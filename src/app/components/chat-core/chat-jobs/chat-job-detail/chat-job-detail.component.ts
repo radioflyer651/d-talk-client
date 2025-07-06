@@ -10,10 +10,11 @@ import { PanelModule } from 'primeng/panel';
 import { TextareaModule } from 'primeng/textarea';
 import { TabsModule } from 'primeng/tabs';
 import { ComponentBase } from '../../../component-base/component-base.component';
-import { ChatJobsService } from '../../../../services/chat-jobs.service';
+import { ChatJobsService } from '../../../../services/chat-core/chat-jobs.service';
 import { ChatJobConfiguration } from '../../../../../model/shared-models/chat-core/chat-job-data.model';
-import { lastValueFrom, takeUntil } from 'rxjs';
+import { lastValueFrom, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 import { PositionableMessageListComponent } from "../../positionable-messages/positionable-message-list/positionable-message-list.component";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-chat-job-detail',
@@ -29,13 +30,14 @@ import { PositionableMessageListComponent } from "../../positionable-messages/po
     ButtonModule,
     TabsModule,
     PositionableMessageListComponent
-],
+  ],
   templateUrl: './chat-job-detail.component.html',
   styleUrl: './chat-job-detail.component.scss'
 })
 export class ChatJobDetailComponent extends ComponentBase {
   constructor(
-    readonly jobService: ChatJobsService
+    readonly jobService: ChatJobsService,
+    readonly route: ActivatedRoute,
   ) {
     super();
   }
@@ -55,9 +57,20 @@ export class ChatJobDetailComponent extends ComponentBase {
   @Output()
   isVisibleChange = new EventEmitter<boolean>();
 
+  private reloadJobConfiguration = new Subject<void>();
+
   ngOnInit() {
-    this.jobService.selectedJob$.pipe(
-      takeUntil(this.ngDestroy$),
+    this.route.params.pipe(
+      takeUntil(this.ngDestroy$)
+    ).subscribe(params => {
+      this.jobService.selectedJobId = params['jobId'];
+    });
+
+    this.reloadJobConfiguration.pipe(
+      startWith(undefined),
+      switchMap(() => this.jobService.selectedJob$.pipe(
+        takeUntil(this.ngDestroy$)
+      ))
     ).subscribe(job => {
       this.jobConfig = job;
     });
@@ -73,9 +86,6 @@ export class ChatJobDetailComponent extends ComponentBase {
   }
 
   onCancel() {
-    // Reset selection to force reload
-    const id = this.jobService.selectedJobId;
-    this.jobService.selectedJobId = undefined;
-    this.jobService.selectedJobId = id;
+    this.reloadJobConfiguration.next();
   }
 }

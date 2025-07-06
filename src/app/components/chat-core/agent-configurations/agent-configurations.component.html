@@ -3,6 +3,6 @@
         <app-agent-config-list></app-agent-config-list>
     </div>
     <div class="agent-config-detail-panel">
-        <app-agent-config-detail *ngIf="!!(agentService.selectedAgentConfig$ | async)"></app-agent-config-detail>
+        <router-outlet></router-outlet>
     </div>
 </div>

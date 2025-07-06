@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentBase } from '../../../component-base/component-base.component';
-import { ChatJobsService } from '../../../../services/chat-jobs.service';
+import { ChatJobsService } from '../../../../services/chat-core/chat-jobs.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
@@ -16,7 +16,8 @@ import { lastValueFrom } from 'rxjs';
 import { ConfirmationService } from 'primeng/api';
 import { ChatJobConfiguration } from '../../../../../model/shared-models/chat-core/chat-job-data.model';
 import { ReadonlySubject } from '../../../../../utils/readonly-subject';
-import { ProjectsService } from '../../../../services/projects.service';
+import { ProjectsService } from '../../../../services/chat-core/projects.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-chat-job-list',
@@ -40,6 +41,8 @@ export class ChatJobListComponent extends ComponentBase {
     readonly jobService: ChatJobsService,
     readonly confirmationService: ConfirmationService,
     readonly projectService: ProjectsService,
+    readonly router: Router,
+    readonly route: ActivatedRoute,
   ) {
     super();
   }
@@ -94,7 +97,7 @@ export class ChatJobListComponent extends ComponentBase {
   }
 
   selectJob(job: ChatJobConfiguration) {
-    this.jobService.selectedJobId = job._id;
+    this.router.navigate([job._id], { relativeTo: this.route });
   }
 
   isNewJobDialogVisible: boolean = false;
@@ -141,7 +144,7 @@ export class ChatJobListComponent extends ComponentBase {
 
     // Select the new job if creation was successful
     if (created && created._id) {
-      this.jobService.selectedJobId = created._id;
+      this.router.navigate([created._id]);
     }
   }
 

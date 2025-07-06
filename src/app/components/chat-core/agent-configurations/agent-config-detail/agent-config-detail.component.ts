@@ -9,9 +9,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
 import { TextareaModule } from 'primeng/textarea';
 
-import { ProjectsService } from '../../../../services/projects.service';
+import { ProjectsService } from '../../../../services/chat-core/projects.service';
 import { ComponentBase } from '../../../component-base/component-base.component';
-import { AgentConfigurationService } from '../../../../services/agent-configuration.service';
+import { AgentConfigurationService } from '../../../../services/chat-core/agent-configuration.service';
 import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-models/chat-core/agent-configuration.model';
 import { AgentTypeSelectorComponent } from "../agent-type-selector/agent-type-selector.component";
 import { AgentConfigEditorComponent } from "../agent-config-editors/agent-config-editor/agent-config-editor.component";
@@ -20,6 +20,7 @@ import { lastValueFrom, takeUntil } from 'rxjs';
 import { TabsModule } from 'primeng/tabs';
 import { InstructionEditorComponent } from "../../../instruction-editor/instruction-editor.component";
 import { PositionableMessageListComponent } from "../../positionable-messages/positionable-message-list/positionable-message-list.component";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-agent-config-detail',
@@ -36,14 +37,15 @@ import { PositionableMessageListComponent } from "../../positionable-messages/po
     AgentTypeSelectorComponent,
     TabsModule,
     PositionableMessageListComponent
-],
+  ],
   templateUrl: './agent-config-detail.component.html',
   styleUrl: './agent-config-detail.component.scss'
 })
 export class AgentConfigDetailComponent extends ComponentBase {
   constructor(
     readonly projectsService: ProjectsService,
-    readonly agentConfigService: AgentConfigurationService
+    readonly agentConfigService: AgentConfigurationService,
+    readonly route: ActivatedRoute,
   ) {
     super();
   }
@@ -64,6 +66,12 @@ export class AgentConfigDetailComponent extends ComponentBase {
   isVisibleChange = new EventEmitter<boolean>();
 
   ngOnInit() {
+    this.route.params.pipe(
+      takeUntil(this.ngDestroy$)
+    ).subscribe(params => {
+      this.agentConfigService.selectedAgentConfigId = params['agentConfigId'];
+    });
+
     this.agentConfigService.selectedAgentConfig$.pipe(
       takeUntil(this.ngDestroy$),
     ).subscribe(config => {

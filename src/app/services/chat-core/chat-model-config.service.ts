@@ -1,8 +1,8 @@
 import { Injectable, model } from '@angular/core';
-import { ILlmModelServiceBase } from '../chat-core-services/model-services/llm-model-service-base';
-import { OllamaModelService } from '../chat-core-services/model-services/ollama.model-service';
-import { OpenAiModelService } from '../chat-core-services/model-services/open-ai.model-service';
-import { ModelServiceParams } from '../../model/shared-models/chat-core/model-service-params.model';
+import { ILlmModelServiceBase } from '../../chat-core-services/model-services/llm-model-service-base';
+import { OllamaModelService } from '../../chat-core-services/model-services/ollama.model-service';
+import { OpenAiModelService } from '../../chat-core-services/model-services/open-ai.model-service';
+import { ModelServiceParams } from '../../../model/shared-models/chat-core/model-service-params.model';
 
 @Injectable({
   providedIn: 'root'

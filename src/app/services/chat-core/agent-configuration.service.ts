@@ -1,11 +1,11 @@
 import { Subject, BehaviorSubject, of, startWith, switchMap, distinctUntilChanged } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
-import { ChatAgentIdentityConfiguration } from '../../model/shared-models/chat-core/agent-configuration.model';
+import { ChatAgentIdentityConfiguration } from '../../../model/shared-models/chat-core/agent-configuration.model';
 import { ProjectsService } from './projects.service';
 import { ClientApiService } from './api-client.service';
 import { ObjectId } from 'mongodb';
-import { ReadonlySubject } from '../../utils/readonly-subject';
-import { NewDbItem } from '../../model/shared-models/db-operation-types.model';
+import { ReadonlySubject } from '../../../utils/readonly-subject';
+import { NewDbItem } from '../../../model/shared-models/db-operation-types.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class AgentConfigurationService implements OnDestroy {
 
   constructor(
     private readonly apiClient: ClientApiService,
-    private readonly projectService: ProjectsService
+    private readonly projectService: ProjectsService,
   ) {
     this.initialize();
   }
@@ -51,13 +51,6 @@ export class AgentConfigurationService implements OnDestroy {
         startWith([])
       )
     );
-
-    // When the project changes, we want the selected agent to reset.
-    this.projectService.currentProjectId$.pipe(
-      distinctUntilChanged()
-    ).subscribe(() => {
-      this.selectedAgentConfigId = undefined;
-    });
 
     this._selectedAgentConfig = new ReadonlySubject<ChatAgentIdentityConfiguration | undefined>(
       this._destroy$,

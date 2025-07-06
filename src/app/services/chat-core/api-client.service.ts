@@ -1,17 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { EMPTY, Observable, tap } from 'rxjs';
-import { TokenService } from './token.service';
-import { LoginRequest } from '../../model/shared-models/login-request.model';
-import { TokenPayload } from '../../model/shared-models/token-payload.model';
-import { ProjectListing } from '../../model/shared-models/chat-core/project-listing.model';
-import { Project } from '../../model/shared-models/chat-core/project.model';
+import { TokenService } from '../token.service';
+import { LoginRequest } from '../../../model/shared-models/login-request.model';
+import { TokenPayload } from '../../../model/shared-models/token-payload.model';
+import { ProjectListing } from '../../../model/shared-models/chat-core/project-listing.model';
+import { Project } from '../../../model/shared-models/chat-core/project.model';
 import { ObjectId } from 'mongodb';
-import { UserRegistration } from '../../model/shared-models/user-registration.model';
-import { ChatAgentIdentityConfiguration } from '../../model/shared-models/chat-core/agent-configuration.model';
-import { NewDbItem } from '../../model/shared-models/db-operation-types.model';
-import { ChatJobConfiguration } from '../../model/shared-models/chat-core/chat-job-data.model';
+import { UserRegistration } from '../../../model/shared-models/user-registration.model';
+import { ChatAgentIdentityConfiguration } from '../../../model/shared-models/chat-core/agent-configuration.model';
+import { NewDbItem } from '../../../model/shared-models/db-operation-types.model';
+import { ChatJobConfiguration } from '../../../model/shared-models/chat-core/chat-job-data.model';
 
 // Extract the type of the `post` method from `HttpClient`
 type HttpClientPostMethod = HttpClient['post'];
