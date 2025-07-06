@@ -1,7 +1,7 @@
 <div *ngIf="!!messages" class="control-container">
     <div class="message-container">
         <app-positionable-message-detail *ngFor="let message of messages; let i = index" [message]="message"
-            [messageIndex]="i"></app-positionable-message-detail>
+            [messageIndex]="i" (deleteClicked)="onDeleteClicked($event)"></app-positionable-message-detail>
     </div>
 
     <div class="footer-button-controls">

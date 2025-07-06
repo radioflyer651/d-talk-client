@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { createStoredMessage } from '../../../../../utils/create-stored-message.utils';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-positionable-message-list',
@@ -20,7 +21,9 @@ import { createStoredMessage } from '../../../../../utils/create-stored-message.
   styleUrl: './positionable-message-list.component.scss'
 })
 export class PositionableMessageListComponent extends ComponentBase {
-  constructor() {
+  constructor(
+    readonly confirmationService: ConfirmationService,
+  ) {
     super();
   }
 
@@ -39,6 +42,16 @@ export class PositionableMessageListComponent extends ComponentBase {
     };
 
     this.messages.push(newPositionableMessage);
+  }
+
+  onDeleteClicked(messageId: number) {
+    this.confirmationService.confirm({
+      header: 'Delete Confirmation',
+      message: 'Are you sure you wish to delete this item?',
+      accept: () => {
+        this.messages.splice(messageId, 1);
+      }
+    });
   }
 
 }
