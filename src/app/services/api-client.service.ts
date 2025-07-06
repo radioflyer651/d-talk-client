@@ -281,4 +281,88 @@ export class ClientApiService {
       this.optionsBuilder.withAuthorization()
     );
   }
+
+  /**
+   * Gets all chat rooms for the current user.
+   */
+  getChatRooms() {
+    return this.http.get<any[]>(
+      this.constructUrl('chat-rooms'),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Gets a single chat room by its ID.
+   */
+  getChatRoomById(roomId: ObjectId) {
+    return this.http.get<any>(
+      this.constructUrl(`chat-room/${roomId}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Creates a new chat room.
+   */
+  createChatRoom(room: any) {
+    return this.http.post<any>(
+      this.constructUrl('chat-room'),
+      room,
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Updates a chat room by its ID (ID in body).
+   */
+  updateChatRoom(update: Partial<any> & { _id: ObjectId }) {
+    return this.http.put<{ success: boolean }>(
+      this.constructUrl('chat-room'),
+      update,
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Deletes a chat room by its ID.
+   */
+  deleteChatRoom(roomId: ObjectId) {
+    return this.http.delete<{ success: boolean }>(
+      this.constructUrl(`chat-room/${roomId}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Creates a new agent instance for a chat room.
+   */
+  createAgentInstanceForChatRoom(roomId: ObjectId, identityId: ObjectId, agentName: string) {
+    return this.http.post<any>(
+      this.constructUrl(`chat-room/${roomId}/agent-instance`),
+      { identityId, agentName },
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Deletes an agent instance from a chat room.
+   */
+  deleteAgentInstanceFromChatRoom(roomId: ObjectId, agentInstanceId: ObjectId) {
+    return this.http.delete<{ success: boolean }>(
+      this.constructUrl(`chat-room/${roomId}/agent-instance/${agentInstanceId}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Assigns an agent instance to a job instance in a chat room.
+   */
+  assignAgentToJobInstance(roomId: ObjectId, jobInstanceId: ObjectId, agentInstanceId: ObjectId) {
+    return this.http.put<{ success: boolean }>(
+      this.constructUrl(`chat-room/${roomId}/job-instance/${jobInstanceId}/assign-agent`),
+      { agentInstanceId },
+      this.optionsBuilder.withAuthorization()
+    );
+  }
 }
