@@ -12,8 +12,30 @@ Use the following services to find and store application data.
   - src\app\services\chat-core\chat-jobs.service.ts
   - src\app\services\chat-core\chat-rooms.service.ts
 
+## Important Models
+The following are the core model files which form the major parts of the data for the application.
+
+  - src\model\shared-models\chat-core\agent-configuration.model.ts
+  - src\model\shared-models\chat-core\agent-instance-configuration.model.ts
+  - src\model\shared-models\chat-core\agent-reference.model.ts
+  - src\model\shared-models\chat-core\chat-job-data.model.ts
+  - src\model\shared-models\chat-core\chat-job-instance.model.ts
+  - src\model\shared-models\chat-core\chat-room-busy-state.model.ts
+  - src\model\shared-models\chat-core\chat-room-data.model.ts
+  - src\model\shared-models\chat-core\chat-room-event.model.ts
+  - src\model\shared-models\chat-core\chat-room-events.model.ts
+  - src\model\shared-models\chat-core\message-speaker.model.ts
+  - src\model\shared-models\chat-core\model-service-params.model.ts
+  - src\model\shared-models\chat-core\plugin-instance-reference.model.ts
+  - src\model\shared-models\chat-core\plugin-specification.model.ts
+  - src\model\shared-models\chat-core\positionable-message.model.ts
+  - src\model\shared-models\chat-core\project-listing.model.ts
+  - src\model\shared-models\chat-core\project.model.ts
+
 ## Components Used For Example
 Use the following files for reference when designing new components.
+
+The files listed below should be read for reference.  They are relative to the project root folder.
 
 ### List Components
   - Chat Job List
