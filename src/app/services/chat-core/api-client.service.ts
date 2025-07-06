@@ -378,4 +378,77 @@ export class ClientApiService {
       this.optionsBuilder.withAuthorization()
     );
   }
+
+  /**
+   * Gets all agent instances for a given agent identity (configuration).
+   */
+  getAgentInstancesForIdentity(identityId: ObjectId) {
+    return this.http.get<AgentInstanceConfiguration[]>(
+      this.constructUrl(`agent-instances/${identityId}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Gets a single agent instance by its ID.
+   */
+  getAgentInstanceById(instanceId: ObjectId) {
+    return this.http.get<AgentInstanceConfiguration>(
+      this.constructUrl(`agent-instance/${instanceId}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Creates a new agent instance.
+   */
+  createAgentInstance(instance: AgentInstanceConfiguration) {
+    return this.http.post<AgentInstanceConfiguration>(
+      this.constructUrl('agent-instance'),
+      instance,
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Updates an agent instance by its ID (ID in body).
+   */
+  updateAgentInstance(instance: Partial<AgentInstanceConfiguration> & { _id: ObjectId }) {
+    return this.http.put<{ success: boolean }>(
+      this.constructUrl('agent-instance'),
+      instance,
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Deletes an agent instance by its ID.
+   */
+  deleteAgentInstance(instanceId: ObjectId) {
+    return this.http.delete<{ success: boolean }>(
+      this.constructUrl(`agent-instance/${instanceId}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Gets multiple agent instances by an array of IDs.
+   */
+  getAgentInstancesByIds(ids: ObjectId[]) {
+    return this.http.post<AgentInstanceConfiguration[]>(
+      this.constructUrl('agent-instances/by-ids'),
+      ids,
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Gets all agent instances for a given chat room.
+   */
+  getAgentInstancesForChatRoom(chatRoomId: ObjectId) {
+    return this.http.get<AgentInstanceConfiguration[]>(
+      this.constructUrl(`agent-instances/by-chat-room/${chatRoomId}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
 }

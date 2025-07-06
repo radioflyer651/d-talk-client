@@ -10,7 +10,7 @@ import { NewDbItem } from '../../../model/shared-models/db-operation-types.model
 @Injectable({
   providedIn: 'root'
 })
-export class AgentConfigurationService implements OnDestroy {
+export class AgentConfigurationService {
   private readonly _destroy$ = new Subject<void>();
 
   constructor(

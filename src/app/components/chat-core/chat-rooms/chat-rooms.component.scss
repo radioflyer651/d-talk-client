@@ -1,0 +1,23 @@
+/* Use flex layout for two columns, with the list smaller on the left */
+.chat-rooms-container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+
+.chat-room-list-column {
+  flex: 0 0 320px; /* fixed width, adjust as needed */
+  min-width: 220px;
+  max-width: 400px;
+  background: #f7f7f7;
+  border-right: 1px solid #e0e0e0;
+  padding: 0 8px 0 0;
+  box-sizing: border-box;
+}
+
+.chat-room-detail-column {
+  flex: 1 1 auto;
+  padding: 0 0 0 16px;
+  box-sizing: border-box;
+}
