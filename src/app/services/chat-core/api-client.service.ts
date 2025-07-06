@@ -13,6 +13,7 @@ import { ChatAgentIdentityConfiguration } from '../../../model/shared-models/cha
 import { NewDbItem } from '../../../model/shared-models/db-operation-types.model';
 import { ChatJobConfiguration } from '../../../model/shared-models/chat-core/chat-job-data.model';
 import { ChatRoomData } from '../../../model/shared-models/chat-core/chat-room-data.model';
+import { AgentInstanceConfiguration } from '../../../model/shared-models/chat-core/agent-instance-configuration.model';
 
 // Extract the type of the `post` method from `HttpClient`
 type HttpClientPostMethod = HttpClient['post'];
@@ -339,7 +340,7 @@ export class ClientApiService {
    * Creates a new agent instance for a chat room.
    */
   createAgentInstanceForChatRoom(roomId: ObjectId, identityId: ObjectId, agentName: string) {
-    return this.http.post<any>(
+    return this.http.post<AgentInstanceConfiguration>(
       this.constructUrl(`chat-room/${roomId}/agent-instance`),
       { identityId, agentName },
       this.optionsBuilder.withAuthorization()
@@ -363,6 +364,17 @@ export class ClientApiService {
     return this.http.put<{ success: boolean }>(
       this.constructUrl(`chat-room/${roomId}/job-instance/${jobInstanceId}/assign-agent`),
       { agentInstanceId },
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Removes an agent from a job instance in a chat room.
+   */
+  removeAgentFromJobInstance(roomId: ObjectId, jobInstanceId: ObjectId) {
+    return this.http.put<{ success: boolean }>(
+      this.constructUrl(`chat-room/${roomId}/job-instance/${jobInstanceId}/remove-agent`),
+      {},
       this.optionsBuilder.withAuthorization()
     );
   }

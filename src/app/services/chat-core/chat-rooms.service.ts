@@ -120,6 +120,36 @@ export class ChatRoomsService {
   }
 
   assignAgentToJobInstance(roomId: ObjectId, jobInstanceId: ObjectId, agentInstanceId: ObjectId) {
-    return this.apiClient.assignAgentToJobInstance(roomId, jobInstanceId, agentInstanceId);
+    return this.apiClient.assignAgentToJobInstance(roomId, jobInstanceId, agentInstanceId).pipe(
+      switchMap(result => {
+        // Update local selectedChatRoom if job exists
+        const chatRoom = this.selectedChatRoom;
+        if (chatRoom && chatRoom._id.toString() === roomId.toString()) {
+          const job = chatRoom.jobs.find(j => j.id && j.id.toString() === jobInstanceId.toString());
+          if (job) {
+            job.agentId = agentInstanceId;
+          }
+        }
+        this.reloadChatRooms();
+        return of(result);
+      })
+    );
+  }
+
+  removeAgentFromJobInstance(roomId: ObjectId, jobInstanceId: ObjectId) {
+    return this.apiClient.removeAgentFromJobInstance(roomId, jobInstanceId).pipe(
+      switchMap(result => {
+        // Update local selectedChatRoom if job exists
+        const chatRoom = this.selectedChatRoom;
+        if (chatRoom && chatRoom._id.toString() === roomId.toString()) {
+          const job = chatRoom.jobs.find(j => j.id && j.id.toString() === jobInstanceId.toString());
+          if (job) {
+            job.agentId = undefined;
+          }
+        }
+        this.reloadChatRooms();
+        return of(result);
+      })
+    );
   }
 }
