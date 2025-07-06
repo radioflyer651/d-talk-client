@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject, of, startWith, switchMap, distinctUntilChanged } from 'rxjs';
+import { BehaviorSubject, Subject, of, startWith, switchMap } from 'rxjs';
 import { ClientApiService } from './api-client.service';
 import { ObjectId } from 'mongodb';
 import { ReadonlySubject } from '../../../utils/readonly-subject';
+import { ChatRoomData } from '../../../model/shared-models/chat-core/chat-room-data.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,12 +21,12 @@ export class ChatRoomsService {
     this._reloadRooms.next();
   }
 
-  private _chatRooms!: ReadonlySubject<any[]>;
-  private _selectedChatRoom!: ReadonlySubject<any | undefined>;
+  private _chatRooms!: ReadonlySubject<ChatRoomData[]>;
+  private _selectedChatRoom!: ReadonlySubject<ChatRoomData | undefined>;
   private _selectedChatRoomId = new BehaviorSubject<ObjectId | undefined>(undefined);
 
   initialize() {
-    this._chatRooms = new ReadonlySubject<any[]>(
+    this._chatRooms = new ReadonlySubject<ChatRoomData[]>(
       this._destroy$,
       this._reloadRooms.pipe(
         startWith(undefined),
@@ -33,7 +34,7 @@ export class ChatRoomsService {
       )
     );
 
-    this._selectedChatRoom = new ReadonlySubject<any | undefined>(
+    this._selectedChatRoom = new ReadonlySubject<ChatRoomData | undefined>(
       this._destroy$,
       this._selectedChatRoomId.asObservable().pipe(
         switchMap((id) => {
@@ -48,7 +49,7 @@ export class ChatRoomsService {
   get chatRooms$() {
     return this._chatRooms.observable$;
   }
-  get chatRooms(): any[] {
+  get chatRooms(): ChatRoomData[] {
     return this._chatRooms.value;
   }
 
@@ -56,7 +57,7 @@ export class ChatRoomsService {
   get selectedChatRoom$() {
     return this._selectedChatRoom.observable$;
   }
-  get selectedChatRoom(): any | undefined {
+  get selectedChatRoom(): ChatRoomData | undefined {
     return this._selectedChatRoom.value;
   }
   get selectedChatRoomId(): ObjectId | undefined {
@@ -67,32 +68,34 @@ export class ChatRoomsService {
   }
 
   // CRUD operations
-  createChatRoom(room: any) {
-    return this.apiClient.createChatRoom(room).pipe(
+  createChatRoom(roomName: string, projectId: ObjectId) {
+    return this.apiClient.createChatRoom({ name: roomName, projectId }).pipe(
       switchMap(result => {
         this.reloadChatRooms();
-        return of(result);
+        // result is expected to be the created ChatRoomData object
+        return of(result as ChatRoomData);
       })
     );
   }
 
-  updateChatRoom(update: Partial<any> & { _id: ObjectId; }) {
+  updateChatRoom(update: Partial<ChatRoomData> & { _id: ObjectId; }) {
     return this.apiClient.updateChatRoom(update).pipe(
-      switchMap(result => {
+      switchMap(() => {
         this.reloadChatRooms();
-        return of(result);
+        // update returns only success, so we do not return a ChatRoomData here
+        return of(undefined);
       })
     );
   }
 
   deleteChatRoom(id: ObjectId) {
     return this.apiClient.deleteChatRoom(id).pipe(
-      switchMap(result => {
+      switchMap(() => {
         if (this.selectedChatRoomId && this.selectedChatRoomId.toString() === id.toString()) {
           this.selectedChatRoomId = undefined;
         }
         this.reloadChatRooms();
-        return of(result);
+        return of(undefined);
       })
     );
   }

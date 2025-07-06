@@ -68,7 +68,7 @@
 
         <p-panel class="project-tab-content" *ngIf="selectedTab==='chat-rooms'" [showHeader]="false">
             <h3>Chat Rooms</h3>
-            Tab content goes here.
+            <router-outlet></router-outlet>
         </p-panel>
 
         <p-panel class="project-tab-content" *ngIf="selectedTab==='plugins'" [showHeader]="false">

@@ -12,6 +12,7 @@ import { UserRegistration } from '../../../model/shared-models/user-registration
 import { ChatAgentIdentityConfiguration } from '../../../model/shared-models/chat-core/agent-configuration.model';
 import { NewDbItem } from '../../../model/shared-models/db-operation-types.model';
 import { ChatJobConfiguration } from '../../../model/shared-models/chat-core/chat-job-data.model';
+import { ChatRoomData } from '../../../model/shared-models/chat-core/chat-room-data.model';
 
 // Extract the type of the `post` method from `HttpClient`
 type HttpClientPostMethod = HttpClient['post'];
@@ -286,7 +287,7 @@ export class ClientApiService {
    * Gets all chat rooms for the current user.
    */
   getChatRooms() {
-    return this.http.get<any[]>(
+    return this.http.get<ChatRoomData[]>(
       this.constructUrl('chat-rooms'),
       this.optionsBuilder.withAuthorization()
     );
@@ -296,17 +297,17 @@ export class ClientApiService {
    * Gets a single chat room by its ID.
    */
   getChatRoomById(roomId: ObjectId) {
-    return this.http.get<any>(
+    return this.http.get<ChatRoomData>(
       this.constructUrl(`chat-room/${roomId}`),
       this.optionsBuilder.withAuthorization()
     );
   }
 
   /**
-   * Creates a new chat room.
+   * Creates a new chat room. Only name and projectId are required; other fields are set server-side.
    */
-  createChatRoom(room: any) {
-    return this.http.post<any>(
+  createChatRoom(room: { name: string; projectId: ObjectId }) {
+    return this.http.post<ChatRoomData>(
       this.constructUrl('chat-room'),
       room,
       this.optionsBuilder.withAuthorization()
@@ -316,7 +317,7 @@ export class ClientApiService {
   /**
    * Updates a chat room by its ID (ID in body).
    */
-  updateChatRoom(update: Partial<any> & { _id: ObjectId }) {
+  updateChatRoom(update: Partial<ChatRoomData> & { _id: ObjectId }) {
     return this.http.put<{ success: boolean }>(
       this.constructUrl('chat-room'),
       update,

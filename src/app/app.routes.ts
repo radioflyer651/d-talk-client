@@ -11,6 +11,7 @@ import { DummyScreenComponent } from './components/dummy-screen/dummy-screen.com
 import { ChatJobsComponent } from './components/chat-core/chat-jobs/chat-jobs.component';
 import { ChatJobDetailComponent } from './components/chat-core/chat-jobs/chat-job-detail/chat-job-detail.component';
 import { ChatRoomsComponent } from './components/chat-core/chat-rooms/chat-rooms.component';
+import { ChatRoomDetailComponent } from './components/chat-core/chat-rooms/chat-room-detail/chat-room-detail.component';
 
 export const routes: Routes = [
     {
@@ -56,7 +57,7 @@ export const routes: Routes = [
                                         children: [
                                             {
                                                 path: ':chatRoomId',
-                                                
+                                                component: ChatRoomDetailComponent,
                                             }
                                         ]
                                     },

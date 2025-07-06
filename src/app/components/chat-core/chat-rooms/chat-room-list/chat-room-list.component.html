@@ -1,1 +1,59 @@
-<p>chat-room-list works!</p>
+<div class="chat-room-list-component">
+    <p-card class="h-100 d-block">
+        <p-panel showHeader="false">
+            <p-floatlabel>
+                <input id="chat-room-search" autocomplete="off" pInputText [(ngModel)]="searchText" />
+                <label for="chat-room-search">Search</label>
+            </p-floatlabel>
+
+            <p-button class="new-chat-room-btn" icon="fa fa-plus" label="New Chat Room"
+                (click)="createNewChatRoom()"></p-button>
+        </p-panel>
+
+        <ng-container *ngIf="!!(chatRoomList$ | async)">
+            <p-dataview [value]="(chatRoomList$ | async)!">
+                <ng-template #header>
+                    Chat Rooms
+                </ng-template>
+
+                <ng-template #list let-items>
+                    <div *ngFor="let room of items" class="chat-room-card-container">
+                        <p-panel [showHeader]="false">
+                            <div class="chat-room-title" (click)="selectChatRoom(room)">
+                                <h5>
+                                    {{room.name}}
+                                </h5>
+                            </div>
+
+                            <div class="chat-room-card-wrapper">
+                                <div class="chat-room-card-content" [innerHtml]="getChatRoomDescription(room)">
+                                </div>
+                                <div class="chat-room-card-controls">
+                                    <p-button icon="fa fa-trash" severity="danger"
+                                        (click)="deleteChatRoom(room)"></p-button>
+                                </div>
+                            </div>
+                        </p-panel>
+                    </div>
+                </ng-template>
+            </p-dataview>
+        </ng-container>
+    </p-card>
+</div>
+
+<p-dialog header="Create New Chat Room" [(visible)]="isNewChatRoomDialogVisible" [modal]="true" [closable]="true"
+    [dismissableMask]="true" [style]="{width: '350px'}">
+    <div class="p-fluid">
+        <div class="p-field">
+            <label for="new-chat-room-name">Room Name</label>
+            <input id="new-chat-room-name" type="text" autocomplete="off" pInputText [(ngModel)]="newChatRoomName"
+                (keyup.enter)="confirmCreateNewChatRoom()" autofocus />
+        </div>
+        <div class="footer-button-controls">
+            <p-button label="Create" icon="fa fa-check" (click)="confirmCreateNewChatRoom()"
+                [disabled]="!newChatRoomName.trim()"></p-button>
+            <p-button label="Cancel" icon="fa fa-times" severity="secondary" (click)="isNewChatRoomDialogVisible=false"
+                class="ml-2"></p-button>
+        </div>
+    </div>
+</p-dialog>
