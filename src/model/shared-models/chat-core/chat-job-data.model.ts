@@ -18,10 +18,6 @@ export interface ChatJobConfiguration {
     /** A name for this chat job, to uniquely identify it in the UI and debugging. */
     name: string;
 
-    /** Gets or sets a boolean value indicating whether or not this
-     *   job is disabled, skipping its turn in the process. */
-    disabled: boolean;
-
     /** The ID of the agent that must fulfill this job. */
     agentId: ObjectId | undefined;
 

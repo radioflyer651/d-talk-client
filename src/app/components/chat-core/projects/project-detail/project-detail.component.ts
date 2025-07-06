@@ -13,6 +13,8 @@ import { Project } from '../../../../../model/shared-models/chat-core/project.mo
 import { ClientApiService } from '../../../../services/api-client.service';
 import { ProjectsService } from '../../../../services/projects.service';
 import { AgentConfigurationsComponent } from "../../agent-configurations/agent-configurations.component";
+import { ChatJobListComponent } from "../../chat-jobs/chat-job-list/chat-job-list.component";
+import { ChatJobsComponent } from "../../chat-jobs/chat-jobs.component";
 
 @Component({
   selector: 'app-project-detail',
@@ -25,7 +27,9 @@ import { AgentConfigurationsComponent } from "../../agent-configurations/agent-c
     FloatLabelModule,
     ButtonModule,
     TextareaModule,
-    AgentConfigurationsComponent
+    AgentConfigurationsComponent,
+    ChatJobListComponent,
+    ChatJobsComponent
 ],
   templateUrl: './project-detail.component.html',
   styleUrl: './project-detail.component.scss'

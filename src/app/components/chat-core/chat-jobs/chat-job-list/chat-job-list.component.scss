@@ -1,0 +1,36 @@
+.chat-job-list-component {
+    p-floatlabel {
+        width: 100%;
+        display: block;
+        margin-bottom: 1em;
+    }
+
+    #chat-job-search {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .new-chat-job-btn {
+        width: 100%;
+        display: block;
+        margin-bottom: 1em;
+    }
+
+    .chat-job-title {
+        cursor: pointer;
+    }
+
+    .chat-job-card-wrapper {
+        display: flex;
+
+        .chat-job-card-content {
+            flex: 1 1 auto;
+        }
+    }
+
+    .top-panel {
+        ::ng-deep.p-button {
+            width: 100%;
+        }
+    }
+}

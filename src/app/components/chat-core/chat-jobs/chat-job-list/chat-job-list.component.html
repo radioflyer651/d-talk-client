@@ -1,0 +1,71 @@
+<div class="chat-job-list-component">
+    <p-card class="h-100 d-block top-panel">
+        <p-panel showHeader="false">
+            <p-floatlabel>
+                <input id="chat-job-search" autocomplete="off" pInputText [(ngModel)]="searchText" />
+                <label for="chat-job-search">Search</label>
+            </p-floatlabel>
+
+            <p-button class="new-chat-job-btn" icon="fa fa-plus" label="New Job"
+                (click)="showNewJobDialog()"></p-button>
+        </p-panel>
+
+        <ng-container *ngIf="!!(jobList$ | async)">
+            <p-dataview [value]="(jobList$ | async)!">
+                <ng-template #header>
+                    Jobs
+                </ng-template>
+
+                <ng-template #list let-items>
+                    <div *ngFor="let job of items" class="chat-job-card-container">
+                        <p-panel [showHeader]="false">
+                            <div class="chat-job-title" (click)="selectJob(job)">
+                                <h5>
+                                    {{job.name}}
+                                </h5>
+                            </div>
+
+                            <div class="chat-job-card-wrapper">
+                                <div class="chat-job-card-content">
+                                    <span *ngIf="job.disabled" class="text-danger">[Disabled]</span>
+                                    <div>
+                                        <b>Agent:</b> {{job.agentId}}
+                                    </div>
+                                    <div>
+                                        <b>Plugins:</b> {{job.plugins.length}}
+                                    </div>
+                                    <div>
+                                        <b>Instructions:</b> {{job.instructions.length}}
+                                    </div>
+                                </div>
+                                <div class="chat-job-card-controls">
+                                    <p-button icon="fa fa-trash" severity="danger" size="small" [rounded]="true"
+                                        (click)="deleteJob(job)"></p-button>
+                                </div>
+                            </div>
+                        </p-panel>
+                    </div>
+                </ng-template>
+            </p-dataview>
+        </ng-container>
+    </p-card>
+
+    <!-- New Job Dialog -->
+    <p-dialog header="Create New Job" [(visible)]="isNewJobDialogVisible" [modal]="true" [closable]="true"
+        [dismissableMask]="true">
+        <div class="p-fluid">
+            <div class="p-field">
+                <label for="newJobName">Job Name</label>
+                <input id="newJobName" autocomplete="off" type="text" pInputText [(ngModel)]="newJobName" />
+            </div>
+        </div>
+        <ng-template #footer>
+            <div class="footer-button-controls">
+                <button pButton type="button" label="Create" (click)="createJobFromDialog()"
+                    [disabled]="!newJobName.trim()"></button>
+            </div>
+        </ng-template>
+    </p-dialog>
+</div>
+
+<!-- Dialog for creating a new job could go here if needed -->
