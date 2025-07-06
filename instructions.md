@@ -5,12 +5,22 @@
 ## Common Services
 Use the following services to find and store application data.
 
-  - src\app\services\chat-core\agent-configuration.service.ts
   - src\app\services\chat-core\api-client.service.ts
-  - src\app\services\chat-core\chat-model-config.service.ts
+    - Contains all methods for API calls to the server.
   - src\app\services\chat-core\projects.service.ts
-  - src\app\services\chat-core\chat-jobs.service.ts
+    - Holds the current project for the application.
+    - Holds list of projects for the current user.
   - src\app\services\chat-core\chat-rooms.service.ts
+    - Holds the currently selected chat room, and a list of chat rooms for the currently selected project.
+  - src\app\services\chat-core\agent-configuration.service.ts
+    - Holds the current agent configuration, and a list of agent configurations for the currently selected project.
+  - src\app\services\chat-core\chat-jobs.service.ts
+    - Holds the currently selected chat job (configurations), and a list of chat job (configurations) for the currently selected project.
+  - src\app\services\chat-core\chat-model-config.service.ts
+    - Contains methods for working with chat model configurations.
+    - This is more of a service that performs actions, rather than holding data.
+  - src\app\services\chat-core\agent-instance.service.ts
+    - Contains methods for working with chat agent instances.
 
 ## Important Models
 The following are the core model files which form the major parts of the data for the application.
