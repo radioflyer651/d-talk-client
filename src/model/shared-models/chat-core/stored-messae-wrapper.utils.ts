@@ -1,5 +1,6 @@
 import { StoredMessage } from "@langchain/core/messages";
-import { StoredMessageAgentTypes } from "../model/stored-message-agent-types.data";
+import { StoredMessageAgentTypes } from "./stored-message-agent-types.data";
+import { getSpeakerFromMessage } from "../../../utils/speaker.utils";
 
 
 export class StoredMessageWrapper {
@@ -44,5 +45,9 @@ export class StoredMessageWrapper {
     }
     set name(value: string | undefined) {
         this.message.data.name = value;
+    }
+
+    get agentId() {
+        return getSpeakerFromMessage(this.message)?.speakerId;
     }
 }

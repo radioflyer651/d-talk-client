@@ -6,7 +6,7 @@ import { ButtonModule } from 'primeng/button';
 import { ChatMessageComponent } from "./chat-message/chat-message.component";
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { ChattingService } from '../../../../services/chat-core/chatting.service';
-import { takeUntil } from 'rxjs';
+import { distinctUntilChanged, takeUntil } from 'rxjs';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ChatRoomsService } from '../../../../services/chat-core/chat-rooms.service';
 import { ObjectId } from 'mongodb';
@@ -34,16 +34,12 @@ export class ChattingComponent extends ComponentBase {
 
   ngOnInit() {
     this.route.params.pipe(
-      takeUntil(this.ngDestroy$)
+      takeUntil(this.ngDestroy$),
     ).subscribe(params => {
       this.chatRoomService.selectedChatRoomId = params['chatRoomId'];
       this.projectId = params['projectId'];
       this.chatRoomId = params['chatRoomId'];
     });
-
-    this.chattingService.chatHistory$.pipe(
-      takeUntil(this.ngDestroy$),
-    );
   }
 
   chatRoomId: ObjectId | undefined;
@@ -60,46 +56,3 @@ export class ChattingComponent extends ComponentBase {
     this.chattingService.clearMessages();
   }
 }
-
-const dummyMessages: StoredMessage[] = [
-  {
-    type: 'chat',
-    data: { content: 'Hello! How can I help you today?', role: 'ai', name: 'AI', tool_call_id: undefined }
-  },
-  {
-    type: 'chat',
-    data: { content: 'Hi! Can you tell me a joke?', role: 'human', name: 'User', tool_call_id: undefined }
-  },
-  {
-    type: 'chat',
-    data: { content: 'Why did the scarecrow win an award? Because he was outstanding in his field!', role: 'ai', name: 'AI', tool_call_id: undefined }
-  },
-  {
-    type: 'chat',
-    data: { content: 'Haha, that was a good one! Can you give me another?', role: 'human', name: 'User', tool_call_id: undefined }
-  },
-  {
-    type: 'chat',
-    data: { content: 'Sure! Why don’t scientists trust atoms? Because they make up everything.', role: 'ai', name: 'AI', tool_call_id: undefined }
-  },
-  {
-    type: 'chat',
-    data: { content: 'I love science jokes! What about a math joke?', role: 'human', name: 'User', tool_call_id: undefined }
-  },
-  {
-    type: 'chat',
-    data: { content: 'Why was the math book sad? Because it had too many problems.', role: 'ai', name: 'AI', tool_call_id: undefined }
-  },
-  {
-    type: 'chat',
-    data: { content: 'These are great! Do you know any puns?', role: 'human', name: 'User', tool_call_id: undefined }
-  },
-  {
-    type: 'chat',
-    data: { content: 'I’m reading a book on anti-gravity. It’s impossible to put down!', role: 'ai', name: 'AI', tool_call_id: undefined }
-  },
-  {
-    type: 'chat',
-    data: { content: 'Thanks for the laughs, AI!', role: 'human', name: 'User', tool_call_id: undefined }
-  }
-];

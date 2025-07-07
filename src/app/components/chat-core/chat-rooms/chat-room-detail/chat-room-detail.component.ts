@@ -75,22 +75,12 @@ export class ChatRoomDetailComponent extends ComponentBase {
     this.chatJobInstances$ = this.chatRoomService.selectedChatRoomJobInstances$;
     this.chatJobInstances$.subscribe(ji => {
     });
-    // .selectedChatRoom$.pipe(
-    //   takeUntil(this.ngDestroy$),
-    //   map(chatRoom => {
-    //     if (!chatRoom) {
-    //       return [];
-    //     }
-
-    //     return chatRoom.jobs.slice();
-    //   })
-    // );
   }
 
 
   createAgentInstance(agent: ChatAgentIdentityConfiguration) {
     this.agentNameDialogAgent = agent;
-    this.agentNameDialogValue = agent.name || '';
+    this.agentNameDialogValue = agent.chatName || '';
     this.agentNameDialogVisible = true;
   }
 
@@ -142,7 +132,10 @@ export class ChatRoomDetailComponent extends ComponentBase {
 
   deleteJobInstance(instance: ChatJobInstance) {
     const chatRoomId = this.chatRoomService.selectedChatRoomId;
-    if (!chatRoomId || !instance.id) return;
+    if (!chatRoomId || !instance.id) {
+      return;
+    }
+
     this.chatRoomService.deleteJobInstanceFromChatRoom(chatRoomId, instance.id).subscribe(() => {
       this.chatRoomService.reloadSelectedChatRoom();
     });
@@ -150,7 +143,10 @@ export class ChatRoomDetailComponent extends ComponentBase {
 
   createJobInstance(job: ChatJobConfiguration) {
     const chatRoomId = this.chatRoomService.selectedChatRoomId;
-    if (!chatRoomId || !job._id) return;
+    if (!chatRoomId || !job._id) {
+      return;
+    }
+
     this.chatRoomService.createJobInstanceForChatRoom(chatRoomId, job._id).subscribe(() => {
       this.chatRoomService.reloadSelectedChatRoom();
     });
@@ -181,6 +177,7 @@ export class ChatRoomDetailComponent extends ComponentBase {
 
   onAgentInstanceDragStart(event: DragEvent, instance: AgentInstanceConfiguration) {
     this.draggedAgentInstanceId = instance._id;
+
     if (event.dataTransfer) {
       event.dataTransfer.setData('agentInstanceId', instance._id);
       event.dataTransfer.effectAllowed = 'move';
@@ -198,13 +195,16 @@ export class ChatRoomDetailComponent extends ComponentBase {
 
   onJobInstanceDrop(event: DragEvent, jobInstance: LinkedJobInstance) {
     event.preventDefault();
+
     const agentInstanceId = event.dataTransfer?.getData('agentInstanceId');
     const chatRoomId = this.chatRoomService.selectedChatRoomId;
+
     if (chatRoomId && jobInstance.id && agentInstanceId) {
       this.chatRoomService.assignAgentToJobInstance(chatRoomId, jobInstance.id, agentInstanceId).subscribe(() => {
         this.chatRoomService.reloadSelectedChatRoom();
       });
     }
+
     this.draggedAgentInstanceId = undefined;
   }
 }

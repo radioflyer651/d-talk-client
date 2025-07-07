@@ -19,7 +19,7 @@
   padding: 0.75rem 1.25rem;
   border-radius: 1.25rem;
   font-size: 1rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   word-break: break-word;
 }
 
@@ -33,4 +33,9 @@
   background: #f1f1f1;
   color: #222;
   border-bottom-left-radius: 0.3rem;
+}
+
+.agent-name {
+  font-weight: bold;
+  font-size: 1.1rem;
 }
