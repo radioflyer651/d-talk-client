@@ -144,7 +144,7 @@ export class ChatJobListComponent extends ComponentBase {
 
     // Select the new job if creation was successful
     if (created && created._id) {
-      this.router.navigate([created._id]);
+      this.router.navigate([created._id], { relativeTo: this.route });
     }
   }
 
