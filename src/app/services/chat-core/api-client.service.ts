@@ -451,4 +451,30 @@ export class ClientApiService {
       this.optionsBuilder.withAuthorization()
     );
   }
+
+  /**
+   * Creates a new job instance for a chat room.
+   * @param roomId The chat room ID
+   * @param jobConfigurationId The job configuration ID to instantiate
+   */
+  createJobInstanceForChatRoom(roomId: ObjectId, jobConfigurationId: ObjectId) {
+    return this.http.post<any>(
+      this.constructUrl(`chat-room/${roomId}/job-instance`),
+      { jobConfigurationId },
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Deletes a job instance from a chat room.
+   * @param roomId The chat room ID
+   * @param jobInstanceId The job instance ID to delete
+   */
+  deleteJobInstanceFromChatRoom(roomId: ObjectId, jobInstanceId: ObjectId) {
+    return this.http.delete<{ success: boolean }>(
+      this.constructUrl(`chat-room/${roomId}/job-instance/${jobInstanceId}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
 }

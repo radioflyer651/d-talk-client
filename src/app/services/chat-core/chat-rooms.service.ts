@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, EMPTY, Observable, Subject, of, startWith, switchMap } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, Subject, combineLatestWith, map, of, startWith, switchMap } from 'rxjs';
 import { ClientApiService } from './api-client.service';
 import { ObjectId } from 'mongodb';
 import { ChatRoomData } from '../../../model/shared-models/chat-core/chat-room-data.model';
 import { ProjectsService } from './projects.service';
+import { LinkedJobInstance } from '../../../model/linked-job-instance.model';
+import { ChatJobsService } from './chat-jobs.service';
+import { AgentInstanceService } from './agent-instance.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +15,8 @@ export class ChatRoomsService {
   constructor(
     private readonly apiClient: ClientApiService,
     private readonly projectService: ProjectsService,
+    private readonly jobService: ChatJobsService,
+    private readonly agentService: AgentInstanceService,
   ) {
     this.initialize();
   }
@@ -55,7 +60,29 @@ export class ChatRoomsService {
         );
       }));
 
+    this.selectedChatRoomJobInstances$ = this.selectedChatRoom$.pipe(
+      combineLatestWith(this.jobService.jobs$, this.agentService.agentInstances$),
+      map(([chatRoom, jobList, agentList]) => {
+        if (!chatRoom || !chatRoom.jobs) {
+          return [];
+        }
+
+        const result = chatRoom.jobs.map(j => {
+          // Get the configuration for this.
+          const config = jobList.find(d => d._id === j.configurationId);
+
+          // Get the agent for this.
+          const agent = agentList.find(a => a._id === j.agentId);
+
+          return { ...j, configuration: config, agent: agent } as LinkedJobInstance;
+        });
+        return result;
+      })
+    );
   }
+
+  /** Returns a list of LinkedJobInstance objects for all jobs linked to a specified chat room. */
+  selectedChatRoomJobInstances$!: Observable<LinkedJobInstance[]>;
 
   // Selected chat room
   selectedChatRoom$!: Observable<ChatRoomData | undefined>;
@@ -100,6 +127,7 @@ export class ChatRoomsService {
   }
 
   reloadSelectedChatRoom() {
+    this._reloadSelectedChatRoom.next();
   }
 
   deleteChatRoom(id: ObjectId) {
@@ -162,6 +190,24 @@ export class ChatRoomsService {
           }
         }
         this.reloadChatRooms();
+        return of(result);
+      })
+    );
+  }
+
+  createJobInstanceForChatRoom(roomId: ObjectId, jobConfigurationId: ObjectId) {
+    return this.apiClient.createJobInstanceForChatRoom(roomId, jobConfigurationId).pipe(
+      switchMap(result => {
+        this.reloadSelectedChatRoom();
+        return of(result);
+      })
+    );
+  }
+
+  deleteJobInstanceFromChatRoom(roomId: ObjectId, jobInstanceId: ObjectId) {
+    return this.apiClient.deleteJobInstanceFromChatRoom(roomId, jobInstanceId).pipe(
+      switchMap(result => {
+        this.reloadSelectedChatRoom();
         return of(result);
       })
     );

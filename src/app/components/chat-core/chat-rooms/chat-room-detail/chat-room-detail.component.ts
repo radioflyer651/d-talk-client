@@ -20,6 +20,7 @@ import { InputText } from 'primeng/inputtext';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { LinkedJobInstance } from '../../../../../model/linked-job-instance.model';
 
 @Component({
   selector: 'app-chat-room-detail',
@@ -39,7 +40,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 export class ChatRoomDetailComponent extends ComponentBase {
   agentConfigurations$!: Observable<ChatAgentIdentityConfiguration[]>;
   chatJobConfigurations$!: Observable<ChatJobConfiguration[]>;
-  chatJobInstances$!: Observable<ChatJobInstance[]>;
+  chatJobInstances$!: Observable<LinkedJobInstance[]>;
   agentInstances$!: Observable<AgentInstanceConfiguration[]>;
 
   agentNameDialogVisible = false;
@@ -64,22 +65,26 @@ export class ChatRoomDetailComponent extends ComponentBase {
       takeUntil(this.ngDestroy$)
     ).subscribe(params => {
       this.chatRoomService.selectedChatRoomId = params['chatRoomId'];
+      this.agentInstanceService.selectedChatRoomId = params['chatRoomId'];
     });
 
     this.agentConfigurations$ = this.chatAgentService.agentConfigurations$;
     this.chatJobConfigurations$ = this.chatJobsService.jobs$;
     this.agentInstances$ = this.agentInstanceService.agentInstances$;
 
-    this.chatJobInstances$ = this.chatRoomService.selectedChatRoom$.pipe(
-      takeUntil(this.ngDestroy$),
-      map(chatRoom => {
-        if (!chatRoom) {
-          return [];
-        }
+    this.chatJobInstances$ = this.chatRoomService.selectedChatRoomJobInstances$;
+    this.chatJobInstances$.subscribe(ji => {
+    });
+    // .selectedChatRoom$.pipe(
+    //   takeUntil(this.ngDestroy$),
+    //   map(chatRoom => {
+    //     if (!chatRoom) {
+    //       return [];
+    //     }
 
-        return chatRoom.jobs.slice();
-      })
-    );
+    //     return chatRoom.jobs.slice();
+    //   })
+    // );
   }
 
 
@@ -124,6 +129,30 @@ export class ChatRoomDetailComponent extends ComponentBase {
     this.agentInstanceService.deleteAgentInstance(instance._id).subscribe(() => {
       // Optionally reload chat rooms or agent instances if needed
       this.agentInstanceService.reloadAgentInstances();
+    });
+  }
+
+  confirmDeleteJobInstance(instance: ChatJobInstance) {
+    this.confirmationService.confirm({
+      header: 'Delete Confirmation',
+      message: `Are you sure you want to delete this job instance?`,
+      accept: () => this.deleteJobInstance(instance)
+    });
+  }
+
+  deleteJobInstance(instance: ChatJobInstance) {
+    const chatRoomId = this.chatRoomService.selectedChatRoomId;
+    if (!chatRoomId || !instance.id) return;
+    this.chatRoomService.deleteJobInstanceFromChatRoom(chatRoomId, instance.id).subscribe(() => {
+      this.chatRoomService.reloadSelectedChatRoom();
+    });
+  }
+
+  createJobInstance(job: ChatJobConfiguration) {
+    const chatRoomId = this.chatRoomService.selectedChatRoomId;
+    if (!chatRoomId || !job._id) return;
+    this.chatRoomService.createJobInstanceForChatRoom(chatRoomId, job._id).subscribe(() => {
+      this.chatRoomService.reloadSelectedChatRoom();
     });
   }
 }

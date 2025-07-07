@@ -27,6 +27,8 @@
                 <div class="object-panel-content">
                     <div *ngIf="job.instructions?.length"><b>Instructions:</b> {{ job.instructions.length }}</div>
                     <div *ngIf="job.plugins?.length"><b>Plugins:</b> {{ job.plugins.length }}</div>
+                    <button pButton type="button" label="Instantiate for Chat Room"
+                        (click)="createJobInstance(job)"></button>
                 </div>
             </div>
         </div>
@@ -52,18 +54,20 @@
             <div>No agent instances found for this chat room.</div>
         </ng-template>
     </div>
+
     <div class="column column-4">
         <h3>Job Instances</h3>
         <div *ngIf="chatJobInstances$ | async as jobInstances; else noJobInstances">
             <div *ngIf="jobInstances.length < 1">No job instances found for this project.</div>
             <div *ngFor="let instance of jobInstances" class="object-panel">
                 <div class="object-panel-header">
-                    {{ instance.id }}
+                    {{ instance.configuration.name }}
                 </div>
                 <div class="object-panel-content">
-                    <div *ngIf="instance.agentId"><b>Agent ID:</b> {{ instance.agentId }}</div>
-                    <div *ngIf="instance.configurationId"><b>Config ID:</b> {{ instance.configurationId }}</div>
+                    <div *ngIf="instance.agent"><b>Agent ID:</b> {{ instance.agent?.name }}</div>
                     <div *ngIf="instance.disabled"><b>Status:</b> Disabled</div>
+                    <button pButton type="button" size="small" severity="danger" icon="fa fa-trash" class="delete-btn"
+                        (click)="confirmDeleteJobInstance(instance)"></button>
                 </div>
             </div>
         </div>

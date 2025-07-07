@@ -10,19 +10,13 @@ import { ChatRoomsService } from './chat-rooms.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AgentInstanceService implements OnDestroy {
+export class AgentInstanceService {
   private readonly _destroy$ = new Subject<void>();
 
   constructor(
     private readonly apiClient: ClientApiService,
-    private readonly chatRoomsService: ChatRoomsService
   ) {
     this.initialize();
-  }
-
-  ngOnDestroy() {
-    this._destroy$.next();
-    this._destroy$.complete();
   }
 
   private _reloadAgentInstances = new Subject<void>();
@@ -35,17 +29,29 @@ export class AgentInstanceService implements OnDestroy {
   private _selectedAgentInstance!: ReadonlySubject<AgentInstanceConfiguration | undefined>;
   private _selectedAgentInstanceId = new BehaviorSubject<ObjectId | undefined>(undefined);
 
+  // #region selectedChatRoomId
+  private readonly _selectedChatRoomId = new BehaviorSubject<ObjectId | undefined>(undefined);
+  readonly selectedChatRoomId$ = this._selectedChatRoomId.asObservable();
+
+  get selectedChatRoomId(): ObjectId | undefined {
+    return this._selectedChatRoomId.getValue();
+  }
+
+  set selectedChatRoomId(newVal: ObjectId | undefined) {
+    this._selectedChatRoomId.next(newVal);
+  }
+  // #endregion
+
   initialize() {
     // Use the private _selectedChatRoomId subject from ChatRoomsService for reactivity
-    const selectedChatRoomId$ = (this.chatRoomsService as any)._selectedChatRoomId as BehaviorSubject<ObjectId | undefined>;
     this._agentInstances = new ReadonlySubject<AgentInstanceConfiguration[]>(
       this._destroy$,
-      selectedChatRoomId$.pipe(
+      this.selectedChatRoomId$.pipe(
         switchMap(chatRoomId => {
           if (!chatRoomId) {
             return of([]);
           }
-          
+
           return this._reloadAgentInstances.pipe(
             startWith(undefined),
             switchMap(() => this.apiClient.getAgentInstancesForChatRoom(chatRoomId))
@@ -90,10 +96,11 @@ export class AgentInstanceService implements OnDestroy {
 
   // CRUD operations
   createAgentInstance(instance: NewDbItem<AgentInstanceConfiguration>) {
-    const chatRoomId = this.chatRoomsService.selectedChatRoomId;
+    const chatRoomId = this.selectedChatRoomId;
     if (!chatRoomId) {
       return of(undefined);
     }
+    
     // The API expects a full AgentInstanceConfiguration object
     return this.apiClient.createAgentInstance(instance as AgentInstanceConfiguration).pipe(
       switchMap(result => {
