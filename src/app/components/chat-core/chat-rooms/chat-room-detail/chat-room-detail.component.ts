@@ -162,6 +162,49 @@ export class ChatRoomDetailComponent extends ComponentBase {
   }
 
   onRemoveAgent(instance: LinkedJobInstance) {
-    // TODO: Implement agent removal logic
+    this.confirmationService.confirm({
+      header: 'Remove Agent',
+      message: 'Are you sure you want to remove this agent from the job instance?',
+      accept: () => {
+        const chatRoomId = this.chatRoomService.selectedChatRoomId;
+        if (chatRoomId && instance.id) {
+          this.chatRoomService.removeAgentFromJobInstance(chatRoomId, instance.id).subscribe(() => {
+            this.chatRoomService.reloadSelectedChatRoom();
+          });
+        }
+      }
+    });
+  }
+
+  // Drag-and-drop for assigning agent to job instance
+  private draggedAgentInstanceId: string | undefined;
+
+  onAgentInstanceDragStart(event: DragEvent, instance: AgentInstanceConfiguration) {
+    this.draggedAgentInstanceId = instance._id;
+    if (event.dataTransfer) {
+      event.dataTransfer.setData('agentInstanceId', instance._id);
+      event.dataTransfer.effectAllowed = 'move';
+    }
+  }
+
+  onAgentInstanceDragEnd(event: DragEvent, instance: AgentInstanceConfiguration) {
+    this.draggedAgentInstanceId = undefined;
+  }
+
+  onJobInstanceDragOver(event: DragEvent, instance: LinkedJobInstance) {
+    event.preventDefault();
+    event.dataTransfer!.dropEffect = 'move';
+  }
+
+  onJobInstanceDrop(event: DragEvent, jobInstance: LinkedJobInstance) {
+    event.preventDefault();
+    const agentInstanceId = event.dataTransfer?.getData('agentInstanceId');
+    const chatRoomId = this.chatRoomService.selectedChatRoomId;
+    if (chatRoomId && jobInstance.id && agentInstanceId) {
+      this.chatRoomService.assignAgentToJobInstance(chatRoomId, jobInstance.id, agentInstanceId).subscribe(() => {
+        this.chatRoomService.reloadSelectedChatRoom();
+      });
+    }
+    this.draggedAgentInstanceId = undefined;
   }
 }

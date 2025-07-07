@@ -367,7 +367,7 @@ export class ClientApiService {
       this.optionsBuilder.withAuthorization()
     );
   }
-
+  
   /**
    * Removes an agent from a job instance in a chat room.
    */

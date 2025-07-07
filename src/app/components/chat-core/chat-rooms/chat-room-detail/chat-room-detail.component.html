@@ -35,7 +35,10 @@
         <h3>Agent Instances</h3>
         <div *ngIf="agentInstances$ | async as agentInstances; else noAgentInstances">
             <div *ngIf="agentInstances.length < 1">No agent instances found for this chat room.</div>
-            <div *ngFor="let instance of agentInstances" class="object-panel">
+            <div *ngFor="let instance of agentInstances" class="object-panel"
+                draggable="true"
+                (dragstart)="onAgentInstanceDragStart($event, instance)"
+                (dragend)="onAgentInstanceDragEnd($event, instance)">
                 <div class="object-panel-header d-flex-header">
                     <span>{{ instance.name || instance._id }}</span>
                     <button pButton [rounded]="true" type="button" size="small" severity="danger"
@@ -54,7 +57,9 @@
         <h3>Job Instances</h3>
         <div *ngIf="chatJobInstances$ | async as jobInstances; else noJobInstances">
             <div *ngIf="jobInstances.length < 1">No job instances found for this project.</div>
-            <div *ngFor="let instance of jobInstances" class="object-panel">
+            <div *ngFor="let instance of jobInstances" class="object-panel"
+                (dragover)="onJobInstanceDragOver($event, instance)"
+                (drop)="onJobInstanceDrop($event, instance)">
                 <div class="object-panel-header d-flex-header">
                     <span>{{ instance.configuration.name }}</span>
                     <button pButton [rounded]="true" type="button" size="small" severity="danger"
