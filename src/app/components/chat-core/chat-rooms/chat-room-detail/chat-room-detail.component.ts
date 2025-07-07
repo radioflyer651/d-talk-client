@@ -6,7 +6,7 @@ import { AgentConfigurationService } from '../../../../services/chat-core/agent-
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
 import { ChatRoomsService } from '../../../../services/chat-core/chat-rooms.service';
 import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-models/chat-core/agent-configuration.model';
-import { Observable, of, takeUntil } from 'rxjs';
+import { map, Observable, of, takeUntil } from 'rxjs';
 import { ChatJobConfiguration } from '../../../../../model/shared-models/chat-core/chat-job-data.model';
 import { PanelModule } from 'primeng/panel';
 import { ChatJobInstance } from '../../../../../model/shared-models/chat-core/chat-job-instance.model';
@@ -68,21 +68,20 @@ export class ChatRoomDetailComponent extends ComponentBase {
 
     this.agentConfigurations$ = this.chatAgentService.agentConfigurations$;
     this.chatJobConfigurations$ = this.chatJobsService.jobs$;
-    this.chatJobInstances$ = this.getJobInstancesForCurrentProject();
     this.agentInstances$ = this.agentInstanceService.agentInstances$;
-  }
 
-  private getJobInstancesForCurrentProject(): Observable<ChatJobInstance[]> {
-    return this.projectService.currentProject$.pipe(
-      switchMap(project => {
-        if (!project || !project._id) return of([]);
-        // Fallback: try to get job instances from all chat rooms in the project
-        const chatRooms = this.chatRoomService.chatRooms.filter(r => r.projectId?.toString() === project._id.toString());
-        const allInstances = chatRooms.flatMap(r => r.jobs || []);
-        return of(allInstances);
+    this.chatJobInstances$ = this.chatRoomService.selectedChatRoom$.pipe(
+      takeUntil(this.ngDestroy$),
+      map(chatRoom => {
+        if (!chatRoom) {
+          return [];
+        }
+
+        return chatRoom.jobs.slice();
       })
     );
   }
+
 
   createAgentInstance(agent: ChatAgentIdentityConfiguration) {
     this.agentNameDialogAgent = agent;
@@ -99,7 +98,8 @@ export class ChatRoomDetailComponent extends ComponentBase {
       return;
     }
     this.chatRoomService.createAgentInstanceForChatRoom(chatRoomId, agent._id, name).subscribe(() => {
-      this.chatRoomService.reloadChatRooms();
+      this.chatRoomService.reloadSelectedChatRoom();
+      this.agentInstanceService.reloadAgentInstances();
       this.agentNameDialogVisible = false;
       this.agentNameDialogAgent = null;
       this.agentNameDialogValue = '';

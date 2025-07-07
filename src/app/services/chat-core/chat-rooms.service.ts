@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, EMPTY, Subject, of, startWith, switchMap } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, Subject, of, startWith, switchMap } from 'rxjs';
 import { ClientApiService } from './api-client.service';
 import { ObjectId } from 'mongodb';
-import { ReadonlySubject } from '../../../utils/readonly-subject';
 import { ChatRoomData } from '../../../model/shared-models/chat-core/chat-room-data.model';
 import { ProjectsService } from './projects.service';
 
@@ -23,59 +22,60 @@ export class ChatRoomsService {
     this._reloadRooms.next();
   }
 
-  private _chatRooms!: ReadonlySubject<ChatRoomData[]>;
-  private _selectedChatRoom!: ReadonlySubject<ChatRoomData | undefined>;
+  // New chatRooms$ property as Observable
+  chatRooms$: Observable<ChatRoomData[]> = this._reloadRooms.pipe(
+    startWith(undefined),
+    switchMap(() => {
+      return this.projectService.currentProjectId$.pipe(
+        switchMap(projectId => {
+          if (!projectId) {
+            return of([]);
+          }
+          return this.apiClient.getChatRoomsForProject(projectId);
+        })
+      );
+    })
+  );
+
   private _selectedChatRoomId = new BehaviorSubject<ObjectId | undefined>(undefined);
+  private _reloadSelectedChatRoom = new Subject<void>();
 
   initialize() {
-    this._chatRooms = new ReadonlySubject<ChatRoomData[]>(
-      EMPTY,
-      this._reloadRooms.pipe(
-        startWith(undefined),
-        switchMap(() => {
-          return this.projectService.currentProjectId$.pipe(
-            switchMap(projectId => {
-              if (!projectId) {
-                return of([]);
-              }
-              return this.apiClient.getChatRoomsForProject(projectId);
-            })
-          );
-        })
-      )
-    );
+    this.selectedChatRoom$ = this._selectedChatRoomId.asObservable().pipe(
+      switchMap((id) => {
+        if (!id) {
+          return of(undefined);
+        }
 
-    this._selectedChatRoom = new ReadonlySubject<ChatRoomData | undefined>(
-      EMPTY,
-      this._selectedChatRoomId.asObservable().pipe(
-        switchMap((id) => {
-          if (!id) return of(undefined);
-          return this.apiClient.getChatRoomById(id);
-        })
-      )
-    );
-  }
+        return this._reloadSelectedChatRoom.pipe(
+          startWith(undefined),
+          switchMap(() => {
+            return this.apiClient.getChatRoomById(id);
+          })
+        );
+      }));
 
-  // List all chat rooms
-  get chatRooms$() {
-    return this._chatRooms.observable$;
-  }
-  get chatRooms(): ChatRoomData[] {
-    return this._chatRooms.value;
   }
 
   // Selected chat room
-  get selectedChatRoom$() {
-    return this._selectedChatRoom.observable$;
-  }
+  selectedChatRoom$!: Observable<ChatRoomData | undefined>;
+
+  private _selectedChatRoom: ChatRoomData | undefined = undefined;
   get selectedChatRoom(): ChatRoomData | undefined {
-    return this._selectedChatRoom.value;
+    return this._selectedChatRoom;
   }
+
   get selectedChatRoomId(): ObjectId | undefined {
     return this._selectedChatRoomId.value;
   }
   set selectedChatRoomId(id: ObjectId | undefined) {
     this._selectedChatRoomId.next(id);
+  }
+
+  private _reloadAgentInstances = new Subject<void>();
+
+  reloadAgentInstances() {
+    this._reloadAgentInstances.next();
   }
 
   // CRUD operations
@@ -97,6 +97,9 @@ export class ChatRoomsService {
         return of(undefined);
       })
     );
+  }
+
+  reloadSelectedChatRoom() {
   }
 
   deleteChatRoom(id: ObjectId) {
