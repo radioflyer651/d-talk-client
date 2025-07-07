@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, EMPTY, Observable, Subject, combineLatestWith, map, of, startWith, switchMap } from 'rxjs';
-import { ClientApiService } from './api-client.service';
+import { ClientApiService } from './api-clients/api-client.service';
 import { ObjectId } from 'mongodb';
 import { ChatRoomData } from '../../../model/shared-models/chat-core/chat-room-data.model';
 import { ProjectsService } from './projects.service';

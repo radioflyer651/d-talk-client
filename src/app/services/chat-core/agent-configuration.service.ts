@@ -2,7 +2,7 @@ import { Subject, BehaviorSubject, of, startWith, switchMap, distinctUntilChange
 import { Injectable, OnDestroy } from '@angular/core';
 import { ChatAgentIdentityConfiguration } from '../../../model/shared-models/chat-core/agent-configuration.model';
 import { ProjectsService } from './projects.service';
-import { ClientApiService } from './api-client.service';
+import { ClientApiService } from './api-clients/api-client.service';
 import { ObjectId } from 'mongodb';
 import { ReadonlySubject } from '../../../utils/readonly-subject';
 import { NewDbItem } from '../../../model/shared-models/db-operation-types.model';

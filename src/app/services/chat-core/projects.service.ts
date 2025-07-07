@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ClientApiService as ApiClientService } from './api-client.service';
+import { ClientApiService as ApiClientService } from './api-clients/api-client.service';
 import { BehaviorSubject, EMPTY, of, startWith, Subject, switchMap } from 'rxjs';
 import { ObjectId } from 'mongodb';
 import { ProjectListing } from '../../../model/shared-models/chat-core/project-listing.model';

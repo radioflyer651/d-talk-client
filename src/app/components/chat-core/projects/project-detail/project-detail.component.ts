@@ -10,7 +10,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { Project } from '../../../../../model/shared-models/chat-core/project.model';
-import { ClientApiService } from '../../../../services/chat-core/api-client.service';
+import { ClientApiService } from '../../../../services/chat-core/api-clients/api-client.service';
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
 import { AgentConfigurationsComponent } from "../../agent-configurations/agent-configurations.component";
 import { ChatJobListComponent } from "../../chat-jobs/chat-job-list/chat-job-list.component";

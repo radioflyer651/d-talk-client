@@ -1,4 +1,5 @@
-<div class="chat-message-container" [class.human]="agent === 'human'" [class.ai]="agent === 'ai'">
+<div *ngIf="!!wrapper" class="chat-message-container" [class.human]="wrapper.agent === 'human'"
+  [class.ai]="wrapper.agent === 'ai'">
   <div class="chat-message-bubble">
     {{ wrapper.content }}
   </div>

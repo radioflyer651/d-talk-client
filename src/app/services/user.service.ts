@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ClientApiService } from './chat-core/api-client.service';
+import { ClientApiService } from './chat-core/api-clients/api-client.service';
 import { map, Observable } from 'rxjs';
 import { LoginRequest } from '../../model/shared-models/login-request.model';
 import { TokenPayload } from '../../model/shared-models/token-payload.model';
@@ -76,7 +76,7 @@ export class UserService extends ComponentBase {
   login(request: LoginRequest): Promise<void> {
     return new Promise((res, rej) => {
       this.clientApiService.login(request).subscribe({
-        next: (response) => {
+        next: () => {
           // Inform the user they've been logged in.
           if (this.user) {
             this.messagingService.sendUserMessage(
@@ -90,7 +90,7 @@ export class UserService extends ComponentBase {
           }
           res();
         },
-        error: err => {
+        error: (err: any) => {
           this.messagingService.sendUserMessage(
             {
               level: 'error',
@@ -121,7 +121,7 @@ export class UserService extends ComponentBase {
           }
           res();
         },
-        error: err => {
+        error: (err: any) => {
           this.messagingService.sendUserMessage({
             level: 'error',
             content: `Sorry, we could not register you at this time.`,

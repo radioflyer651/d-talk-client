@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subject, of, startWith, switchMap, distinctUntilChanged } from 'rxjs';
 import { ProjectsService } from './projects.service';
-import { ClientApiService } from './api-client.service';
+import { ClientApiService } from './api-clients/api-client.service';
 import { ObjectId } from 'mongodb';
 import { ChatJobConfiguration } from '../../../model/shared-models/chat-core/chat-job-data.model';
 import { ReadonlySubject } from '../../../utils/readonly-subject';

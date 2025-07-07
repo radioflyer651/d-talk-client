@@ -16,14 +16,16 @@ export class StoredMessageWrapper {
 
     /** Gets or sets the agent value. */
     get agent(): StoredMessageAgentTypes {
-        return this.message.data.role as StoredMessageAgentTypes ?? 'unknown';
+        return this.message.type as StoredMessageAgentTypes ?? 'unknown';
     }
 
     set agent(value: StoredMessageAgentTypes) {
         if (value === 'none') {
             this.message.data.role = undefined;
+            this.message.type = undefined as any;
         } else {
             this.message.data.role = value;
+            this.message.type = value;
         }
     }
 

@@ -36,7 +36,7 @@ export class PositionableMessageListComponent extends ComponentBase {
     // Create a new message, and add it to the list.
     const newMessage = createStoredMessage();
     const newPositionableMessage: PositionableMessage<StoredMessage> = {
-      location: MessagePositionTypes.Last,
+      location: MessagePositionTypes.Instructions,
       message: newMessage,
       offset: 0
     };

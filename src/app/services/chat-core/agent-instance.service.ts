@@ -1,7 +1,7 @@
 import { Subject, BehaviorSubject, of, startWith, switchMap, distinctUntilChanged } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { AgentInstanceConfiguration } from '../../../model/shared-models/chat-core/agent-instance-configuration.model';
-import { ClientApiService } from './api-client.service';
+import { ClientApiService } from './api-clients/api-client.service';
 import { ObjectId } from 'mongodb';
 import { ReadonlySubject } from '../../../utils/readonly-subject';
 import { NewDbItem } from '../../../model/shared-models/db-operation-types.model';

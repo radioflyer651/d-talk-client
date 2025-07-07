@@ -3,12 +3,18 @@
     <!-- Left (narrow) pane content goes here -->
   </div>
   <div class="chatting-pane chatting-pane--right">
-    <div class="chat-history-area">
-        <app-chat-message *ngFor="let message of messages" [message]="message"></app-chat-message>
+    
+    <div class="chat-history-area" *ngIf="(chattingService.chatHistory$ | async ) as messages">
+      <app-chat-message *ngFor="let message of messages" [message]="message"></app-chat-message>
     </div>
+
     <div class="chat-input-area">
-      <input type="text" class="chat-input" placeholder="Type your message..." />
-      <button class="chat-send-btn">Send</button>
+      <input type="text" class="chat-input" placeholder="Type your message..." [(ngModel)]="chatMessage" />
+      <p-button severity="contrast" (click)="sendMessage()">Send</p-button>
+      <p-button severity="contrast" (click)="clearMessages()">Clear Messages</p-button>
+      <a [routerLink]="['/projects', projectId, 'chat-rooms', chatRoomId]">
+        <p-button label="Configuration"></p-button>
+      </a>
     </div>
   </div>
 </div>

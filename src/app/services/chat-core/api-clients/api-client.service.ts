@@ -1,119 +1,30 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
-import { EMPTY, Observable, tap } from 'rxjs';
-import { TokenService } from '../token.service';
-import { LoginRequest } from '../../../model/shared-models/login-request.model';
-import { TokenPayload } from '../../../model/shared-models/token-payload.model';
-import { ProjectListing } from '../../../model/shared-models/chat-core/project-listing.model';
-import { Project } from '../../../model/shared-models/chat-core/project.model';
 import { ObjectId } from 'mongodb';
-import { UserRegistration } from '../../../model/shared-models/user-registration.model';
-import { ChatAgentIdentityConfiguration } from '../../../model/shared-models/chat-core/agent-configuration.model';
-import { NewDbItem } from '../../../model/shared-models/db-operation-types.model';
-import { ChatJobConfiguration } from '../../../model/shared-models/chat-core/chat-job-data.model';
-import { ChatRoomData } from '../../../model/shared-models/chat-core/chat-room-data.model';
-import { AgentInstanceConfiguration } from '../../../model/shared-models/chat-core/agent-instance-configuration.model';
+import { tap, Observable, EMPTY } from 'rxjs';
+import { ChatAgentIdentityConfiguration } from '../../../../model/shared-models/chat-core/agent-configuration.model';
+import { AgentInstanceConfiguration } from '../../../../model/shared-models/chat-core/agent-instance-configuration.model';
+import { ChatJobConfiguration } from '../../../../model/shared-models/chat-core/chat-job-data.model';
+import { ChatRoomData } from '../../../../model/shared-models/chat-core/chat-room-data.model';
+import { ProjectListing } from '../../../../model/shared-models/chat-core/project-listing.model';
+import { Project } from '../../../../model/shared-models/chat-core/project.model';
+import { NewDbItem } from '../../../../model/shared-models/db-operation-types.model';
+import { LoginRequest } from '../../../../model/shared-models/login-request.model';
+import { UserRegistration } from '../../../../model/shared-models/user-registration.model';
+import { TokenService } from '../../token.service';
+import { ClientApiServiceBase } from './api-client-base.service';
 
-// Extract the type of the `post` method from `HttpClient`
-type HttpClientPostMethod = HttpClient['post'];
 
-// Extract the type of the `options` parameter from the `post` method
-type HttpClientPostOptions = Parameters<HttpClientPostMethod>[2];
-
-// Extract the type of the `post` method from `HttpClient`
-type HttpClientGetMethod = HttpClient['get'];
-
-// Extract the type of the `options` parameter from the `post` method
-type HttpClientGetOptions = Parameters<HttpClientGetMethod>[1];
-
-type HttpCallOptions = HttpClientGetOptions | HttpClientPostOptions;
-
-class HttpOptionsBuilder {
-  constructor(
-    readonly parent: ClientApiService,
-    readonly tokenService: TokenService,
-  ) {
-  }
-
-  /** Shortcut to just return options with the authorization header. */
-  withAuthorization(): HttpCallOptions {
-    return this.buildOptions().addAuthToken().build();
-  }
-
-  buildOptions(): OptionsBuilderInternal {
-    return new OptionsBuilderInternal(this);
-  }
-}
-
-class OptionsBuilderInternal {
-  constructor(
-    readonly parent: HttpOptionsBuilder
-  ) { }
-
-  protected _optionsBuilder: Exclude<HttpCallOptions, undefined | null> = {};
-
-  /** Returns the TokenService from the parent. */
-  get tokenService() {
-    return this.parent.tokenService;
-  }
-
-  /** Returns the API service from the parent. */
-  get parentApiService() {
-    return this.parent.parent;
-  }
-
-  /** Returns the headers property from the options. */
-  private getHeaders(): { [key: string]: string; } {
-    if (!this._optionsBuilder.headers) {
-      this._optionsBuilder.headers = {} as { [key: string]: string; };
-    }
-
-    return this._optionsBuilder.headers as { [key: string]: string; };
-  }
-
-  /** Adds a token to the headers. */
-  addAuthToken() {
-    if (this.tokenService.token) {
-      this.getHeaders()['Authorization'] = this.tokenService.token;
-    }
-    return this;
-  }
-
-  build(): HttpCallOptions {
-    return this._optionsBuilder;
-  }
-}
 
 @Injectable({
   providedIn: 'root',
 })
-export class ClientApiService {
+export class ClientApiService extends ClientApiServiceBase {
   constructor(
-    protected readonly http: HttpClient,
-    protected readonly tokenService: TokenService,
+    http: HttpClient,
+    tokenService: TokenService,
   ) {
-    this.optionsBuilder = new HttpOptionsBuilder(this, this.tokenService);
-  }
-
-  protected readonly optionsBuilder: HttpOptionsBuilder;
-
-  /** The base URL to the API. */
-  protected readonly baseUrl = environment.apiBaseUrl;
-
-  /** Combines a specified path with the base URL. */
-  private constructUrl(path: string) {
-    return this.baseUrl + path;
-  }
-
-  /** Attempts to parse a token, and return the TokenPayload. */
-  parseToken(token: string): TokenPayload {
-    if (!token) {
-      throw new Error(`token was empty.`);
-    }
-
-    // Decode the Base64 token.
-    return JSON.parse(atob(token.split('.')[1])) as TokenPayload;
+    super(http, tokenService);
   }
 
   /** Makes a call to attempt to login the user with their credentials. */
@@ -367,7 +278,7 @@ export class ClientApiService {
       this.optionsBuilder.withAuthorization()
     );
   }
-  
+
   /**
    * Removes an agent from a job instance in a chat room.
    */
@@ -471,7 +382,7 @@ export class ClientApiService {
    * @param jobInstanceId The job instance ID to delete
    */
   deleteJobInstanceFromChatRoom(roomId: ObjectId, jobInstanceId: ObjectId) {
-    return this.http.delete<{ success: boolean }>(
+    return this.http.delete<{ success: boolean; }>(
       this.constructUrl(`chat-room/${roomId}/job-instance/${jobInstanceId}`),
       this.optionsBuilder.withAuthorization()
     );
