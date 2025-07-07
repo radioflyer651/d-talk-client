@@ -82,7 +82,6 @@ export class ProjectDetailComponent extends ComponentBase {
         const tabId = firstChild.snapshot.params['tabId'];
         this.selectedTab = tabId ?? 'overview';
       } else {
-        console.log(`Naving2: ${currentPath}`);
         this.selectedTab = currentPath ?? 'overview';
       }
 

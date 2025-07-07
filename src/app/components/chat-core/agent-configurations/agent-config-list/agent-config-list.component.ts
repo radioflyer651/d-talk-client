@@ -110,7 +110,6 @@ export class AgentConfigListComponent extends ComponentBase {
   }
 
   selectAgentConfig(config: ChatAgentIdentityConfiguration) {
-    console.log(this.router.url, config._id);
     this.router.navigate([config._id], { relativeTo: this.route });
     //this.agentConfigService.selectedAgentConfigId = config._id;
   }
