@@ -56,9 +56,29 @@
     text-shadow: none;
 }
 
+.object-panel-header.d-flex-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.header-btn .fa {
+    font-size: 1.1em;
+}
+
+.delete-btn {
+    color: #c0392b;
+}
+
 .object-panel-content {
     padding: 10px 12px 8px 12px;
     font-size: 0.97em;
+}
+
+.object-panel-content-empty {
+    min-height: 32px;
+    padding: 12px 0;
 }
 
 /* Optional: make panel header stand out */
@@ -66,4 +86,42 @@
     font-weight: 600;
     background: #f4f6fa;
     border-radius: 8px 8px 0 0;
+}
+
+.job-agent-present, .job-agent-placeholder {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 28px;
+    margin: 0 12px; /* Add horizontal margin only */
+    padding-left: 2px; /* Add a little left padding to avoid hugging edge */
+}
+
+.job-agent-present .remove-agent-btn,
+.job-agent-placeholder .add-agent-btn {
+    margin-left: auto;
+}
+
+.agent-icon {
+    font-size: 1.2em;
+}
+.agent-present {
+    color: #6c63ff;
+}
+.agent-missing {
+    color: #bdbdbd;
+}
+.agent-name {
+    font-weight: 600;
+    color: #2a3a4b;
+}
+.agent-placeholder-text {
+    color: #888;
+    font-style: italic;
+}
+.add-agent-btn {
+    color: #388e3c;
+}
+.remove-agent-btn {
+    color: #c0392b;
 }

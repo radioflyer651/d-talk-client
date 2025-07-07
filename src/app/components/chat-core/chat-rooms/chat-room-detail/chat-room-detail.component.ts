@@ -155,4 +155,13 @@ export class ChatRoomDetailComponent extends ComponentBase {
       this.chatRoomService.reloadSelectedChatRoom();
     });
   }
+
+  // Placeholder for agent add/remove logic for job instances
+  onAddAgent(instance: LinkedJobInstance) {
+    // TODO: Implement agent assignment logic
+  }
+
+  onRemoveAgent(instance: LinkedJobInstance) {
+    // TODO: Implement agent removal logic
+  }
 }
