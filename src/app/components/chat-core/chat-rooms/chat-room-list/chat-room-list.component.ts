@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { ChatRoomsService } from '../../../../services/chat-core/chat-rooms.service';
-import { BehaviorSubject, map, switchMap, takeUntil } from 'rxjs';
+import { BehaviorSubject, map, switchMap } from 'rxjs';
 import { ReadonlySubject } from '../../../../../utils/readonly-subject';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
@@ -15,9 +15,6 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
-import { NewDbItem } from '../../../../../model/shared-models/db-operation-types.model';
-import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-models/chat-core/agent-configuration.model';
-import { ChatRoomData } from '../../../../../model/shared-models/chat-core/chat-room-data.model';
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
 
 @Component({

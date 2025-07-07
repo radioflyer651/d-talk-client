@@ -61,7 +61,11 @@ export const routes: Routes = [
                                             }
                                         ]
                                     },
-                                    { path: ':tabId', pathMatch: 'full', component: ProjectDetailComponent },
+                                    {
+                                        path: 'overview',
+                                        component: ProjectsComponent,
+                                    },
+                                    // { path: ':tabId', pathMatch: 'full', component: ProjectDetailComponent },
                                     { path: '', pathMatch: 'full', redirectTo: 'overview' },
                                 ]
                             }

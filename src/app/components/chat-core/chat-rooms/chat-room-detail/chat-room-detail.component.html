@@ -8,6 +8,8 @@
                 </div>
                 <div class="object-panel-content">
                     <div><b>Description:</b> {{ agent.description }}</div>
+                    <button pButton type="button" label="Instantiate for Chat Room"
+                        (click)="createAgentInstance(agent)"></button>
                 </div>
             </div>
         </div>
@@ -41,6 +43,8 @@
                     {{ instance.name || instance._id }}
                 </div>
                 <div class="object-panel-content">
+                    <button pButton type="button" size="small" severity="danger" icon="fa fa-trash" class="delete-btn"
+                        (click)="confirmDeleteAgentInstance(instance)"></button>
                 </div>
             </div>
         </div>
@@ -68,3 +72,22 @@
         </ng-template>
     </div>
 </div>
+
+
+<p-dialog header="Instantiate Agent for Chat Room" [(visible)]="agentNameDialogVisible" [modal]="true"
+    [closable]="false" [dismissableMask]="true" [style]="{width: '350px'}">
+    <div class="p-fluid">
+        <div class="p-field">
+            <label for="agent-instance-name">Agent Name</label>
+            <input pInputText id="agent-instance-name" type="text" autocomplete="off" pInputText
+                [(ngModel)]="agentNameDialogValue" />
+        </div>
+        <div class="footer-button-controls">
+            <button pButton type="button" label="OK" (click)="onAgentNameDialogOk()"
+                [disabled]="!agentNameDialogValue.trim()"></button>
+            <p-button type="button" label="Cancel" class="ml-2" (click)="onAgentNameDialogCancel()"></p-button>
+        </div>
+    </div>
+</p-dialog>
+
+<p-confirmdialog />>

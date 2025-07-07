@@ -266,7 +266,7 @@ export class ClientApiService {
    * Updates a job by its ID (ID in body).
    * The backend expects _id and projectId in the body.
    */
-  updateJob(update: Partial<ChatJobConfiguration> & { _id: ObjectId }) {
+  updateJob(update: Partial<ChatJobConfiguration> & { _id: ObjectId; }) {
     return this.http.put<{ success: boolean; }>(
       this.constructUrl('job'),
       update,
@@ -287,9 +287,9 @@ export class ClientApiService {
   /**
    * Gets all chat rooms for the current user.
    */
-  getChatRooms() {
+  getChatRoomsForProject(projectId: ObjectId) {
     return this.http.get<ChatRoomData[]>(
-      this.constructUrl('chat-rooms'),
+      this.constructUrl(`project/${projectId}/chat-rooms`),
       this.optionsBuilder.withAuthorization()
     );
   }
@@ -307,7 +307,7 @@ export class ClientApiService {
   /**
    * Creates a new chat room. Only name and projectId are required; other fields are set server-side.
    */
-  createChatRoom(room: { name: string; projectId: ObjectId }) {
+  createChatRoom(room: { name: string; projectId: ObjectId; }) {
     return this.http.post<ChatRoomData>(
       this.constructUrl('chat-room'),
       room,
@@ -318,8 +318,8 @@ export class ClientApiService {
   /**
    * Updates a chat room by its ID (ID in body).
    */
-  updateChatRoom(update: Partial<ChatRoomData> & { _id: ObjectId }) {
-    return this.http.put<{ success: boolean }>(
+  updateChatRoom(update: Partial<ChatRoomData> & { _id: ObjectId; }) {
+    return this.http.put<{ success: boolean; }>(
       this.constructUrl('chat-room'),
       update,
       this.optionsBuilder.withAuthorization()
@@ -330,7 +330,7 @@ export class ClientApiService {
    * Deletes a chat room by its ID.
    */
   deleteChatRoom(roomId: ObjectId) {
-    return this.http.delete<{ success: boolean }>(
+    return this.http.delete<{ success: boolean; }>(
       this.constructUrl(`chat-room/${roomId}`),
       this.optionsBuilder.withAuthorization()
     );
@@ -351,7 +351,7 @@ export class ClientApiService {
    * Deletes an agent instance from a chat room.
    */
   deleteAgentInstanceFromChatRoom(roomId: ObjectId, agentInstanceId: ObjectId) {
-    return this.http.delete<{ success: boolean }>(
+    return this.http.delete<{ success: boolean; }>(
       this.constructUrl(`chat-room/${roomId}/agent-instance/${agentInstanceId}`),
       this.optionsBuilder.withAuthorization()
     );
@@ -361,7 +361,7 @@ export class ClientApiService {
    * Assigns an agent instance to a job instance in a chat room.
    */
   assignAgentToJobInstance(roomId: ObjectId, jobInstanceId: ObjectId, agentInstanceId: ObjectId) {
-    return this.http.put<{ success: boolean }>(
+    return this.http.put<{ success: boolean; }>(
       this.constructUrl(`chat-room/${roomId}/job-instance/${jobInstanceId}/assign-agent`),
       { agentInstanceId },
       this.optionsBuilder.withAuthorization()
@@ -372,7 +372,7 @@ export class ClientApiService {
    * Removes an agent from a job instance in a chat room.
    */
   removeAgentFromJobInstance(roomId: ObjectId, jobInstanceId: ObjectId) {
-    return this.http.put<{ success: boolean }>(
+    return this.http.put<{ success: boolean; }>(
       this.constructUrl(`chat-room/${roomId}/job-instance/${jobInstanceId}/remove-agent`),
       {},
       this.optionsBuilder.withAuthorization()
@@ -413,8 +413,8 @@ export class ClientApiService {
   /**
    * Updates an agent instance by its ID (ID in body).
    */
-  updateAgentInstance(instance: Partial<AgentInstanceConfiguration> & { _id: ObjectId }) {
-    return this.http.put<{ success: boolean }>(
+  updateAgentInstance(instance: Partial<AgentInstanceConfiguration> & { _id: ObjectId; }) {
+    return this.http.put<{ success: boolean; }>(
       this.constructUrl('agent-instance'),
       instance,
       this.optionsBuilder.withAuthorization()
@@ -425,7 +425,7 @@ export class ClientApiService {
    * Deletes an agent instance by its ID.
    */
   deleteAgentInstance(instanceId: ObjectId) {
-    return this.http.delete<{ success: boolean }>(
+    return this.http.delete<{ success: boolean; }>(
       this.constructUrl(`agent-instance/${instanceId}`),
       this.optionsBuilder.withAuthorization()
     );

@@ -42,7 +42,10 @@ export class AgentInstanceService implements OnDestroy {
       this._destroy$,
       selectedChatRoomId$.pipe(
         switchMap(chatRoomId => {
-          if (!chatRoomId) return of([]);
+          if (!chatRoomId) {
+            return of([]);
+          }
+          
           return this._reloadAgentInstances.pipe(
             startWith(undefined),
             switchMap(() => this.apiClient.getAgentInstancesForChatRoom(chatRoomId))

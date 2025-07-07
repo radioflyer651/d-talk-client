@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject, of, startWith, switchMap } from 'rxjs';
+import { BehaviorSubject, EMPTY, Subject, of, startWith, switchMap } from 'rxjs';
 import { ClientApiService } from './api-client.service';
 import { ObjectId } from 'mongodb';
 import { ReadonlySubject } from '../../../utils/readonly-subject';
 import { ChatRoomData } from '../../../model/shared-models/chat-core/chat-room-data.model';
+import { ProjectsService } from './projects.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatRoomsService {
-  private readonly _destroy$ = new Subject<void>();
-
-  constructor(private readonly apiClient: ClientApiService) {
+  constructor(
+    private readonly apiClient: ClientApiService,
+    private readonly projectService: ProjectsService,
+  ) {
     this.initialize();
   }
 
@@ -27,15 +29,24 @@ export class ChatRoomsService {
 
   initialize() {
     this._chatRooms = new ReadonlySubject<ChatRoomData[]>(
-      this._destroy$,
+      EMPTY,
       this._reloadRooms.pipe(
         startWith(undefined),
-        switchMap(() => this.apiClient.getChatRooms())
+        switchMap(() => {
+          return this.projectService.currentProjectId$.pipe(
+            switchMap(projectId => {
+              if (!projectId) {
+                return of([]);
+              }
+              return this.apiClient.getChatRoomsForProject(projectId);
+            })
+          );
+        })
       )
     );
 
     this._selectedChatRoom = new ReadonlySubject<ChatRoomData | undefined>(
-      this._destroy$,
+      EMPTY,
       this._selectedChatRoomId.asObservable().pipe(
         switchMap((id) => {
           if (!id) return of(undefined);
