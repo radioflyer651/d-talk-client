@@ -3,7 +3,7 @@ import { ComponentBase } from '../../../component-base/component-base.component'
 import { ChatRoomsService } from '../../../../services/chat-core/chat-rooms.service';
 import { BehaviorSubject, map, switchMap } from 'rxjs';
 import { ReadonlySubject } from '../../../../../utils/readonly-subject';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { lastValueFrom } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -28,7 +28,8 @@ import { ProjectsService } from '../../../../services/chat-core/projects.service
     FloatLabel,
     ButtonModule,
     DataViewModule,
-    DialogModule
+    DialogModule,
+    RouterModule,
   ],
   templateUrl: './chat-room-list.component.html',
   styleUrl: './chat-room-list.component.scss'

@@ -7,11 +7,11 @@ import { ProjectsComponent } from './components/chat-core/projects/projects.comp
 import { ProjectDetailComponent } from './components/chat-core/projects/project-detail/project-detail.component';
 import { AgentConfigDetailComponent } from './components/chat-core/agent-configurations/agent-config-detail/agent-config-detail.component';
 import { AgentConfigurationsComponent } from './components/chat-core/agent-configurations/agent-configurations.component';
-import { DummyScreenComponent } from './components/dummy-screen/dummy-screen.component';
 import { ChatJobsComponent } from './components/chat-core/chat-jobs/chat-jobs.component';
 import { ChatJobDetailComponent } from './components/chat-core/chat-jobs/chat-job-detail/chat-job-detail.component';
 import { ChatRoomsComponent } from './components/chat-core/chat-rooms/chat-rooms.component';
 import { ChatRoomDetailComponent } from './components/chat-core/chat-rooms/chat-room-detail/chat-room-detail.component';
+import { ChattingComponent } from './components/chat-core/chatting/chatting/chatting.component';
 
 export const routes: Routes = [
     {
@@ -68,6 +68,15 @@ export const routes: Routes = [
                                     // { path: ':tabId', pathMatch: 'full', component: ProjectDetailComponent },
                                     { path: '', pathMatch: 'full', redirectTo: 'overview' },
                                 ]
+                            }
+                        ]
+                    },
+                    {
+                        path: 'chatting',
+                        children: [
+                            {
+                                path: 'project/:projectId/chat-room/:chatRoomId',
+                                component: ChattingComponent
                             }
                         ]
                     }

@@ -31,6 +31,10 @@
                                 <div class="chat-room-card-controls">
                                     <p-button icon="fa fa-trash" severity="danger"
                                         (click)="deleteChatRoom(room)"></p-button>
+                                    <a
+                                        [routerLink]="['/chatting', 'project', projectService.currentProjectId, 'chat-room', room._id]">
+                                        <p-button label="Chat"></p-button>
+                                    </a>
                                 </div>
                             </div>
                         </p-panel>
