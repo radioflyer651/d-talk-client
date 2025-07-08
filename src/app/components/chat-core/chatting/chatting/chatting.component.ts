@@ -1,15 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { StoredMessage } from '@langchain/core/messages';
 import { ButtonModule } from 'primeng/button';
 import { ChatMessageComponent } from "./chat-message/chat-message.component";
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { ChattingService } from '../../../../services/chat-core/chatting.service';
-import { distinctUntilChanged, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ChatRoomsService } from '../../../../services/chat-core/chat-rooms.service';
 import { ObjectId } from 'mongodb';
+import { AgentConfigListComponent } from "../../agent-configurations/agent-config-list/agent-config-list.component";
 
 @Component({
   selector: 'app-chatting',
@@ -19,7 +19,8 @@ import { ObjectId } from 'mongodb';
     ButtonModule,
     ChatMessageComponent,
     RouterModule,
-  ],
+    AgentConfigListComponent
+],
   templateUrl: './chatting.component.html',
   styleUrl: './chatting.component.scss'
 })
