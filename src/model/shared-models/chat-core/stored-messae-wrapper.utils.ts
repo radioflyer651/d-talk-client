@@ -1,6 +1,6 @@
 import { StoredMessage } from "@langchain/core/messages";
 import { StoredMessageAgentTypes } from "./stored-message-agent-types.data";
-import { getSpeakerFromMessage } from "../../../utils/speaker.utils";
+
 
 
 export class StoredMessageWrapper {
@@ -48,6 +48,6 @@ export class StoredMessageWrapper {
     }
 
     get agentId() {
-        return getSpeakerFromMessage(this.message)?.speakerId;
+        return this.message.data.additional_kwargs?.['dtalk_speaker']?.speakerId;
     }
 }
