@@ -15,6 +15,7 @@ import { ChatJobConfiguration } from '../../../../../model/shared-models/chat-co
 import { lastValueFrom, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 import { PositionableMessageListComponent } from "../../positionable-messages/positionable-message-list/positionable-message-list.component";
 import { ActivatedRoute } from '@angular/router';
+import { PluginSelectorComponent } from "../../plugins/plugin-selector/plugin-selector.component";
 
 @Component({
   selector: 'app-chat-job-detail',
@@ -29,8 +30,9 @@ import { ActivatedRoute } from '@angular/router';
     CardModule,
     ButtonModule,
     TabsModule,
-    PositionableMessageListComponent
-  ],
+    PositionableMessageListComponent,
+    PluginSelectorComponent
+],
   templateUrl: './chat-job-detail.component.html',
   styleUrl: './chat-job-detail.component.scss'
 })

@@ -20,7 +20,7 @@ export type PluginSelectionData = {
     CommonModule,
     ButtonModule,
     PluginOptionsDialogComponent
-],
+  ],
   templateUrl: './plugin-selector.component.html',
   styleUrl: './plugin-selector.component.scss'
 })
@@ -36,6 +36,20 @@ export class PluginSelectorComponent {
   }
   set attachmentTarget(value: IPluginConfigurationAttachmentType | undefined) {
     this._attachmentTarget = value;
+  }
+
+  /** Gets or sets an indicator of what the attachment is to, so filters can be properly applied. */
+  @Input({ required: true })
+  attachedObjectType!: 'job' | 'agent';
+
+  get filteredPluginOptions() {
+    if (this.attachedObjectType === 'job') {
+      return this.pluginOptions.filter(o => o.attachesToJob);
+    } else if (this.attachedObjectType === 'agent') {
+      return this.pluginOptions.filter(o => o.attachesToAgent);
+    }
+
+    throw new Error(`Unexpected attachedObjectType: ${this.attachedObjectType}`);
   }
 
   getDisplayName(plugin: PluginSpecification) {
