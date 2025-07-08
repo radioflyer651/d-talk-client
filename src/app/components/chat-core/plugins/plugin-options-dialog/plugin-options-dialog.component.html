@@ -1,0 +1,17 @@
+<ng-container *ngIf="canShowParams">
+    <p-button label="Edit Plugin" (click)="showDialog()"></p-button>
+
+    <p-dialog [(visible)]="visible" [header]="`Plugin Parameters: ${pluginName}`">
+        
+        <div class="param-container">
+            <app-drunk-plugin-params *ngIf="pluginType==='act-drunk'" [params]="pluginParams"></app-drunk-plugin-params>
+
+        </div>
+
+        <ng-template #footer>
+            <div class="footer-button-controls">
+                <p-button label="OK" (click)="closeDialog()"></p-button>
+            </div>
+        </ng-template>
+    </p-dialog>
+</ng-container>

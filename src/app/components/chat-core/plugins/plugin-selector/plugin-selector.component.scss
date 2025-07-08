@@ -18,7 +18,8 @@
             margin: 0.5em;
             align-items: baseline;
 
-            .item-label {
+            .item-label,
+            .edit-control {
                 flex: 1 1 auto;
             }
         }

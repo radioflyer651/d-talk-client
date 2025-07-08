@@ -1,0 +1,6 @@
+<div *ngIf="!!params" class="param-container">
+    <p-floatlabel>
+        <input id="drunk-param" autocomplete="off" pInputText [(ngModel)]="params.message" />
+        <label for="drunk-param">Additional Instruction</label>
+    </p-floatlabel>
+</div>

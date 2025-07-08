@@ -6,6 +6,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { generateObjectId } from '../../../../../utils/generate-object-id.utils';
+import { PluginOptionsDialogComponent } from "../plugin-options-dialog/plugin-options-dialog.component";
 
 export type PluginSelectionData = {
   pluginInfo: PluginInfo,
@@ -18,7 +19,8 @@ export type PluginSelectionData = {
     CheckboxModule,
     CommonModule,
     ButtonModule,
-  ],
+    PluginOptionsDialogComponent
+],
   templateUrl: './plugin-selector.component.html',
   styleUrl: './plugin-selector.component.scss'
 })
