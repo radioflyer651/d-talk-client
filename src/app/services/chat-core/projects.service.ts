@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ClientApiService as ApiClientService } from './api-clients/api-client.service';
-import { BehaviorSubject, EMPTY, of, startWith, Subject, switchMap } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, EMPTY, of, startWith, Subject, switchMap } from 'rxjs';
 import { ObjectId } from 'mongodb';
 import { ProjectListing } from '../../../model/shared-models/chat-core/project-listing.model';
 import { Project } from '../../../model/shared-models/chat-core/project.model';
@@ -59,7 +59,9 @@ export class ProjectsService {
 
   // #region currentProjectId
   private readonly _currentProjectId = new BehaviorSubject<ObjectId | undefined>(undefined);
-  readonly currentProjectId$ = this._currentProjectId.asObservable();
+  readonly currentProjectId$ = this._currentProjectId.asObservable().pipe(
+    distinctUntilChanged()
+  );
 
   /** Gets or sets the current project that the application is working with. */
   get currentProjectId(): ObjectId | undefined {

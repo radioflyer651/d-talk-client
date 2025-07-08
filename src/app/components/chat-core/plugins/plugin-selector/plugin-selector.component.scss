@@ -1,0 +1,26 @@
+.plugins-container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    box-sizing: border-box;
+    background-color: rgb(221, 238, 247);
+
+    .plugin-items,
+    .specification-items {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 0.25em;
+
+        .specification-item,
+        .plugin-item {
+            display: flex;
+            margin: 0.5em;
+            align-items: baseline;
+
+            .item-label {
+                flex: 1 1 auto;
+            }
+        }
+    }
+}

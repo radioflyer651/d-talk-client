@@ -3,6 +3,7 @@ import { ObjectId as bObjectId } from 'bson';
 
 /** Returns a new ObjectId (string) with MongoDb-compatible values. */
 export function generateObjectId(): ObjectId {
-    const id = bObjectId.generate();
-    return id.toString();
+    const id = new bObjectId();
+    const result = id.toHexString();
+    return result;
 }

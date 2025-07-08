@@ -1,6 +1,5 @@
 import { ObjectId } from "mongodb";
 
-
 /** This type is used to indicate, on a configuration, that it requires a specific plugin.  When an instance of
  *   whatever it's attached to is created, a plugin instance must be instantiated (created or rehydrated) for this plugin specification. */
 export interface PluginSpecification<T = any> {
@@ -15,4 +14,15 @@ export interface PluginSpecification<T = any> {
     /** Data for the plugin. For instance, we might be referencing a memory plugin,
      *   but need to indicate what type of memories the plugin should be creating/retrieving. */
     configuration: T;
+}
+
+/** TypeGuard for the PluginSpecification type. */
+export function isPluginSpecification(target: any): target is PluginSpecification {
+    return (
+        typeof target === "object" &&
+        target !== null &&
+        "id" in target &&
+        "pluginType" in target &&
+        "configuration" in target
+    );
 }

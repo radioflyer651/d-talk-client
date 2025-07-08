@@ -41,6 +41,6 @@ export class ChatMessageComponent {
   wrapper: StoredMessageWrapper | undefined;
 
   get innerHtml() {
-    return this.sanitizer.bypassSecurityTrustHtml(this.message.data.content.replaceAll(/\n/g, '\n'));
+    return this.sanitizer.bypassSecurityTrustHtml(this.message.data.content.replaceAll(/\n/g, '<br/>'));
   }
 }

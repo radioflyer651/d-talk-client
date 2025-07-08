@@ -21,6 +21,7 @@ import { TabsModule } from 'primeng/tabs';
 import { InstructionEditorComponent } from "../../../instruction-editor/instruction-editor.component";
 import { PositionableMessageListComponent } from "../../positionable-messages/positionable-message-list/positionable-message-list.component";
 import { ActivatedRoute } from '@angular/router';
+import { PluginSelectorComponent } from "../../plugins/plugin-selector/plugin-selector.component";
 
 @Component({
   selector: 'app-agent-config-detail',
@@ -36,8 +37,9 @@ import { ActivatedRoute } from '@angular/router';
     ButtonModule,
     AgentTypeSelectorComponent,
     TabsModule,
-    PositionableMessageListComponent
-  ],
+    PositionableMessageListComponent,
+    PluginSelectorComponent
+],
   templateUrl: './agent-config-detail.component.html',
   styleUrl: './agent-config-detail.component.scss'
 })
@@ -92,5 +94,4 @@ export class AgentConfigDetailComponent extends ComponentBase {
     this.agentConfigService.selectedAgentConfigId = undefined;
     this.agentConfigService.selectedAgentConfigId = id;
   }
-
 }

@@ -1,0 +1,23 @@
+<div class="plugins-container" *ngIf="attachmentTarget">
+    <div class="plugin-items">
+        <div class="plugin-item" *ngFor="let option of pluginOptions">
+            <div class="item-label">
+                {{option.displayName}}
+            </div>
+            <div>
+                <p-button icon="fa fa-add" size="small" [rounded]="true" (click)="addOption(option)"></p-button>
+            </div>
+        </div>
+    </div>
+    <div class="specification-items">
+        <div class="specification-item" *ngFor="let plugin of attachmentTarget.plugins">
+            <div class="item-label">
+                {{getDisplayName(plugin)}}
+            </div>
+            <div>
+                <p-button icon="fa fa-x" severity="danger" size="small" [rounded]="true"
+                    (click)="removePlugin(plugin)"></p-button>
+            </div>
+        </div>
+    </div>
+</div>
