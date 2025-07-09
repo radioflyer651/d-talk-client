@@ -73,8 +73,9 @@ export class ChatRoomDetailComponent extends ComponentBase {
     this.agentInstances$ = this.agentInstanceService.agentInstances$;
 
     this.chatJobInstances$ = this.chatRoomService.selectedChatRoomJobInstances$;
-    this.chatJobInstances$.subscribe(ji => {
-    });
+    this.chatJobInstances$.pipe(
+      takeUntil(this.ngDestroy$)
+    ).subscribe();
   }
 
 

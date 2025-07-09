@@ -5,11 +5,12 @@ import { ButtonModule } from 'primeng/button';
 import { ChatMessageComponent } from "./chat-message/chat-message.component";
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { ChattingService } from '../../../../services/chat-core/chatting.service';
-import { takeUntil } from 'rxjs';
+import { Subscription, takeUntil } from 'rxjs';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ChatRoomsService } from '../../../../services/chat-core/chat-rooms.service';
 import { ObjectId } from 'mongodb';
 import { AgentConfigListComponent } from "../../agent-configurations/agent-config-list/agent-config-list.component";
+import { ChatSocketService } from '../../../../services/chat-core/chat-socket.service';
 
 @Component({
   selector: 'app-chatting',
@@ -19,8 +20,7 @@ import { AgentConfigListComponent } from "../../agent-configurations/agent-confi
     ButtonModule,
     ChatMessageComponent,
     RouterModule,
-    AgentConfigListComponent
-],
+  ],
   templateUrl: './chatting.component.html',
   styleUrl: './chatting.component.scss'
 })
@@ -29,6 +29,7 @@ export class ChattingComponent extends ComponentBase {
     readonly chatRoomService: ChatRoomsService,
     readonly chattingService: ChattingService,
     readonly route: ActivatedRoute,
+    readonly chatSocketService: ChatSocketService,
   ) {
     super();
   }
@@ -48,8 +49,28 @@ export class ChattingComponent extends ComponentBase {
 
   chatMessage: string = '';
 
+  cancelLlmMessage!: () => void;
+  isLoading = false;
+
   sendMessage() {
-    this.chattingService.sendChatMessage(this.chatMessage);
+    this.isLoading = true;
+
+    const onComplete = () => {
+      this.isLoading = false;
+      this.cancelLlmMessage = () => undefined;
+    };
+
+    let subscription = this.chattingService.sendChatMessage(this.chatMessage).subscribe({
+      next: onComplete,
+      error: onComplete,
+      complete: onComplete
+    });
+
+    this.cancelLlmMessage = () => {
+      subscription.unsubscribe();
+      onComplete();
+    };
+
     this.chatMessage = '';
   }
 

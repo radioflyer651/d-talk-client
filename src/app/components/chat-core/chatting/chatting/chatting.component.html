@@ -1,6 +1,6 @@
 <div class="chatting-container">
   <div class="chatting-pane chatting-pane--left">
-    
+
   </div>
   <div class="chatting-pane chatting-pane--right">
 
@@ -10,8 +10,10 @@
 
     <div class="chat-input-area">
       <input type="text" class="chat-input" placeholder="Type your message..." [(ngModel)]="chatMessage" />
-      <p-button severity="contrast" (click)="sendMessage()">Send</p-button>
-      <p-button severity="contrast" (click)="clearMessages()">Clear Messages</p-button>
+      <p-button *ngIf="!isLoading" label="Send" severity="contrast" (click)="sendMessage()"></p-button>
+      <p-button *ngIf="isLoading " label="Cancel" severity="warn" (click)="cancelLlmMessage()"></p-button>
+
+      <p-button [disabled]="isLoading" label="Clear Messages" severity="contrast" (click)="clearMessages()"></p-button>
       <a [routerLink]="['/projects', projectId, 'chat-rooms', chatRoomId]">
         <p-button label="Configuration"></p-button>
       </a>

@@ -50,4 +50,13 @@ export class StoredMessageWrapper {
     get agentId() {
         return this.message.data.additional_kwargs?.['dtalk_speaker']?.speakerId;
     }
+    set agentId(value: string) {
+        if (!this.message.data.additional_kwargs) {
+            this.message.data.additional_kwargs = {};
+        }
+        if (!this.message.data.additional_kwargs['dtalk_speaker']) {
+            this.message.data.additional_kwargs['dtalk_speaker'] = {};
+        }
+        this.message.data.additional_kwargs['dtalk_speaker'].speakerId = value;
+    }
 }
