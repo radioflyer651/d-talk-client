@@ -11,6 +11,8 @@ import { ChatRoomsService } from '../../../../services/chat-core/chat-rooms.serv
 import { ObjectId } from 'mongodb';
 import { AgentConfigListComponent } from "../../agent-configurations/agent-config-list/agent-config-list.component";
 import { ChatSocketService } from '../../../../services/chat-core/chat-socket.service';
+import { TextareaModule } from 'primeng/textarea';
+import { SplitterModule } from 'primeng/splitter';
 
 @Component({
   selector: 'app-chatting',
@@ -20,6 +22,9 @@ import { ChatSocketService } from '../../../../services/chat-core/chat-socket.se
     ButtonModule,
     ChatMessageComponent,
     RouterModule,
+    TextareaModule,
+    SplitterModule,
+    
   ],
   templateUrl: './chatting.component.html',
   styleUrl: './chatting.component.scss'
