@@ -10,7 +10,22 @@
     <div [innerHTML]="innerHtml"></div>
 
     <div class="button-container">
+      <p-button size="small" (click)="editMessage()" [rounded]="true" icon="fa fa-pencil" severity="primary"></p-button>
       <p-button size="small" (click)="deleteMessage()" [rounded]="true" icon="fa fa-minus" severity="danger"></p-button>
     </div>
   </div>
 </div>
+
+<p-dialog header="Edit Message" [(visible)]="isEditDialogVisible" [style]="{width: '40vw', height: '40vh'}"
+  appendTo="body">
+  <div class="edit-message-content">
+    <textarea pTextarea [(ngModel)]="editMessageContent"></textarea>
+  </div>
+
+  <ng-template #footer>
+    <div class="footer-button-controls">
+      <p-button label="Cancel" (click)="onMessageEditClosed(true)"></p-button>
+      <p-button label="OK" (click)="onMessageEditClosed(false)"></p-button>
+    </div>
+  </ng-template>
+</p-dialog>

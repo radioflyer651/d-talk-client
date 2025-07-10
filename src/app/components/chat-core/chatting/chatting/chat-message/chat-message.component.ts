@@ -10,6 +10,10 @@ import { combineLatestWith, map, Observable, of, Subject, takeUntil } from 'rxjs
 import { AgentInstanceConfiguration } from '../../../../../../model/shared-models/chat-core/agent-instance-configuration.model';
 import { ComponentBase } from '../../../../component-base/component-base.component';
 import { AgentInstanceService } from '../../../../../services/chat-core/agent-instance.service';
+import { ConfirmationService } from 'primeng/api';
+import { DialogModule } from 'primeng/dialog';
+import { TextareaModule } from 'primeng/textarea';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-chat-message',
@@ -18,7 +22,10 @@ import { AgentInstanceService } from '../../../../../services/chat-core/agent-in
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     ButtonModule,
+    DialogModule,
+    TextareaModule,
   ],
 })
 export class ChatMessageComponent extends ComponentBase {
@@ -26,6 +33,7 @@ export class ChatMessageComponent extends ComponentBase {
     readonly sanitizer: DomSanitizer,
     readonly chattingService: ChattingService,
     readonly agentsService: AgentInstanceService,
+    readonly confirmationService: ConfirmationService,
   ) {
     super();
 
@@ -98,11 +106,32 @@ export class ChatMessageComponent extends ComponentBase {
 
   wrapper: StoredMessageWrapper | undefined;
 
+
   get innerHtml() {
     return this.sanitizer.bypassSecurityTrustHtml(this.message.data.content.replaceAll(/\n/g, '<br/>').replaceAll('\t', '&nbsp;'.repeat(5)));
   }
 
+  isEditDialogVisible = false;
+  editMessageContent = '';
+
+  editMessage(): void {
+    this.isEditDialogVisible = true;
+    this.editMessageContent = this.wrapper!.content;
+  }
+
+  async onMessageEditClosed(cancelled: boolean) {
+    this.isEditDialogVisible = false;
+    if (!cancelled) {
+      this.wrapper!.content = this.editMessageContent;
+      await this.chattingService.updateChatMessageInChatRoom(this.wrapper!.id, this.wrapper!.content);
+    }
+  }
+
   deleteMessage() {
-    return this.chattingService.deleteChatMessageInChatRoom(this.wrapper!.id);
+    this.confirmationService.confirm({
+      header: 'Confirm Message Deletion',
+      message: 'Are you sure you wish to delete this message?',
+      accept: () => this.chattingService.deleteChatMessageInChatRoom(this.wrapper!.id)
+    });
   }
 }
