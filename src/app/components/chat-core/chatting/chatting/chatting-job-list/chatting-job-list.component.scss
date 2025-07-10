@@ -1,0 +1,31 @@
+$item-border-radius: 0.5em;
+
+.chat-job-item {
+    width: auto;
+    background-color: rgb(222, 225, 227);
+    margin: 0.5em;
+    gap: 0.25em;
+    border-radius: $item-border-radius;
+    box-shadow: 0px 2px 5px rgb(201, 201, 201);
+
+    .job-header {
+        padding: 0.75em 0.75em 0.5em 1em;
+        margin: 0;
+        box-shadow: 0px 1px 5px rgb(201, 201, 201);
+
+        border-radius: $item-border-radius $item-border-radius 0 0;
+
+        font-weight: bold;
+        font-size: 1.1em;
+        background-color: rgb(156, 235, 247);
+    }
+
+    .job-body {
+        margin: 0.5em;
+        margin-left: 1.25em;
+
+        .agent-name {
+            font-weight: bold;
+        }
+    }
+}

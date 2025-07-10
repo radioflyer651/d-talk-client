@@ -242,7 +242,8 @@ export class ChatRoomDetailComponent extends ComponentBase {
   }
 
   async setAgentDisabled(job: ChatJobInstance): Promise<void> {
-    await this.chatRoomService.setDisabledChatRoomJob(job.id, !job.disabled);
+    // Send the actual value to the server.  Because of 2-way binding, the value of disabled should already be set to the proper value.
+    await this.chatRoomService.setDisabledChatRoomJob(job.id, job.disabled);
   }
 
 }

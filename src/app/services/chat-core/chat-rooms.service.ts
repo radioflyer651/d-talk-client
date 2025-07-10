@@ -94,7 +94,7 @@ export class ChatRoomsService {
   }
 
   /** Contains the job instances for the current chat room. */
-  chatRoomJobInstances: ChatJobInstance[] = [];
+  chatRoomJobInstances: LinkedJobInstance[] = [];
 
   /** Returns a list of LinkedJobInstance objects for all jobs linked to a specified chat room. */
   selectedChatRoomJobInstances$!: Observable<LinkedJobInstance[]>;

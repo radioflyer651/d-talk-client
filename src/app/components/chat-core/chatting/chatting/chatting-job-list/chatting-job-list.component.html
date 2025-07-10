@@ -1,0 +1,16 @@
+<div *ngIf="chatRoomService.chatRoomJobInstances ">
+    <div *ngFor="let job of chatRoomService.chatRoomJobInstances" class="chat-job-item">
+        <div class="job-header">
+            {{ job.configuration?.name }}
+        </div>
+        <div class="job-body">
+            <div class="agent-name mt-2">
+                Agent: {{ job.agent?.name }}
+            </div>
+            <div class="checkbox-container mt-1">
+                <p-checkbox [binary]="true" [(ngModel)]="job.disabled" (onChange)="setJobDisabled(job)"></p-checkbox>
+                <label>Disabled</label>
+            </div>
+        </div>
+    </div>
+</div>

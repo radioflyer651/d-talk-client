@@ -36,12 +36,12 @@ export class ChattingApiClientService extends ClientApiServiceBase {
    */
   updateChatMessageInChatRoom(roomId: ObjectId, messageId: string, newContent: string) {
     return this.http.put<{ success: boolean; }>(
-      this.constructUrl(`chat-room/${roomId}/message/${messageId}`),
+      this.constructUrl(`chat-room/${roomId}/conversation/message/${messageId}`),
       { newContent },
       this.optionsBuilder.withAuthorization()
     );
   }
-
+  
   /**
    * Deletes a chat message in a chat room.
    * @param roomId The chat room ID
@@ -49,7 +49,7 @@ export class ChattingApiClientService extends ClientApiServiceBase {
    */
   deleteChatMessageInChatRoom(roomId: ObjectId, messageId: string) {
     return this.http.delete<{ success: boolean; }>(
-      this.constructUrl(`chat-room/${roomId}/message/${messageId}`),
+      this.constructUrl(`chat-room/${roomId}/conversation/message/${messageId}`),
       this.optionsBuilder.withAuthorization()
     );
   }

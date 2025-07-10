@@ -12,6 +12,7 @@ import { ObjectId } from 'mongodb';
 import { ChatSocketService } from '../../../../services/chat-core/chat-socket.service';
 import { TextareaModule } from 'primeng/textarea';
 import { SplitterModule } from 'primeng/splitter';
+import { ChattingJobListComponent } from "./chatting-job-list/chatting-job-list.component";
 
 @Component({
   selector: 'app-chatting',
@@ -23,8 +24,8 @@ import { SplitterModule } from 'primeng/splitter';
     RouterModule,
     TextareaModule,
     SplitterModule,
-
-  ],
+    ChattingJobListComponent
+],
   templateUrl: './chatting.component.html',
   styleUrl: './chatting.component.scss'
 })
