@@ -48,6 +48,9 @@ export class ChatRoomDetailComponent extends ComponentBase {
   agentNameDialogValue = '';
   agentNameDialogAgent: ChatAgentIdentityConfiguration | null = null;
 
+  dragOverIndex: number | null = null;
+  draggedJobIndex: number | null = null;
+
   constructor(
     readonly chatJobsService: ChatJobsService,
     readonly chatAgentService: AgentConfigurationService,
@@ -189,24 +192,53 @@ export class ChatRoomDetailComponent extends ComponentBase {
     this.draggedAgentInstanceId = undefined;
   }
 
-  onJobInstanceDragOver(event: DragEvent, instance: LinkedJobInstance) {
-    event.preventDefault();
-    event.dataTransfer!.dropEffect = 'move';
+  onJobInstanceDragStart(event: DragEvent, instance: LinkedJobInstance, index: number) {
+    this.draggedJobIndex = index;
+    if (event.dataTransfer) {
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('jobInstanceId', instance.id);
+      event.dataTransfer.setData('jobIndex', index.toString());
+    }
   }
 
-  onJobInstanceDrop(event: DragEvent, jobInstance: LinkedJobInstance) {
+  onJobInstanceDragEnd(event: DragEvent, instance: LinkedJobInstance, index: number) {
+    this.draggedJobIndex = null;
+    this.dragOverIndex = null;
+  }
+
+  onJobInstanceDragEnter(event: DragEvent, index: number) {
     event.preventDefault();
+    this.dragOverIndex = index;
+  }
 
-    const agentInstanceId = event.dataTransfer?.getData('agentInstanceId');
-    const chatRoomId = this.chatRoomService.selectedChatRoomId;
+  onJobInstanceDragLeave(event: DragEvent, index: number) {
+    event.preventDefault();
+    this.dragOverIndex = null;
+  }
 
-    if (chatRoomId && jobInstance.id && agentInstanceId) {
-      this.chatRoomService.assignAgentToJobInstance(chatRoomId, jobInstance.id, agentInstanceId).subscribe(() => {
-        this.chatRoomService.reloadSelectedChatRoom();
-      });
+  onJobInstanceDragOver(event: DragEvent, instance: LinkedJobInstance, index: number) {
+    event.preventDefault();
+    this.dragOverIndex = index;
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = 'move';
     }
+  }
 
-    this.draggedAgentInstanceId = undefined;
+  onJobInstanceDrop(event: DragEvent, instance: LinkedJobInstance, index: number) {
+    event.preventDefault();
+    const jobIndexStr = event.dataTransfer?.getData('jobIndex');
+    const jobInstanceId = event.dataTransfer?.getData('jobInstanceId');
+    const chatRoomId = this.chatRoomService.selectedChatRoomId;
+    if (chatRoomId && jobInstanceId && typeof jobIndexStr === 'string') {
+      const fromIndex = parseInt(jobIndexStr, 10);
+      if (fromIndex !== index) {
+        this.chatRoomService.setChatJobOrder(jobInstanceId, index).then(() => {
+          this.chatRoomService.reloadSelectedChatRoom();
+        });
+      }
+    }
+    this.draggedJobIndex = null;
+    this.dragOverIndex = null;
   }
 
   async setAgentDisabled(job: ChatJobInstance): Promise<void> {

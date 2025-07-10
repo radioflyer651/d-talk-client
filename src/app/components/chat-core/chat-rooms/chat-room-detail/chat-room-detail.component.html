@@ -57,8 +57,15 @@
         <div *ngIf="chatJobInstances$ | async as jobInstances; else noJobInstances">
             <div *ngIf="jobInstances.length < 1">No job instances found for this project.</div>
 
-            <div *ngFor="let instance of jobInstances" class="object-panel"
-                (dragover)="onJobInstanceDragOver($event, instance)" (drop)="onJobInstanceDrop($event, instance)">
+            <div *ngFor="let instance of jobInstances; let i = index" class="object-panel job-instance-panel"
+                (dragover)="onJobInstanceDragOver($event, instance, i)"
+                (drop)="onJobInstanceDrop($event, instance, i)"
+                (dragenter)="onJobInstanceDragEnter($event, i)"
+                (dragleave)="onJobInstanceDragLeave($event, i)"
+                [class.drag-over]="dragOverIndex === i"
+                draggable="true"
+                (dragstart)="onJobInstanceDragStart($event, instance, i)"
+                (dragend)="onJobInstanceDragEnd($event, instance, i)">
                 <div class="object-panel-header d-flex-header">
                     <ng-container *ngIf="!!instance?.configuration">
                         <span>{{ instance.configuration.name }}</span>
@@ -67,14 +74,12 @@
                             (click)="confirmDeleteJobInstance(instance)"></button>
                     </ng-container>
                 </div>
-
                 <div class="object-panel-content object-panel-content-empty">
                     <div class="checkbox-container">
                         <p-checkbox [binary]="true" [(ngModel)]="instance.disabled"
                             (onChange)="setAgentDisabled(instance)"></p-checkbox>
                         <label>Disabled</label>
                     </div>
-
                     <ng-container *ngIf="instance.agent; else agentPlaceholder">
                         <div class="job-agent-present">
                             <i class="fa fa-user agent-icon agent-present"></i>
@@ -83,7 +88,6 @@
                                 icon="fa fa-times remove-agent-btn" (click)="onRemoveAgent(instance)"></button>
                         </div>
                     </ng-container>
-
                     <ng-template #agentPlaceholder>
                         <div class="job-agent-placeholder">
                             <i class="fa fa-user agent-icon agent-missing"></i>

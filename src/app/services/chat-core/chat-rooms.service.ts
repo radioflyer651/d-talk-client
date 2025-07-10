@@ -87,6 +87,10 @@ export class ChatRoomsService {
     this.selectedChatRoomJobInstances$.subscribe(jobs => {
       this.chatRoomJobInstances = jobs;
     });
+
+    this.selectedChatRoom$.subscribe(room => {
+      this._selectedChatRoom = room;
+    });
   }
 
   /** Contains the job instances for the current chat room. */
