@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, EMPTY, Observable, Subject, combineLatestWith, map, of, shareReplay, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, Subject, combineLatestWith, lastValueFrom, map, of, shareReplay, startWith, switchMap, tap } from 'rxjs';
 import { ClientApiService } from './api-clients/api-client.service';
 import { ObjectId } from 'mongodb';
 import { ChatRoomData } from '../../../model/shared-models/chat-core/chat-room-data.model';
@@ -7,6 +7,7 @@ import { ProjectsService } from './projects.service';
 import { LinkedJobInstance } from '../../../model/linked-job-instance.model';
 import { ChatJobsService } from './chat-jobs.service';
 import { AgentInstanceService } from './agent-instance.service';
+import { ChatJobInstance } from '../../../model/shared-models/chat-core/chat-job-instance.model';
 
 @Injectable({
   providedIn: 'root'
@@ -78,10 +79,18 @@ export class ChatRoomsService {
 
           return { ...j, configuration: config, agent: agent } as LinkedJobInstance;
         });
+
         return result;
       })
     );
+
+    this.selectedChatRoomJobInstances$.subscribe(jobs => {
+      this.chatRoomJobInstances = jobs;
+    });
   }
+
+  /** Contains the job instances for the current chat room. */
+  chatRoomJobInstances: ChatJobInstance[] = [];
 
   /** Returns a list of LinkedJobInstance objects for all jobs linked to a specified chat room. */
   selectedChatRoomJobInstances$!: Observable<LinkedJobInstance[]>;
@@ -102,6 +111,47 @@ export class ChatRoomsService {
   }
 
   private _reloadAgentInstances = new Subject<void>();
+
+  /** Sets the disabled status on a specified job instance, and updates the value on the server. */
+  async setDisabledChatRoomJob(jobId: ObjectId, newValue: boolean): Promise<void> {
+    // Validate.
+    if (!this.selectedChatRoomId) {
+      throw new Error(`No selected chat room ID available.`);
+    }
+
+    const job = this.chatRoomJobInstances.find(j => j.id === jobId);
+    if (!job) {
+      throw new Error(`Job not found with ID: ${jobId}`);
+    }
+
+    // Set the local value.
+    job.disabled = newValue;
+
+    // Update the server.
+    await lastValueFrom(this.apiClient.setJobInstanceDisabled(this.selectedChatRoomId, jobId, newValue));
+  }
+
+  async setChatJobOrder(jobId: ObjectId, newPosition: number): Promise<void> {
+    // Get the chat room and validate it.
+    const room = this.selectedChatRoom;
+    if (!room) {
+      throw new Error(`No chat room is currently selected.`);
+    }
+
+    // Get the job, and remove it from the room.
+    const jobIndex = room.jobs.findIndex(j => j.id === jobId);
+    const job = room.jobs.splice(jobIndex, 1)[0];
+
+    // Place the job in the proper location.
+    if (newPosition > room.jobs.length - 1) {
+      room.jobs.push(job);
+    } else {
+      room.jobs.splice(newPosition, 0, job);
+    }
+
+    // Update the position on the server.
+    await lastValueFrom(this.apiClient.setJobInstanceOrder(room._id, jobId, newPosition));
+  }
 
   reloadAgentInstances() {
     this._reloadAgentInstances.next();

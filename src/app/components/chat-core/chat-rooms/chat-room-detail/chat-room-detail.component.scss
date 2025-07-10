@@ -74,6 +74,9 @@
 .object-panel-content {
     padding: 10px 12px 8px 12px;
     font-size: 0.97em;
+    
+    margin: 0 12px; /* Add horizontal margin only */
+    padding-left: 2px; /* Add a little left padding to avoid hugging edge */
 }
 
 .object-panel-content-empty {
@@ -93,8 +96,6 @@
     align-items: center;
     gap: 10px;
     min-height: 28px;
-    margin: 0 12px; /* Add horizontal margin only */
-    padding-left: 2px; /* Add a little left padding to avoid hugging edge */
 }
 
 .job-agent-present .remove-agent-btn,

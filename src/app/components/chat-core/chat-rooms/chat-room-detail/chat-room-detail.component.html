@@ -56,6 +56,7 @@
         <h3>Job Instances</h3>
         <div *ngIf="chatJobInstances$ | async as jobInstances; else noJobInstances">
             <div *ngIf="jobInstances.length < 1">No job instances found for this project.</div>
+
             <div *ngFor="let instance of jobInstances" class="object-panel"
                 (dragover)="onJobInstanceDragOver($event, instance)" (drop)="onJobInstanceDrop($event, instance)">
                 <div class="object-panel-header d-flex-header">
@@ -66,7 +67,14 @@
                             (click)="confirmDeleteJobInstance(instance)"></button>
                     </ng-container>
                 </div>
+
                 <div class="object-panel-content object-panel-content-empty">
+                    <div class="checkbox-container">
+                        <p-checkbox [binary]="true" [(ngModel)]="instance.disabled"
+                            (onChange)="setAgentDisabled(instance)"></p-checkbox>
+                        <label>Disabled</label>
+                    </div>
+
                     <ng-container *ngIf="instance.agent; else agentPlaceholder">
                         <div class="job-agent-present">
                             <i class="fa fa-user agent-icon agent-present"></i>
@@ -75,6 +83,7 @@
                                 icon="fa fa-times remove-agent-btn" (click)="onRemoveAgent(instance)"></button>
                         </div>
                     </ng-container>
+
                     <ng-template #agentPlaceholder>
                         <div class="job-agent-placeholder">
                             <i class="fa fa-user agent-icon agent-missing"></i>

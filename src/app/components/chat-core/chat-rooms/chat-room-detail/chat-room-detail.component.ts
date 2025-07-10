@@ -6,11 +6,10 @@ import { AgentConfigurationService } from '../../../../services/chat-core/agent-
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
 import { ChatRoomsService } from '../../../../services/chat-core/chat-rooms.service';
 import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-models/chat-core/agent-configuration.model';
-import { map, Observable, of, takeUntil } from 'rxjs';
+import { Observable, takeUntil } from 'rxjs';
 import { ChatJobConfiguration } from '../../../../../model/shared-models/chat-core/chat-job-data.model';
 import { PanelModule } from 'primeng/panel';
 import { ChatJobInstance } from '../../../../../model/shared-models/chat-core/chat-job-instance.model';
-import { switchMap } from 'rxjs';
 import { AgentInstanceService } from '../../../../services/chat-core/agent-instance.service';
 import { AgentInstanceConfiguration } from '../../../../../model/shared-models/chat-core/agent-instance-configuration.model';
 import { ButtonModule } from 'primeng/button';
@@ -21,6 +20,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { LinkedJobInstance } from '../../../../../model/linked-job-instance.model';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-chat-room-detail',
@@ -32,6 +32,7 @@ import { LinkedJobInstance } from '../../../../../model/linked-job-instance.mode
     DialogModule,
     InputText,
     ConfirmDialogModule,
+    CheckboxModule,
   ],
   templateUrl: './chat-room-detail.component.html',
   styleUrl: './chat-room-detail.component.scss',
@@ -77,7 +78,6 @@ export class ChatRoomDetailComponent extends ComponentBase {
       takeUntil(this.ngDestroy$)
     ).subscribe();
   }
-
 
   createAgentInstance(agent: ChatAgentIdentityConfiguration) {
     this.agentNameDialogAgent = agent;
@@ -208,4 +208,9 @@ export class ChatRoomDetailComponent extends ComponentBase {
 
     this.draggedAgentInstanceId = undefined;
   }
+
+  async setAgentDisabled(job: ChatJobInstance): Promise<void> {
+    await this.chatRoomService.setDisabledChatRoomJob(job.id, !job.disabled);
+  }
+
 }

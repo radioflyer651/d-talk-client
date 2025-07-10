@@ -388,5 +388,26 @@ export class ClientApiService extends ClientApiServiceBase {
     );
   }
 
+  /**
+   * Sets the 'disabled' property of a job instance in a chat room.
+   */
+  setJobInstanceDisabled(roomId: ObjectId, jobId: ObjectId | string, disabled: boolean) {
+    return this.http.put<{ success: boolean; }>(
+      this.constructUrl(`chat-room/${roomId}/job-instance/${jobId}/disabled`),
+      { disabled },
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Sets the order of a job instance in a chat room.
+   */
+  setJobInstanceOrder(roomId: ObjectId, jobId: ObjectId | string, newPosition: number) {
+    return this.http.put<{ success: boolean; }>(
+      this.constructUrl(`chat-room/${roomId}/job-instance/${jobId}/order`),
+      { newPosition },
+      this.optionsBuilder.withAuthorization()
+    );
+  }
 
 }
