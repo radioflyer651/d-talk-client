@@ -23,27 +23,22 @@ export class ChattingService {
   private _reloadChatHistory$ = new Subject<void>();
 
   initialize() {
-    let switchRoom: ChatRoomData | undefined;
-    let chatRoom: ChatRoomData | undefined;
+    this._reloadChatHistory$.subscribe(() => {
+      this.chatRoomService.reloadSelectedChatRoom();
+    });
 
-    this.chatHistory$ = this._reloadChatHistory$.pipe(
-      startWith(undefined),
-      switchMap(() => {
-        return this.chatRoomService.selectedChatRoom$.pipe(
-          tap(room => {
-            this.chatRoom = room;
-            chatRoom = room;
-          }),
-          switchMap(room => {
-            return this._refreshChatHistory$.pipe(
-              startWith(undefined),
-              map(() => {
-                return room?.conversation ?? [];
-              })
-            );
-          }),
+    this.chatHistory$ = this.chatRoomService.selectedChatRoom$.pipe(
+      tap(room => {
+        this.chatRoom = room;
+      }),
+      switchMap(room => {
+        return this._refreshChatHistory$.pipe(
+          startWith(undefined),
+          map(() => {
+            return room?.conversation ?? [];
+          })
         );
-      })
+      }),
     );
   }
 
@@ -111,5 +106,36 @@ export class ChattingService {
 
   reloadChatHistory() {
     this._reloadChatHistory$.next();
+  }
+
+  /**
+   * Updates a chat message in the current chat room and refreshes chat history.
+   * @param messageId The message ID
+   * @param newContent The new content for the message
+   */
+  async updateChatMessageInChatRoom(messageId: string, newContent: string) {
+    if (!this.chatRoom) {
+      throw new Error('No chat room is selected.');
+    }
+    await lastValueFrom(
+      this.chattingApiClient.updateChatMessageInChatRoom(this.chatRoom._id, messageId, newContent)
+    );
+    this.reloadChatHistory();
+  }
+
+  /**
+   * Deletes a chat message in the current chat room and refreshes chat history.
+   * @param messageId The message ID
+   */
+  async deleteChatMessageInChatRoom(messageId: string) {
+    if (!this.chatRoom) {
+      throw new Error('No chat room is selected.');
+    }
+
+    await lastValueFrom(
+      this.chattingApiClient.deleteChatMessageInChatRoom(this.chatRoom._id, messageId)
+    );
+
+    this.reloadChatHistory();
   }
 }

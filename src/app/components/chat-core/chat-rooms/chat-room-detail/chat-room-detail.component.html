@@ -35,8 +35,7 @@
         <h3>Agent Instances</h3>
         <div *ngIf="agentInstances$ | async as agentInstances; else noAgentInstances">
             <div *ngIf="agentInstances.length < 1">No agent instances found for this chat room.</div>
-            <div *ngFor="let instance of agentInstances" class="object-panel"
-                draggable="true"
+            <div *ngFor="let instance of agentInstances" class="object-panel" draggable="true"
                 (dragstart)="onAgentInstanceDragStart($event, instance)"
                 (dragend)="onAgentInstanceDragEnd($event, instance)">
                 <div class="object-panel-header d-flex-header">
@@ -58,26 +57,30 @@
         <div *ngIf="chatJobInstances$ | async as jobInstances; else noJobInstances">
             <div *ngIf="jobInstances.length < 1">No job instances found for this project.</div>
             <div *ngFor="let instance of jobInstances" class="object-panel"
-                (dragover)="onJobInstanceDragOver($event, instance)"
-                (drop)="onJobInstanceDrop($event, instance)">
+                (dragover)="onJobInstanceDragOver($event, instance)" (drop)="onJobInstanceDrop($event, instance)">
                 <div class="object-panel-header d-flex-header">
-                    <span>{{ instance.configuration.name }}</span>
-                    <button pButton [rounded]="true" type="button" size="small" severity="danger"
-                        icon="fa fa-trash header-btn delete-btn" (click)="confirmDeleteJobInstance(instance)"></button>
+                    <ng-container *ngIf="!!instance?.configuration">
+                        <span>{{ instance.configuration.name }}</span>
+                        <button pButton [rounded]="true" type="button" size="small" severity="danger"
+                            icon="fa fa-trash header-btn delete-btn"
+                            (click)="confirmDeleteJobInstance(instance)"></button>
+                    </ng-container>
                 </div>
                 <div class="object-panel-content object-panel-content-empty">
                     <ng-container *ngIf="instance.agent; else agentPlaceholder">
                         <div class="job-agent-present">
                             <i class="fa fa-user agent-icon agent-present"></i>
                             <span class="agent-name">{{ instance.agent.name }}</span>
-                            <button pButton [rounded]="true" type="button" size="small" severity="danger" icon="fa fa-times remove-agent-btn" (click)="onRemoveAgent(instance)"></button>
+                            <button pButton [rounded]="true" type="button" size="small" severity="danger"
+                                icon="fa fa-times remove-agent-btn" (click)="onRemoveAgent(instance)"></button>
                         </div>
                     </ng-container>
                     <ng-template #agentPlaceholder>
                         <div class="job-agent-placeholder">
                             <i class="fa fa-user agent-icon agent-missing"></i>
                             <span class="agent-placeholder-text">No agent assigned</span>
-                            <button pButton [rounded]="true" type="button" size="small" icon="fa fa-plus add-agent-btn" (click)="onAddAgent(instance)"></button>
+                            <button pButton [rounded]="true" type="button" size="small" icon="fa fa-plus add-agent-btn"
+                                (click)="onAddAgent(instance)"></button>
                         </div>
                     </ng-template>
                 </div>

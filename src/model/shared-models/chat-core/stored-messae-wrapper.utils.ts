@@ -47,6 +47,10 @@ export class StoredMessageWrapper {
         this.message.data.name = value;
     }
 
+    get id() {
+        return this.message.data.id || this.message.data.additional_kwargs?.['id'];
+    }
+
     get agentId() {
         return this.message.data.additional_kwargs?.['dtalk_speaker']?.speakerId;
     }

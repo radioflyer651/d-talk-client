@@ -5,11 +5,10 @@ import { ButtonModule } from 'primeng/button';
 import { ChatMessageComponent } from "./chat-message/chat-message.component";
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { ChattingService } from '../../../../services/chat-core/chatting.service';
-import { Subscription, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ChatRoomsService } from '../../../../services/chat-core/chat-rooms.service';
 import { ObjectId } from 'mongodb';
-import { AgentConfigListComponent } from "../../agent-configurations/agent-config-list/agent-config-list.component";
 import { ChatSocketService } from '../../../../services/chat-core/chat-socket.service';
 import { TextareaModule } from 'primeng/textarea';
 import { SplitterModule } from 'primeng/splitter';
@@ -24,7 +23,7 @@ import { SplitterModule } from 'primeng/splitter';
     RouterModule,
     TextareaModule,
     SplitterModule,
-    
+
   ],
   templateUrl: './chatting.component.html',
   styleUrl: './chatting.component.scss'
@@ -47,6 +46,10 @@ export class ChattingComponent extends ComponentBase {
       this.projectId = params['projectId'];
       this.chatRoomId = params['chatRoomId'];
     });
+
+    setTimeout(() => {
+      this.scrollChatToBottom();
+    }, 500);
   }
 
   chatRoomId: ObjectId | undefined;
@@ -63,6 +66,8 @@ export class ChattingComponent extends ComponentBase {
     const onComplete = () => {
       this.isLoading = false;
       this.cancelLlmMessage = () => undefined;
+
+      this.scrollChatToBottom();
     };
 
     let subscription = this.chattingService.sendChatMessage(this.chatMessage).subscribe({
@@ -81,5 +86,15 @@ export class ChattingComponent extends ComponentBase {
 
   clearMessages() {
     this.chattingService.clearMessages();
+  }
+
+  scrollChatToBottom() {
+    const historyArea = document.querySelector('.chat-history-area');
+    if (historyArea) {
+      historyArea.scrollTo({
+        top: historyArea.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   }
 }

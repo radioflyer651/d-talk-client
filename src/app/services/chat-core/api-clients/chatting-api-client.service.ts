@@ -27,4 +27,30 @@ export class ChattingApiClientService extends ClientApiServiceBase {
       undefined,
       this.optionsBuilder.withAuthorization());
   }
+
+  /**
+   * Updates a chat message in a chat room.
+   * @param roomId The chat room ID
+   * @param messageId The message ID
+   * @param newContent The new content for the message
+   */
+  updateChatMessageInChatRoom(roomId: ObjectId, messageId: string, newContent: string) {
+    return this.http.put<{ success: boolean; }>(
+      this.constructUrl(`chat-room/${roomId}/message/${messageId}`),
+      { newContent },
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Deletes a chat message in a chat room.
+   * @param roomId The chat room ID
+   * @param messageId The message ID
+   */
+  deleteChatMessageInChatRoom(roomId: ObjectId, messageId: string) {
+    return this.http.delete<{ success: boolean; }>(
+      this.constructUrl(`chat-room/${roomId}/message/${messageId}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
 }

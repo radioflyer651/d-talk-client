@@ -8,6 +8,7 @@ import { StoredMessageWrapper } from '../../../model/shared-models/chat-core/sto
 import { ObjectId } from 'mongodb';
 import { ENTER_CHAT_ROOM, EnterChatRoomMessage, EXIT_CHAT_ROOM, ExitChatRoomMessage } from '../../../model/shared-models/chat-core/socket-messaging/general-messaging.socket-model';
 import { ChattingService } from './chatting.service';
+import { ChatRoomData } from '../../../model/shared-models/chat-core/chat-room-data.model';
 
 @Injectable({
   providedIn: 'root'

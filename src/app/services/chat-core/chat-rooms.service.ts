@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, EMPTY, Observable, Subject, combineLatestWith, map, of, shareReplay, startWith, switchMap } from 'rxjs';
+import { BehaviorSubject, EMPTY, Observable, Subject, combineLatestWith, map, of, shareReplay, startWith, switchMap, tap } from 'rxjs';
 import { ClientApiService } from './api-clients/api-client.service';
 import { ObjectId } from 'mongodb';
 import { ChatRoomData } from '../../../model/shared-models/chat-core/chat-room-data.model';
@@ -59,7 +59,8 @@ export class ChatRoomsService {
           }),
         );
       }),
-      shareReplay(),);
+      shareReplay(),
+    );
 
     this.selectedChatRoomJobInstances$ = this.selectedChatRoom$.pipe(
       combineLatestWith(this.jobService.jobs$, this.agentService.agentInstances$),

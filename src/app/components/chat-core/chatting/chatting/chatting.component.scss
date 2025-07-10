@@ -30,12 +30,13 @@
 
       .chat-input-area {
         display: flex;
-        width: 100%;
-        align-items: flex-start; // Changed from center to flex-start
+        flex-direction: row;
+        align-items: flex-start;
         padding: 1rem;
         background: #fff;
         border-top: 1px solid #e0e0e0;
-        gap: 0.25rem; // Add a small gap between children
+        gap: 0.25rem;
+        width: 100%;
 
         .chat-input {
           flex: 1 1 auto;
@@ -50,6 +51,26 @@
       }
       .chat-input-area > * {
         margin: 0.1rem;
+      }
+
+      .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        align-items: flex-end;
+      }
+
+      .button-row {
+        display: flex;
+        flex-direction: row;
+        gap: 0.25rem;
+
+        ::ng-deep.p-button {
+          min-width: 140px;
+          width: 100%;
+          flex: 1 1 0;
+          box-sizing: border-box;
+        }
       }
     }
   }
