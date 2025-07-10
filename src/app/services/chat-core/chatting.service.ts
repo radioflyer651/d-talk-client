@@ -6,6 +6,8 @@ import { StoredMessage } from '@langchain/core/messages';
 import { ChatRoomData } from '../../../model/shared-models/chat-core/chat-room-data.model';
 import { ChattingApiClientService } from './api-clients/chatting-api-client.service';
 import { AgentInstanceService } from './agent-instance.service';
+import { ObjectId } from 'mongodb';
+import { AgentInstanceConfiguration } from '../../../model/shared-models/chat-core/agent-instance-configuration.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,12 +17,14 @@ export class ChattingService {
     readonly projectService: ProjectsService,
     readonly chatRoomService: ChatRoomsService,
     readonly chattingApiClient: ChattingApiClientService,
+    readonly agentInstanceService: AgentInstanceService,
   ) {
     this.initialize();
   }
 
   private _refreshChatHistory$ = new Subject<void>();
   private _reloadChatHistory$ = new Subject<void>();
+  private _agents: AgentInstanceConfiguration[] = [];
 
   initialize() {
     this._reloadChatHistory$.subscribe(() => {
@@ -40,6 +44,10 @@ export class ChattingService {
         );
       }),
     );
+
+    this.agentInstanceService.agentInstances$.subscribe(instances => {
+      this._agents = instances;
+    });
   }
 
   chatRoom: ChatRoomData | undefined;
@@ -137,5 +145,10 @@ export class ChattingService {
     );
 
     this.reloadChatHistory();
+  }
+
+  /** Returns an agent instance for a specified ID. */
+  getAgentInstance(agentId: ObjectId): AgentInstanceConfiguration | undefined {
+    return this._agents.find(i => i._id === agentId);
   }
 }

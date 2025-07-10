@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { switchMap, of, Observable, EMPTY } from 'rxjs';
+import { switchMap, of, Observable, EMPTY, Subject } from 'rxjs';
 import { io } from 'socket.io-client';
 import { environment } from '../../environments/environment';
 import { ReadonlySubject } from '../../utils/readonly-subject';
@@ -50,9 +50,14 @@ export class SocketService {
 
       s.io.on("reconnect", (attempt) => {
         console.log(`Socket reconnected after ${attempt} attempts`);
+        this._reconnected.next();
       });
     });
   }
+
+  /** Event to tell observers that the socket connection has been reestablished after it was lost. */
+  private _reconnected = new Subject<void>();
+  readonly reconnected$ = this._reconnected.asObservable();
 
   /** Initializes the chat service. */
   private initializeSocketObservable(): void {

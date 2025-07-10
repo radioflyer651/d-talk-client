@@ -1,11 +1,14 @@
 <div *ngIf="!!wrapper" class="chat-message-container" [class.human]="wrapper.agent === 'human'"
   [class.ai]="wrapper.agent === 'ai'">
+
   <div class="chat-message-bubble">
+
     <div class="agent-name">
-      {{wrapper.name}}
+      {{name}}
     </div>
-    <div [innerHTML]="innerHtml">
-    </div>
+
+    <div [innerHTML]="innerHtml"></div>
+
     <div class="button-container">
       <p-button size="small" (click)="deleteMessage()" [rounded]="true" icon="fa fa-minus" severity="danger"></p-button>
     </div>

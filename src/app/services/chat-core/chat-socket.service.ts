@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SocketService } from '../socket.service';
 import { MESSAGE_CHUNK_MESSAGE, MessageChunkMessage } from '../../../model/shared-models/chat-core/socket-messaging/message-chunk-message.socket-model';
 import { ChatRoomsService } from './chat-rooms.service';
-import { EMPTY, filter, map, switchMap, tap } from 'rxjs';
+import { EMPTY, filter, map, startWith, switchMap, tap } from 'rxjs';
 import { createStoredMessage } from '../../../utils/create-stored-message.utils';
 import { StoredMessageWrapper } from '../../../model/shared-models/chat-core/stored-messae-wrapper.utils';
 import { ObjectId } from 'mongodb';
@@ -31,11 +31,17 @@ export class ChatSocketService {
   }
 
   initialize() {
-    const room$ = this.chatRoomService.selectedChatRoom$;
-
     // Subscription 1: Handle joining/leaving rooms
     let previousRoomId: ObjectId | null = null;
-    room$.subscribe(room => {
+
+    const connectedRoom$ = this.socketService.reconnected$.pipe(
+      startWith(undefined),
+      switchMap(() => {
+        return this.chatRoomService.selectedChatRoom$;
+      })
+    );
+
+    connectedRoom$.subscribe(room => {
       if (previousRoomId && (!room || previousRoomId !== room._id)) {
         this.leaveChatRoom(previousRoomId);
       }
@@ -51,7 +57,7 @@ export class ChatSocketService {
     });
 
     // Subscription 2: Handle incoming messages for the selected room
-    room$.pipe(
+    connectedRoom$.pipe(
       switchMap(room => {
         // If there's no room, then there's nothing to do here.
         if (!room) {

@@ -1,5 +1,6 @@
 import { StoredMessage } from "@langchain/core/messages";
 import { StoredMessageAgentTypes } from "./stored-message-agent-types.data";
+import { getSpeakerFromMessage } from "../../../utils/speaker.utils";
 
 
 
@@ -41,10 +42,20 @@ export class StoredMessageWrapper {
 
     /** Gets or sets the user's name that sent this message. */
     get name(): string | undefined {
-        return this.message.data.name;
+        const speaker = getSpeakerFromMessage(this.message);
+        return this.message.data.name ?? speaker?.name ?? '';
     }
     set name(value: string | undefined) {
+
+        if (!this.message.data.additional_kwargs) {
+            this.message.data.additional_kwargs = {};
+        }
+
         this.message.data.name = value;
+        const speaker = getSpeakerFromMessage(this.message);
+        if (speaker) {
+            speaker.name = value;
+        }
     }
 
     get id() {
