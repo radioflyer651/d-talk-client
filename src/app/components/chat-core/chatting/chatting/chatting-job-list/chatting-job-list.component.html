@@ -1,5 +1,13 @@
 <div *ngIf="chatRoomService.chatRoomJobInstances ">
-    <div *ngFor="let job of chatRoomService.chatRoomJobInstances" class="chat-job-item">
+    <div *ngFor="let job of chatRoomService.chatRoomJobInstances; let i = index" class="chat-job-item"
+        (dragover)="onJobInstanceDragOver($event, job, i)"
+        (drop)="onJobInstanceDrop($event, job, i)"
+        (dragenter)="onJobInstanceDragEnter($event, i)"
+        (dragleave)="onJobInstanceDragLeave($event, i)"
+        [class.drag-over]="dragOverIndex === i"
+        draggable="true"
+        (dragstart)="onJobInstanceDragStart($event, job, i)"
+        (dragend)="onJobInstanceDragEnd($event, job, i)">
         <div class="job-header">
             {{ job.configuration?.name }}
         </div>

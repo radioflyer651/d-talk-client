@@ -24,6 +24,9 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './chatting-job-list.component.scss'
 })
 export class ChattingJobListComponent extends ComponentBase {
+  dragOverIndex: number | null = null;
+  draggedJobIndex: number | null = null;
+
   constructor(
     readonly chattingService: ChattingService,
     readonly chatRoomService: ChatRoomsService,
@@ -49,6 +52,53 @@ export class ChattingJobListComponent extends ComponentBase {
 
   async setJobDisabled(job: ChatJobInstance): Promise<void> {
     await this.chatRoomService.setDisabledChatRoomJob(job.id, job.disabled);
+  }
+
+  onJobInstanceDragStart(event: DragEvent, job: ChatJobInstance, index: number) {
+    this.draggedJobIndex = index;
+    if (event.dataTransfer) {
+      event.dataTransfer.effectAllowed = 'move';
+      event.dataTransfer.setData('jobInstanceId', job.id);
+      event.dataTransfer.setData('jobIndex', index.toString());
+    }
+  }
+
+  onJobInstanceDragEnd(event: DragEvent, job: ChatJobInstance, index: number) {
+    this.draggedJobIndex = null;
+    this.dragOverIndex = null;
+  }
+
+  onJobInstanceDragEnter(event: DragEvent, index: number) {
+    event.preventDefault();
+    this.dragOverIndex = index;
+  }
+
+  onJobInstanceDragLeave(event: DragEvent, index: number) {
+    event.preventDefault();
+    this.dragOverIndex = null;
+  }
+
+  onJobInstanceDragOver(event: DragEvent, job: ChatJobInstance, index: number) {
+    event.preventDefault();
+    this.dragOverIndex = index;
+    if (event.dataTransfer) {
+      event.dataTransfer.dropEffect = 'move';
+    }
+  }
+
+  async onJobInstanceDrop(event: DragEvent, job: ChatJobInstance, index: number) {
+    event.preventDefault();
+    const jobIndexStr = event.dataTransfer?.getData('jobIndex');
+    const jobInstanceId = event.dataTransfer?.getData('jobInstanceId');
+    if (jobInstanceId && typeof jobIndexStr === 'string') {
+      const fromIndex = parseInt(jobIndexStr, 10);
+      if (fromIndex !== index) {
+        await this.chatRoomService.setChatJobOrder(jobInstanceId, index);
+        this.chatRoomService.reloadSelectedChatRoom();
+      }
+    }
+    this.draggedJobIndex = null;
+    this.dragOverIndex = null;
   }
 
 
