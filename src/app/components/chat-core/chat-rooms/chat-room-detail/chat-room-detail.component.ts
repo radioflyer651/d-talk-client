@@ -226,9 +226,22 @@ export class ChatRoomDetailComponent extends ComponentBase {
 
   onJobInstanceDrop(event: DragEvent, instance: LinkedJobInstance, index: number) {
     event.preventDefault();
+    const agentInstanceId = event.dataTransfer?.getData('agentInstanceId');
     const jobIndexStr = event.dataTransfer?.getData('jobIndex');
     const jobInstanceId = event.dataTransfer?.getData('jobInstanceId');
     const chatRoomId = this.chatRoomService.selectedChatRoomId;
+
+    // If agentInstanceId is present, this is an agent assignment drop
+    if (chatRoomId && instance.id && agentInstanceId) {
+      this.chatRoomService.assignAgentToJobInstance(chatRoomId, instance.id, agentInstanceId).subscribe(() => {
+        this.chatRoomService.reloadSelectedChatRoom();
+      });
+      this.draggedJobIndex = null;
+      this.dragOverIndex = null;
+      return;
+    }
+
+    // Otherwise, handle job reordering
     if (chatRoomId && jobInstanceId && typeof jobIndexStr === 'string') {
       const fromIndex = parseInt(jobIndexStr, 10);
       if (fromIndex !== index) {

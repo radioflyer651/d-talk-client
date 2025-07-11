@@ -25,7 +25,7 @@ import { ChattingJobListComponent } from "./chatting-job-list/chatting-job-list.
     TextareaModule,
     SplitterModule,
     ChattingJobListComponent
-],
+  ],
   templateUrl: './chatting.component.html',
   styleUrl: './chatting.component.scss'
 })
@@ -58,7 +58,7 @@ export class ChattingComponent extends ComponentBase {
 
   chatMessage: string = '';
 
-  cancelLlmMessage!: () => void;
+  cancelLlmMessage!: () => void | Promise<void>;
   isLoading = false;
 
   sendMessage() {
@@ -77,9 +77,12 @@ export class ChattingComponent extends ComponentBase {
       complete: onComplete
     });
 
-    this.cancelLlmMessage = () => {
+    this.cancelLlmMessage = async () => {
       subscription.unsubscribe();
-      onComplete();
+      setTimeout(async () => {
+        await this.chattingService.reloadChatHistory();
+        onComplete();
+      }, 1000);
     };
 
     this.chatMessage = '';
