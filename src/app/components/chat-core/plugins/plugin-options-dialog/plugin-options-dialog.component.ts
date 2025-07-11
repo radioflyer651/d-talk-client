@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { pluginInformation } from '../../../../../model/shared-models/chat-core/plugins/plugin-type-constants.data';
 import { DrunkPluginParamsComponent } from "../plugin-params/drunk-plugin-params/drunk-plugin-params.component";
 import { ButtonModule } from 'primeng/button';
+import { IgnoreSpecificAgentPluginParamsComponent } from "../plugin-params/ignore-specific-agent-plugin-params/ignore-specific-agent-plugin-params.component";
 
 @Component({
   selector: 'app-plugin-options-dialog',
@@ -15,7 +16,8 @@ import { ButtonModule } from 'primeng/button';
     DialogModule,
     DrunkPluginParamsComponent,
     ButtonModule,
-  ],
+    IgnoreSpecificAgentPluginParamsComponent
+],
   templateUrl: './plugin-options-dialog.component.html',
   styleUrl: './plugin-options-dialog.component.scss'
 })

@@ -1,4 +1,4 @@
-import { Subject, BehaviorSubject, of, startWith, switchMap, distinctUntilChanged } from 'rxjs';
+import { Subject, BehaviorSubject, of, startWith, switchMap, distinctUntilChanged, Observable } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { AgentInstanceConfiguration } from '../../../model/shared-models/chat-core/agent-instance-configuration.model';
 import { ClientApiService } from './api-clients/api-client.service';
@@ -25,7 +25,6 @@ export class AgentInstanceService {
     this._reloadAgentInstances.next();
   }
 
-  private _agentInstances!: ReadonlySubject<AgentInstanceConfiguration[]>;
   private _selectedAgentInstance!: ReadonlySubject<AgentInstanceConfiguration | undefined>;
   private _selectedAgentInstanceId = new BehaviorSubject<ObjectId | undefined>(undefined);
 
@@ -44,21 +43,19 @@ export class AgentInstanceService {
 
   initialize() {
     // Use the private _selectedChatRoomId subject from ChatRoomsService for reactivity
-    this._agentInstances = new ReadonlySubject<AgentInstanceConfiguration[]>(
-      this._destroy$,
-      this.selectedChatRoomId$.pipe(
-        switchMap(chatRoomId => {
-          if (!chatRoomId) {
-            return of([]);
-          }
+    this.agentInstances$ = this.selectedChatRoomId$.pipe(
+      switchMap(chatRoomId => {
+        if (!chatRoomId) {
+          return of([]);
+        }
 
-          return this._reloadAgentInstances.pipe(
-            startWith(undefined),
-            switchMap(() => this.apiClient.getAgentInstancesForChatRoom(chatRoomId))
-          );
-        }),
-        startWith([])
-      )
+
+        return this._reloadAgentInstances.pipe(
+          startWith(undefined),
+          switchMap(() => this.apiClient.getAgentInstancesForChatRoom(chatRoomId))
+        );
+      }),
+      startWith([] as AgentInstanceConfiguration[])
     );
 
     this._selectedAgentInstance = new ReadonlySubject<AgentInstanceConfiguration | undefined>(
@@ -73,12 +70,7 @@ export class AgentInstanceService {
   }
 
   // List all agent instances for the selected chat room
-  get agentInstances$() {
-    return this._agentInstances.observable$;
-  }
-  get agentInstances(): AgentInstanceConfiguration[] {
-    return this._agentInstances.value;
-  }
+  agentInstances$!: Observable<AgentInstanceConfiguration[]>;
 
   // Selected agent instance
   get selectedAgentInstance$() {
@@ -100,7 +92,7 @@ export class AgentInstanceService {
     if (!chatRoomId) {
       return of(undefined);
     }
-    
+
     // The API expects a full AgentInstanceConfiguration object
     return this.apiClient.createAgentInstance(instance as AgentInstanceConfiguration).pipe(
       switchMap(result => {

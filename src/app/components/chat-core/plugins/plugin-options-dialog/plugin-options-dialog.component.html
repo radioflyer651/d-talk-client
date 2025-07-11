@@ -2,10 +2,11 @@
     <p-button label="Edit Plugin" (click)="showDialog()"></p-button>
 
     <p-dialog [(visible)]="visible" [header]="`Plugin Parameters: ${pluginName}`">
-        
-        <div class="param-container">
-            <app-drunk-plugin-params *ngIf="pluginType==='act-drunk'" [params]="pluginParams"></app-drunk-plugin-params>
 
+        <div class="param-container" *ngIf="visible">
+            <app-drunk-plugin-params *ngIf="pluginType==='act-drunk'" [params]="pluginParams"></app-drunk-plugin-params>
+            <app-ignore-specific-agent-plugin-params *ngIf="pluginType==='ignore-specific-agent'"
+                [params]="pluginParams"></app-ignore-specific-agent-plugin-params>
         </div>
 
         <ng-template #footer>

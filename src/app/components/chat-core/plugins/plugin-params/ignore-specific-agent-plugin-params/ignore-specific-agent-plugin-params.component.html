@@ -1,0 +1,8 @@
+<div *ngFor="let option of agentOptions" class="checkbox-container">
+    <p-checkbox [binary]="true" [(ngModel)]="option.isChecked"></p-checkbox>
+    <label>{{option.agentName}}</label>
+</div>
+
+<div *ngIf="agentOptions.length <1">
+    No agents to select.
+</div>
