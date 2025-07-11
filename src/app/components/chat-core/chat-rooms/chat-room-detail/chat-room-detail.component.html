@@ -15,6 +15,7 @@
             <div>No agent configurations found for this project.</div>
         </ng-template>
     </div>
+    
     <div class="column column-2">
         <h3>Job Configs</h3>
         <div *ngIf="chatJobConfigurations$ | async as chatJobs; else noJobs">
@@ -31,6 +32,7 @@
             <div>No chat job configurations found for this project.</div>
         </ng-template>
     </div>
+
     <div class="column column-3">
         <h3>Agent Instances</h3>
         <div *ngIf="agentInstances$ | async as agentInstances; else noAgentInstances">
