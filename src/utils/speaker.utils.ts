@@ -1,4 +1,4 @@
-import { BaseMessage, StoredMessage } from "@langchain/core/messages";
+import { StoredMessage } from "@langchain/core/messages";
 import { isMessageSpeaker, MessageSpeaker } from "../model/shared-models/chat-core/message-speaker.model";
 
 export const MESSAGE_SPEAKER_KEY = 'dtalk_speaker';

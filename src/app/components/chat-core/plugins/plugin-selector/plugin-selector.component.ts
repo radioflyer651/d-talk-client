@@ -26,7 +26,14 @@ export type PluginSelectionData = {
 })
 export class PluginSelectorComponent {
 
-  pluginOptions = pluginInformation;
+  ngOnInit() {
+    this.pluginOptions = pluginInformation.slice();
+    this.pluginOptions.sort((v1, v2) => {
+      return v1.displayName.localeCompare(v2.displayName);
+    });
+  }
+
+  pluginOptions!: typeof pluginInformation;
 
   private _attachmentTarget: IPluginConfigurationAttachmentType | undefined;
   /** Gets or sets the entity that plugins will be applied/removed from. */

@@ -7,8 +7,8 @@ export interface MessageSpeaker {
     /** The type of speaker who created the message. */
     speakerType: 'user' | 'agent';
     /** The ObjectId, in string form, of the agent or user who created the message. */
-    speakerId: string;
-    /** Gets or sets the name of the agent/user that produced the message */
+    speakerId: string | undefined;
+    /** Gets or sets the name of the speaker.  This isn't available directly on the agents. */
     name: string | undefined;
 }
 

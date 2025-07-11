@@ -2,3 +2,45 @@
     <input id="ollama-model" autocomplete="off" pInputText [(ngModel)]="params.serviceParams.model" />
     <label for="ollama-model">Model Name</label>
 </p-floatlabel>
+
+<div class="nullable-value">
+    <p-checkbox [(ngModel)]="enableNumPredict" [binary]="true"></p-checkbox>
+    <div class="value">
+        <p-floatlabel>
+            <p-inputnumber [disabled]="!enableNumPredict" id="max-output" autocomplete="false"
+                [(ngModel)]="numPredict"></p-inputnumber>
+            <label for="max-output">Max Out Tokens</label>
+        </p-floatlabel>
+    </div>
+</div>
+
+<div class="nullable-value">
+    <p-checkbox [(ngModel)]="enableTemperature" [binary]="true"></p-checkbox>
+    <div class="value">
+        <p-floatlabel>
+            <p-inputnumber [disabled]="!enableTemperature" mode="decimal" [minFractionDigits]="2"
+                [maxFractionDigits]="2" id="temperature" [(ngModel)]="temperature" [min]="0" [max]="2" [step]="0.01" />
+            <label for="temperature">Temperature</label>
+        </p-floatlabel>
+    </div>
+</div>
+
+<div class="nullable-value">
+    <p-checkbox [(ngModel)]="enableKeepAlive" [binary]="true"></p-checkbox>
+    <div class="value">
+        <p-floatlabel>
+            <input [disabled]="!enableKeepAlive" id="keep-alive" pInputText [(ngModel)]="keepAlive" />
+            <label for="keep-alive">Keep Alive (e.g. 5m, 30m)</label>
+        </p-floatlabel>
+    </div>
+</div>
+
+<div class="nullable-value">
+    <p-checkbox [(ngModel)]="enableFormat" [binary]="true"></p-checkbox>
+    <div class="value">
+        <p-floatlabel>
+            <input [disabled]="!enableFormat" id="format" pInputText [(ngModel)]="format" />
+            <label for="format">Format (e.g. json, text)</label>
+        </p-floatlabel>
+    </div>
+</div>
