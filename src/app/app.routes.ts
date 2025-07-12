@@ -13,6 +13,7 @@ import { ChatRoomsComponent } from './components/chat-core/chat-rooms/chat-rooms
 import { ChatRoomDetailComponent } from './components/chat-core/chat-rooms/chat-room-detail/chat-room-detail.component';
 import { ChattingComponent } from './components/chat-core/chatting/chatting/chatting.component';
 import { ProjectListComponent } from './components/chat-core/projects/project-list/project-list.component';
+import { ProjectKnowledgeComponent } from './components/chat-core/projects/project-knowledge/project-knowledge.component';
 
 export const routes: Routes = [
     {
@@ -46,6 +47,10 @@ export const routes: Routes = [
                                                 component: AgentConfigDetailComponent,
                                             },
                                         ]
+                                    },
+                                    {
+                                        path: 'project-knowledge',
+                                        component: ProjectKnowledgeComponent
                                     },
                                     {
                                         path: 'jobs',

@@ -423,4 +423,17 @@ export class ClientApiService extends ClientApiServiceBase {
     );
   }
 
+  /**
+   * Updates the projectKnowledge property of a project.
+   * @param projectId The project ID
+   * @param projectKnowledge The new knowledge array
+   */
+  updateProjectKnowledge(projectId: ObjectId, projectKnowledge: any[]) {
+    return this.http.put<{ success: boolean; }>(
+      this.constructUrl(`project/${projectId}/project-knowledge`),
+      { projectKnowledge },
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
 }
