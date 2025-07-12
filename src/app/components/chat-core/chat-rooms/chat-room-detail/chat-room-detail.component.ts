@@ -6,7 +6,7 @@ import { AgentConfigurationService } from '../../../../services/chat-core/agent-
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
 import { ChatRoomsService } from '../../../../services/chat-core/chat-rooms.service';
 import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-models/chat-core/agent-configuration.model';
-import { Observable, takeUntil } from 'rxjs';
+import { lastValueFrom, Observable, takeUntil } from 'rxjs';
 import { ChatJobConfiguration } from '../../../../../model/shared-models/chat-core/chat-job-data.model';
 import { PanelModule } from 'primeng/panel';
 import { ChatJobInstance } from '../../../../../model/shared-models/chat-core/chat-job-instance.model';
@@ -280,4 +280,10 @@ export class ChatRoomDetailComponent extends ComponentBase {
     await this.chatRoomService.setDisabledChatRoomJob(job.id, job.disabled);
   }
 
+  async saveRoom() {
+    if (!this.chatRoom) {
+      throw new Error(`chatRoom is not set.`);
+    }
+    await lastValueFrom(this.chatRoomService.updateChatRoomInstructions(this.chatRoom._id, this.chatRoom.roomInstructions));
+  }
 }

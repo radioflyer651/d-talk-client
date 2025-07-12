@@ -19,7 +19,7 @@
                 <ng-template #list let-items>
                     <div *ngFor="let room of items" class="chat-room-card-container">
                         <p-panel [showHeader]="false">
-                            <div class="chat-room-title" (click)="selectChatRoom(room)">
+                            <div class="chat-room-title">
                                 <h5>
                                     {{room.name}}
                                 </h5>
@@ -31,6 +31,9 @@
                                 <div class="chat-room-card-controls">
                                     <p-button icon="fa fa-trash" severity="danger"
                                         (click)="deleteChatRoom(room)"></p-button>
+
+                                    <p-button icon="fa fa-pencil" (click)="selectChatRoom(room)"></p-button>
+
                                     <a
                                         [routerLink]="['/chatting', 'project', projectService.currentProjectId, 'chat-room', room._id]">
                                         <p-button label="Chat"></p-button>

@@ -364,6 +364,19 @@ export class ClientApiService extends ClientApiServiceBase {
   }
 
   /**
+ * Updates the roomInstructions property of a chat room.
+ * @param roomId The chat room ID
+ * @param roomInstructions The new instructions array
+ */
+  updateChatRoomInstructions(roomId: ObjectId, roomInstructions: any[]) {
+    return this.http.put<{ success: boolean; }>(
+      this.constructUrl(`chat-room/${roomId}/instructions`),
+      { roomInstructions },
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
    * Creates a new job instance for a chat room.
    * @param roomId The chat room ID
    * @param jobConfigurationId The job configuration ID to instantiate

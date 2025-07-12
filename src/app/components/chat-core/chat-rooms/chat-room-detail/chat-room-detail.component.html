@@ -12,7 +12,7 @@
         <p-tabpanel value="0">
             <div class="chat-room-detail-columns">
                 <div class="column column-1">
-                    <h3>Agent Configurations</h3>
+                    <h3>Agent Templates</h3>
                     <div *ngIf="agentConfigurations$ | async as agentConfigurations; else noAgents">
                         <div *ngFor="let agent of agentConfigurations" class="object-panel">
                             <div class="object-panel-header d-flex-header">
@@ -24,12 +24,12 @@
                         </div>
                     </div>
                     <ng-template #noAgents>
-                        <div>No agent configurations found for this project.</div>
+                        <div>No agent templates found for this project.</div>
                     </ng-template>
                 </div>
 
                 <div class="column column-2">
-                    <h3>Job Configs</h3>
+                    <h3>Task Templates</h3>
                     <div *ngIf="chatJobConfigurations$ | async as chatJobs; else noJobs">
                         <div *ngFor="let job of chatJobs" class="object-panel">
                             <div class="object-panel-header d-flex-header">
@@ -41,12 +41,12 @@
                         </div>
                     </div>
                     <ng-template #noJobs>
-                        <div>No chat job configurations found for this project.</div>
+                        <div>No chat task templates found for this project.</div>
                     </ng-template>
                 </div>
 
                 <div class="column column-3">
-                    <h3>Agent Instances</h3>
+                    <h3>Chat Partners</h3>
                     <div *ngIf="agentInstances$ | async as agentInstances; else noAgentInstances">
                         <div *ngIf="agentInstances.length < 1">No agent instances found for this chat room.</div>
                         <div *ngFor="let instance of agentInstances" class="object-panel" draggable="true"
@@ -62,14 +62,14 @@
                         </div>
                     </div>
                     <ng-template #noAgentInstances>
-                        <div>No agent instances found for this chat room.</div>
+                        <div>No chat partners found for this chat room.</div>
                     </ng-template>
                 </div>
 
                 <div class="column column-4">
-                    <h3>Job Instances</h3>
+                    <h3>Chat Room Tasks</h3>
                     <div *ngIf="chatJobInstances$ | async as jobInstances; else noJobInstances">
-                        <div *ngIf="jobInstances.length < 1">No job instances found for this project.</div>
+                        <div *ngIf="jobInstances.length < 1">No tasks found for this project.</div>
 
                         <div *ngFor="let instance of jobInstances; let i = index"
                             class="object-panel job-instance-panel"
@@ -123,6 +123,10 @@
         <p-tabpanel value="1">
             <app-positionable-message-list *ngIf="chatRoom"
                 [messages]="chatRoom.roomInstructions"></app-positionable-message-list>
+
+                <div class="footer-button-controls">
+                    <p-button label="Save" (click)="saveRoom()"></p-button>
+                </div>
         </p-tabpanel>
     </p-tabpanels>
 </p-tabs>

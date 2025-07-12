@@ -8,6 +8,8 @@ import { LinkedJobInstance } from '../../../model/linked-job-instance.model';
 import { ChatJobsService } from './chat-jobs.service';
 import { AgentInstanceService } from './agent-instance.service';
 import { ChatJobInstance } from '../../../model/shared-models/chat-core/chat-job-instance.model';
+import { PositionableMessage } from '../../../model/shared-models/chat-core/positionable-message.model';
+import { StoredMessage } from '@langchain/core/messages';
 
 @Injectable({
   providedIn: 'root'
@@ -172,15 +174,6 @@ export class ChatRoomsService {
     );
   }
 
-  updateChatRoom(update: Partial<ChatRoomData> & { _id: ObjectId; }) {
-    return this.apiClient.updateChatRoom(update).pipe(
-      switchMap(() => {
-        this.reloadChatRooms();
-        // update returns only success, so we do not return a ChatRoomData here
-        return of(undefined);
-      })
-    );
-  }
 
   reloadSelectedChatRoom() {
     this._reloadSelectedChatRoom.next();
@@ -267,5 +260,9 @@ export class ChatRoomsService {
         return of(result);
       })
     );
+  }
+
+  updateChatRoomInstructions(roomId: ObjectId, newInstructions: PositionableMessage<StoredMessage>[]) {
+    return this.apiClient.updateChatRoomInstructions(roomId, newInstructions);
   }
 }
