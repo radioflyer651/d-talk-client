@@ -21,6 +21,9 @@ import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { LinkedJobInstance } from '../../../../../model/linked-job-instance.model';
 import { CheckboxModule } from 'primeng/checkbox';
+import { TabsModule } from 'primeng/tabs';
+import { PositionableMessageListComponent } from "../../positionable-messages/positionable-message-list/positionable-message-list.component";
+import { ChatRoomData } from '../../../../../model/shared-models/chat-core/chat-room-data.model';
 
 @Component({
   selector: 'app-chat-room-detail',
@@ -33,6 +36,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     InputText,
     ConfirmDialogModule,
     CheckboxModule,
+    TabsModule,
+    PositionableMessageListComponent
   ],
   templateUrl: './chat-room-detail.component.html',
   styleUrl: './chat-room-detail.component.scss',
@@ -46,10 +51,12 @@ export class ChatRoomDetailComponent extends ComponentBase {
 
   agentNameDialogVisible = false;
   agentNameDialogValue = '';
-  agentNameDialogAgent: ChatAgentIdentityConfiguration | null = null;
+  agentNameDialogAgent: ChatAgentIdentityConfiguration | undefined = undefined;
 
-  dragOverIndex: number | null = null;
-  draggedJobIndex: number | null = null;
+  dragOverIndex: number | undefined = undefined;
+  draggedJobIndex: number | undefined = undefined;
+
+  chatRoom: ChatRoomData | undefined;
 
   constructor(
     readonly chatJobsService: ChatJobsService,
@@ -80,6 +87,20 @@ export class ChatRoomDetailComponent extends ComponentBase {
     this.chatJobInstances$.pipe(
       takeUntil(this.ngDestroy$)
     ).subscribe();
+
+    this.chatRoomService.selectedChatRoom$.pipe(
+      takeUntil(this.ngDestroy$)
+    ).subscribe(room => {
+      this.chatRoom = room;
+
+      if (room) {
+        // Ensure we have roomInstructions on the room.
+        if (!room.roomInstructions) {
+          room.roomInstructions = [];
+        }
+      }
+
+    });
   }
 
   createAgentInstance(agent: ChatAgentIdentityConfiguration) {
@@ -100,14 +121,14 @@ export class ChatRoomDetailComponent extends ComponentBase {
       this.chatRoomService.reloadSelectedChatRoom();
       this.agentInstanceService.reloadAgentInstances();
       this.agentNameDialogVisible = false;
-      this.agentNameDialogAgent = null;
+      this.agentNameDialogAgent = undefined;
       this.agentNameDialogValue = '';
     });
   }
 
   onAgentNameDialogCancel() {
     this.agentNameDialogVisible = false;
-    this.agentNameDialogAgent = null;
+    this.agentNameDialogAgent = undefined;
     this.agentNameDialogValue = '';
   }
 
@@ -202,8 +223,8 @@ export class ChatRoomDetailComponent extends ComponentBase {
   }
 
   onJobInstanceDragEnd(event: DragEvent, instance: LinkedJobInstance, index: number) {
-    this.draggedJobIndex = null;
-    this.dragOverIndex = null;
+    this.draggedJobIndex = undefined;
+    this.dragOverIndex = undefined;
   }
 
   onJobInstanceDragEnter(event: DragEvent, index: number) {
@@ -213,7 +234,7 @@ export class ChatRoomDetailComponent extends ComponentBase {
 
   onJobInstanceDragLeave(event: DragEvent, index: number) {
     event.preventDefault();
-    this.dragOverIndex = null;
+    this.dragOverIndex = undefined;
   }
 
   onJobInstanceDragOver(event: DragEvent, instance: LinkedJobInstance, index: number) {
@@ -236,8 +257,8 @@ export class ChatRoomDetailComponent extends ComponentBase {
       this.chatRoomService.assignAgentToJobInstance(chatRoomId, instance.id, agentInstanceId).subscribe(() => {
         this.chatRoomService.reloadSelectedChatRoom();
       });
-      this.draggedJobIndex = null;
-      this.dragOverIndex = null;
+      this.draggedJobIndex = undefined;
+      this.dragOverIndex = undefined;
       return;
     }
 
@@ -250,8 +271,8 @@ export class ChatRoomDetailComponent extends ComponentBase {
         });
       }
     }
-    this.draggedJobIndex = null;
-    this.dragOverIndex = null;
+    this.draggedJobIndex = undefined;
+    this.dragOverIndex = undefined;
   }
 
   async setAgentDisabled(job: ChatJobInstance): Promise<void> {

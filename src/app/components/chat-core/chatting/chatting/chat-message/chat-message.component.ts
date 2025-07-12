@@ -134,4 +134,21 @@ export class ChatMessageComponent extends ComponentBase {
       accept: () => this.chattingService.deleteChatMessageInChatRoom(this.wrapper!.id)
     });
   }
+
+  copyMessageContent() {
+    if (this.wrapper) {
+      const content = this.wrapper.content;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(content);
+      } else {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = content;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      }
+    }
+  }
 }

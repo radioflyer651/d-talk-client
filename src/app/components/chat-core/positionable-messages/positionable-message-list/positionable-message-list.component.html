@@ -4,6 +4,10 @@
             [messageIndex]="i" (deleteClicked)="onDeleteClicked($event)"></app-positionable-message-detail>
     </div>
 
+    <div *ngIf="messages.length < 1">
+        There are currently no messages in the list.  Click the add button to create your first!
+    </div>
+
     <div class="footer-button-controls">
         <p-button icon="fa fa-message-plus" (click)="addMessage()"></p-button>
     </div>
