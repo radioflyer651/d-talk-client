@@ -12,9 +12,6 @@
 
         <ng-container *ngIf="!!(chatRoomList$ | async)">
             <p-dataview [value]="(chatRoomList$ | async)!">
-                <ng-template #header>
-                    Chat Rooms
-                </ng-template>
 
                 <ng-template #list let-items>
                     <div *ngFor="let room of items" class="chat-room-card-container">
