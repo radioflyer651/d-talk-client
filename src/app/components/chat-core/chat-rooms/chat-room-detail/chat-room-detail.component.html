@@ -12,7 +12,7 @@
 <div class="tab-content" *ngIf="selectedTabId===0">
     <div class="chat-room-detail-columns">
         <div class="column column-1">
-            <h3>Agent Templates</h3>
+            <h3>Partner Templates</h3>
             <div *ngIf="agentConfigurations$ | async as agentConfigurations; else noAgents">
                 <div *ngFor="let agent of agentConfigurations" class="object-panel">
                     <div class="object-panel-header agent-template d-flex-header">
@@ -44,7 +44,7 @@
         </div>
 
         <div class="column column-3">
-            <h3>Chat Partners</h3>
+            <h3>Chat Room Partners</h3>
             <div *ngIf="agentInstances$ | async as agentInstances; else noAgentInstances">
                 <div *ngIf="agentInstances.length < 1">No chat partners found for this chat room.</div>
 
@@ -97,19 +97,19 @@
 
                         <ng-container *ngIf="instance.agent; else agentPlaceholder">
                             <div class="job-agent-present">
-                                <i class="fa fa-user agent-icon agent-present"></i>
-                                <span class="agent-name">{{ instance.agent.name }}</span>
                                 <button pButton [rounded]="true" type="button" size="small" severity="danger"
                                     icon="fa fa-times remove-agent-btn" (click)="onRemoveAgent(instance)"></button>
+                                <i class="fa fa-user agent-icon agent-present"></i>
+                                <span class="agent-name">{{ instance.agent.name }}</span>
                             </div>
                         </ng-container>
 
                         <ng-template #agentPlaceholder>
                             <div class="job-agent-placeholder">
-                                <i class="fa fa-user agent-icon agent-missing"></i>
-                                <span class="agent-placeholder-text">No partner assigned</span>
                                 <button pButton [rounded]="true" type="button" size="small"
                                     icon="fa fa-plus add-agent-btn" (click)="onAddAgent(instance)"></button>
+                                <i class="fa fa-user agent-icon agent-missing"></i>
+                                <span class="agent-placeholder-text">No partner assigned</span>
                             </div>
                         </ng-template>
                     </div>

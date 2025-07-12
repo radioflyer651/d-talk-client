@@ -19,11 +19,10 @@
                 <ng-template #list let-items>
                     <div *ngFor="let room of items" class="chat-room-card-container">
                         <p-panel [showHeader]="false">
-                            <div class="chat-room-title">
-                                <h5>
-                                    {{room.name}}
-                                </h5>
-                            </div>
+                            <h4 class="chat-room-title" (click)="selectChatRoom(room)">
+                                <span class="fa-regular fa-users-between-lines icon"></span>
+                                <div class="room-name">{{room.name}}</div>
+                            </h4>
 
                             <div class="chat-room-card-wrapper">
                                 <div class="chat-room-card-content" [innerHtml]="getChatRoomDescription(room)">

@@ -22,9 +22,9 @@
                 <ng-container
                     *ngTemplateOutlet="projectTab; context:{ title: 'Overview', selectionIndex: 'overview', icon: 'fa-square-list'}"></ng-container>
                 <ng-container
-                    *ngTemplateOutlet="projectTab; context:{ title: 'Agents', selectionIndex: 'agents', icon: 'fa-address-book'}"></ng-container>
+                    *ngTemplateOutlet="projectTab; context:{ title: 'Partner Templates', selectionIndex: 'agents', icon: 'fa-address-book'}"></ng-container>
                 <ng-container
-                    *ngTemplateOutlet="projectTab; context:{ title: 'Jobs', selectionIndex: 'jobs', icon: 'fa-timeline-arrow'}"></ng-container>
+                    *ngTemplateOutlet="projectTab; context:{ title: 'Task Templates', selectionIndex: 'jobs', icon: 'fa-timeline-arrow'}"></ng-container>
                 <ng-container
                     *ngTemplateOutlet="projectTab; context:{ title: 'Chat Rooms', selectionIndex: 'chat-rooms', icon: 'fa-users-between-lines'}"></ng-container>
             </div>
@@ -53,25 +53,17 @@
         </p-panel>
 
         <p-panel class="project-tab-content" *ngIf="selectedTab==='agents'" [showHeader]="false">
-            <h3>Agents</h3>
             <!-- <app-agent-configurations></app-agent-configurations> -->
             <router-outlet></router-outlet>
             <!-- <app-dummy-screen></app-dummy-screen> -->
         </p-panel>
 
         <p-panel class="project-tab-content" *ngIf="selectedTab==='jobs'" [showHeader]="false">
-            <h3>Jobs</h3>
             <router-outlet></router-outlet>
         </p-panel>
 
         <p-panel class="project-tab-content" *ngIf="selectedTab==='chat-rooms'" [showHeader]="false">
-            <h3>Chat Rooms</h3>
             <router-outlet></router-outlet>
-        </p-panel>
-
-        <p-panel class="project-tab-content" *ngIf="selectedTab==='plugins'" [showHeader]="false">
-            <h3>Plugins</h3>
-            Tab content goes here.
         </p-panel>
     </div>
 </div>

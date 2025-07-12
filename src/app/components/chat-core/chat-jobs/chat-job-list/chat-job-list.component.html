@@ -13,7 +13,7 @@
         <ng-container *ngIf="!!(jobList$ | async)">
             <p-dataview [value]="(jobList$ | async)!">
                 <ng-template #header>
-                    Jobs
+                    Task Templates
                 </ng-template>
 
                 <ng-template #list let-items>

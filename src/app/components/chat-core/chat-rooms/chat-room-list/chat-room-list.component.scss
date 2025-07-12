@@ -2,3 +2,29 @@
     display: flex;
     justify-content: space-between;
 }
+
+.chat-room-title {
+    cursor: pointer;
+    text-align: center;
+    align-self: center;
+    margin: 0;
+    margin-bottom: 1em;
+    font-size: 1.5em;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #333;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid #bdbdbd;
+    padding: 0.5em;
+    width: 100%;
+    background-color: rgb(229, 229, 229);
+
+    display: flex;
+    .room-name {
+        flex: 1 1 auto;
+    }
+    .icon {
+        align-self: center;
+    }
+}
