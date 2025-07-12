@@ -34,14 +34,12 @@ export class ProjectsComponent extends ComponentBase {
       takeUntil(this.ngDestroy$)
     ).subscribe(params => {
       this.projectsService.currentProjectId = params['projectId'];
-      console.log(params);
     });
 
     this.projectsService.currentProject$.pipe(
       takeUntil(this.ngDestroy$)
     ).subscribe(project => {
       this._hasProject = !!project;
-      console.log(project);
     });
   }
 

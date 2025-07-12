@@ -18,7 +18,6 @@ export class CurrentRouteParamsService {
       startWith(undefined),
       map(() => {
         let route = this.router.routerState.snapshot.root;
-        console.log(route);
 
         // paramMap is always available on a snapshot
         const params: { [key: string]: string; } = {};

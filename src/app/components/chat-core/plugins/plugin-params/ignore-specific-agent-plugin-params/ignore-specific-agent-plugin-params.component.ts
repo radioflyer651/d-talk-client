@@ -32,17 +32,9 @@ export class IgnoreSpecificAgentPluginParamsComponent extends ComponentBase {
   }
 
   ngOnInit() {
-    this.route.params.pipe(
-      takeUntil(this.ngDestroy$)
-    ).subscribe(params => {
-      //console.log(params);
-      //this.agentService.selectedChatRoomId = params['roomId'];
-    });
-
     this.agentService.agentConfigurations$.pipe(
       takeUntil(this.ngDestroy$)
     ).subscribe(agents => {
-      console.log(agents);
       this.agents = agents;
       this.createOptions();
     });
