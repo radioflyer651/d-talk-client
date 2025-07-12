@@ -5,19 +5,15 @@ import { CardModule } from 'primeng/card';
 import { PanelModule } from 'primeng/panel';
 import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { filter, lastValueFrom, startWith, takeUntil, takeWhile } from 'rxjs';
+import { filter, lastValueFrom, startWith, takeUntil } from 'rxjs';
 import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { Project } from '../../../../../model/shared-models/chat-core/project.model';
 import { ClientApiService } from '../../../../services/chat-core/api-clients/api-client.service';
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
-import { AgentConfigurationsComponent } from "../../agent-configurations/agent-configurations.component";
-import { ChatJobListComponent } from "../../chat-jobs/chat-job-list/chat-job-list.component";
-import { ChatJobsComponent } from "../../chat-jobs/chat-jobs.component";
 import { ActivatedRoute, NavigationEnd, Router, RouterModule } from '@angular/router';
 import { CurrentRouteParamsService } from '../../../../services/current-route-params.service';
-import { DummyScreenComponent } from "../../../dummy-screen/dummy-screen.component";
 
 @Component({
   selector: 'app-project-detail',
@@ -30,11 +26,7 @@ import { DummyScreenComponent } from "../../../dummy-screen/dummy-screen.compone
     FloatLabelModule,
     ButtonModule,
     TextareaModule,
-    AgentConfigurationsComponent,
-    ChatJobListComponent,
-    ChatJobsComponent,
     RouterModule,
-    DummyScreenComponent
   ],
   providers: [
     CurrentRouteParamsService

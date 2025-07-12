@@ -12,6 +12,7 @@ import { ChatJobDetailComponent } from './components/chat-core/chat-jobs/chat-jo
 import { ChatRoomsComponent } from './components/chat-core/chat-rooms/chat-rooms.component';
 import { ChatRoomDetailComponent } from './components/chat-core/chat-rooms/chat-room-detail/chat-room-detail.component';
 import { ChattingComponent } from './components/chat-core/chatting/chatting/chatting.component';
+import { ProjectListComponent } from './components/chat-core/projects/project-list/project-list.component';
 
 export const routes: Routes = [
     {
@@ -27,6 +28,11 @@ export const routes: Routes = [
                         path: 'projects',
                         component: ProjectsComponent,
                         children: [
+                            {
+                                path: '',
+                                pathMatch: 'full',
+                                component: ProjectListComponent,
+                            },
                             {
                                 path: ':projectId',
                                 component: ProjectDetailComponent,

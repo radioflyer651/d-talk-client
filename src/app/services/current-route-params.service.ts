@@ -18,19 +18,21 @@ export class CurrentRouteParamsService {
       startWith(undefined),
       map(() => {
         let route = this.router.routerState.snapshot.root;
-
-        while (route.firstChild) {
-          route = route.firstChild;
-        }
+        console.log(route);
 
         // paramMap is always available on a snapshot
         const params: { [key: string]: string; } = {};
-        route.paramMap?.keys.forEach(key => {
-          const val = route.paramMap?.get(key);
-          if (val !== null) {
-            params[key] = val;
-          }
-        });
+
+        while (route.firstChild) {
+          route = route.firstChild;
+
+          route.paramMap?.keys.forEach(key => {
+            const val = route.paramMap?.get(key);
+            if (val !== null) {
+              params[key] = val;
+            }
+          });
+        }
 
         return params;
       }),
