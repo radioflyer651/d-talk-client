@@ -103,6 +103,8 @@ export class ChatRoomDetailComponent extends ComponentBase {
     });
   }
 
+  selectedTabId = 0;
+
   createAgentInstance(agent: ChatAgentIdentityConfiguration) {
     this.agentNameDialogAgent = agent;
     this.agentNameDialogValue = agent.chatName || '';
