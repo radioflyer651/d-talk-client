@@ -1,1 +1,39 @@
-<p>label-memory-plugin-params works!</p>
+<div class="label-memory-plugin-params-container" *ngIf="!!params">
+    <h4>Label Memory Plugin Parameters</h4>
+
+    <p-floatlabel>
+        <input id="memory-collection-name" autocomplete="off" pInputText [(ngModel)]="params.memoryCollectionName" />
+        <label for="memory-collection-name">DB Colleaction Name</label>
+    </p-floatlabel>
+
+
+    <p-floatlabel>
+        <input pInputText id="memoryKeyPrefix" [(ngModel)]="memoryKeyPrefixString"
+            (ngModelChange)="onMemoryKeyPrefixChange($event)" />
+        <label for="memoryKeyPrefix">Memory Key Prefix (slash (/) separated)</label>
+    </p-floatlabel>
+
+    <p-floatlabel>
+        <input pInputText id="keyMeanings" [(ngModel)]="keyMeaningsString"
+            (ngModelChange)="onKeyMeaningsChange($event)" />
+        <label for="keyMeanings">Key Meanings (slash (/) separated)</label>
+    </p-floatlabel>
+
+    <div class="form-group checkbox-container">
+        <p-checkbox id="canWrite" [(ngModel)]="params.canWrite" [binary]="true" />
+        <label for="canWrite">Can Write</label>
+    </div>
+
+    <p-floatlabel>
+        <label for="memorySetPurpose">Memory Set Purpose</label>
+        <textarea pTextarea id="memorySetPurpose" [(ngModel)]="params.memorySetPurpose" autoResize="true"
+            rows="3"></textarea>
+    </p-floatlabel>
+
+    <app-agent-type-selector [(value)]="params.modelServiceParams"
+        *ngIf="params?.modelServiceParams"></app-agent-type-selector>
+
+    <div *ngIf="!params?.modelServiceParams">
+        <span>No model parameters available.</span>
+    </div>
+</div>

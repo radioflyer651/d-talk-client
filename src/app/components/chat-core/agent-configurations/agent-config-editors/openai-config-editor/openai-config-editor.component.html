@@ -1,4 +1,63 @@
 <p-floatlabel>
-    <input id="open-ai-model" autocomplete="off" pInputText [(ngModel)]="params.serviceParams.model" />
-    <label for="open-ai-model">Model Name</label>
+    <input id="model-selection" autocomplete="off" pInputText [(ngModel)]="params.serviceParams.model" />
+    <label for="model-selection">Model Selection</label>
 </p-floatlabel>
+
+<p-table [value]="options" [(selection)]="selection" dataKey="value" selectionMode="single">
+    <ng-template #header>
+        <tr>
+            <td>
+                Name
+            </td>
+            <td>
+                Speed
+            </td>
+            <td>
+                Reasoning
+            </td>
+            <td>
+                Thinking Model
+            </td>
+            <td>
+                Context Window
+            </td>
+            <td>
+                Input Cost
+            </td>
+            <td>
+                Output Cost
+            </td>
+        </tr>
+    </ng-template>
+
+    <ng-template #body let-item>
+        <tr [pSelectableRow]="item">
+            <td>
+                <div>
+                    {{item.modelLabel}}
+                </div>
+                <div>
+                    {{item.value}}
+                </div>
+            </td>
+            <td>
+                {{item.speed | number: '2.0'}}
+            </td>
+            <td>
+                {{item.reasoning | number: '2.0'}}
+            </td>
+            <td>
+                <i class="fa fa-check" *ngIf="item.reasoningTokens"></i>
+            </td>
+            <td>
+                {{item.contextWindow | number: '2.0'}}
+            </td>
+            <td>
+                {{item.inputCost | currency: 'USD'}}/m
+            </td>
+            <td>
+                {{item.outputCost | currency: 'USD'}}/m
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

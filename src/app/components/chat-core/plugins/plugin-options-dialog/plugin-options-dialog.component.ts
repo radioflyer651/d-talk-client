@@ -7,6 +7,7 @@ import { pluginInformation } from '../../../../../model/shared-models/chat-core/
 import { DrunkPluginParamsComponent } from "../plugin-params/drunk-plugin-params/drunk-plugin-params.component";
 import { ButtonModule } from 'primeng/button';
 import { IgnoreSpecificAgentPluginParamsComponent } from "../plugin-params/ignore-specific-agent-plugin-params/ignore-specific-agent-plugin-params.component";
+import { LabeledMemoryPluginParamsComponent } from "../plugin-params/label-memory-plugin-params/label-memory-plugin-params.component";
 
 @Component({
   selector: 'app-plugin-options-dialog',
@@ -16,7 +17,8 @@ import { IgnoreSpecificAgentPluginParamsComponent } from "../plugin-params/ignor
     DialogModule,
     DrunkPluginParamsComponent,
     ButtonModule,
-    IgnoreSpecificAgentPluginParamsComponent
+    IgnoreSpecificAgentPluginParamsComponent,
+    LabeledMemoryPluginParamsComponent
 ],
   templateUrl: './plugin-options-dialog.component.html',
   styleUrl: './plugin-options-dialog.component.scss'

@@ -1,0 +1,29 @@
+.label-memory-plugin-params-container {
+    padding: 1em;
+    background: #f7fafd;
+    border-radius: 0.5em;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+    h4 {
+        margin-bottom: 1em;
+        font-weight: 600;
+        color: #1976d2;
+    }
+
+    p-floatlabel {
+        width: 100%;
+
+        input {
+            width: 100%;
+        }
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 12em;
+    }
+
+    .checkbox-container {
+        margin: 1em 0;
+    }
+}

@@ -7,6 +7,8 @@
             <app-drunk-plugin-params *ngIf="pluginType==='act-drunk'" [params]="pluginParams"></app-drunk-plugin-params>
             <app-ignore-specific-agent-plugin-params *ngIf="pluginType==='ignore-specific-agent'"
                 [params]="pluginParams"></app-ignore-specific-agent-plugin-params>
+            <app-label-memory-plugin-params *ngIf="pluginType==='labeled-memory-plugin'"
+                [params]="pluginParams"></app-label-memory-plugin-params>
         </div>
 
         <ng-template #footer>

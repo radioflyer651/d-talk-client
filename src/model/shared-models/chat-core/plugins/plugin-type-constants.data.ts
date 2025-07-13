@@ -114,11 +114,11 @@ export const pluginInformation: PluginInfo[] = [
         defaultParameterCreator: () => (<LabeledMemoryPluginParams>{
             memoryCollectionName: 'memories',
             memoryKeyPrefix: [],
-            memorySetPurpose: '',
-            projectId: '',
+            memorySetPurpose: 'To remember information about ...',
+            projectId: '', // This has to be filled in by the editor.
             modelServiceParams: {
                 llmService: '',
-                serviceParams: {}
+                serviceParams: undefined as any, // This has to be filled in by the editor.
             },
             keyMeanings: [],
             canWrite: true,
