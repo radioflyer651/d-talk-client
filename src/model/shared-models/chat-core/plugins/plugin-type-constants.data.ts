@@ -1,3 +1,5 @@
+import { LabeledMemoryPluginParams } from "./labeled-memory-plugin.params";
+
 export const ROOM_INFO_PLUGIN_TYPE_ID = 'room-info-plugin';
 export const OTHER_AGENTS_INVISIBLE_PLUGIN = 'other-agents-invisible';
 export const DEBUG_PLUGIN = 'debug';
@@ -8,6 +10,7 @@ export const USER_MESSAGES_IGNORED_PLUGIN_TYPE_ID = 'user-messages-ignored';
 export const LABEL_AGENT_SPEAKERS_PLUGIN_TYPE_ID = 'label-agent-speakers';
 export const IGNORE_SPECIFIC_AGENT_PLUGIN_TYPE_ID = 'ignore-specific-agent';
 export const WEB_SEARCH_PLUGIN_TYPE_ID = 'web-search-plugin';
+export const LABELED_MEMORY_PLUGIN_TYPE_ID = 'labeled-memory-plugin';
 
 export interface PluginInfo {
     pluginType: string;
@@ -100,5 +103,25 @@ export const pluginInformation: PluginInfo[] = [
         attachesToChatRoom: true,
         attachesToJob: true,
         defaultParameterCreator: () => ({})
+    },
+    {
+        pluginType: LABELED_MEMORY_PLUGIN_TYPE_ID,
+        displayName: 'Labeled Memory',
+        description: 'Allows agents to have labeled memory for better context in conversations.',
+        attachesToAgent: true,
+        attachesToChatRoom: true,
+        attachesToJob: true,
+        defaultParameterCreator: () => (<LabeledMemoryPluginParams>{
+            memoryCollectionName: 'memories',
+            memoryKeyPrefix: [],
+            memorySetPurpose: '',
+            projectId: '',
+            modelServiceParams: {
+                llmService: '',
+                serviceParams: {}
+            },
+            keyMeanings: [],
+            canWrite: true,
+        })
     },
 ];
