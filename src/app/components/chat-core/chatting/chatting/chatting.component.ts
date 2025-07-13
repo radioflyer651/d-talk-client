@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { ChatMessageComponent } from "./chat-message/chat-message.component";
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { ChattingService } from '../../../../services/chat-core/chatting.service';
-import { takeUntil } from 'rxjs';
+import { map, Observable, takeUntil } from 'rxjs';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ChatRoomsService } from '../../../../services/chat-core/chat-rooms.service';
 import { ObjectId } from 'mongodb';
@@ -13,6 +13,7 @@ import { ChatSocketService } from '../../../../services/chat-core/chat-socket.se
 import { TextareaModule } from 'primeng/textarea';
 import { SplitterModule } from 'primeng/splitter';
 import { ChattingJobListComponent } from "./chatting-job-list/chatting-job-list.component";
+import { StoredMessage } from '@langchain/core/messages';
 
 @Component({
   selector: 'app-chatting',
@@ -44,14 +45,24 @@ export class ChattingComponent extends ComponentBase {
       takeUntil(this.ngDestroy$),
     ).subscribe(params => {
       this.chatRoomService.selectedChatRoomId = params['chatRoomId'];
+      this.chatRoomId = params['chatRoomId']; 
       this.projectId = params['projectId'];
-      this.chatRoomId = params['chatRoomId'];
     });
+
+    this.chatHistory$ = this.chattingService.chatHistory$.pipe(
+      takeUntil(this.ngDestroy$),
+      map(value => {
+        const result = value?.filter(m => m.type !== 'tool' && (!m.data.tool_calls || m.data.tool_calls.length < 1)) ?? [];
+        return result;
+      })
+    );
 
     setTimeout(() => {
       this.scrollChatToBottom();
     }, 500);
   }
+
+  chatHistory$!: Observable<StoredMessage[]>;
 
   chatRoomId: ObjectId | undefined;
   projectId: ObjectId | undefined;

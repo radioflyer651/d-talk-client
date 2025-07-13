@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ProjectsService } from './projects.service';
 import { ChatRoomsService } from './chat-rooms.service';
-import { lastValueFrom, map, Observable, shareReplay, startWith, Subject, switchMap, tap } from 'rxjs';
+import { lastValueFrom, map, Observable, shareReplay, startWith, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { StoredMessage } from '@langchain/core/messages';
 import { ChatRoomData } from '../../../model/shared-models/chat-core/chat-room-data.model';
 import { ChattingApiClientService } from './api-clients/chatting-api-client.service';

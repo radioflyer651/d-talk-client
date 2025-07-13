@@ -33,7 +33,7 @@ export interface ChatRoomData {
 
     /** Messages/instructions to be used for all agents in the chat room. */
     roomInstructions: PositionableMessage<StoredMessage>[];
-
+    
     /** A set of documents that are being worked on in this chat room. */
     documents: ObjectId[];
 

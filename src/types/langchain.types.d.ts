@@ -5,6 +5,7 @@ declare module '@langchain/core/messages' {
         role: string | undefined;
         name: string | undefined;
         tool_call_id: string | undefined;
+        tool_calls?: any[];
         additional_kwargs?: Record<string, any>;
         /** Response metadata. For example: response headers, logprobs, token counts. */
         response_metadata?: Record<string, any>;
