@@ -1,8 +1,6 @@
 import { StoredMessage } from "@langchain/core/messages";
 import { StoredMessageAgentTypes } from "./stored-message-agent-types.data";
-import { getSpeakerFromMessage } from "../../../utils/speaker.utils";
-
-
+import { getSpeakerFromStoredMessage, MESSAGE_SPEAKER_KEY } from "../../../utils/speaker.utils";
 
 export class StoredMessageWrapper {
     constructor(
@@ -42,7 +40,7 @@ export class StoredMessageWrapper {
 
     /** Gets or sets the user's name that sent this message. */
     get name(): string | undefined {
-        const speaker = getSpeakerFromMessage(this.message);
+        const speaker = getSpeakerFromStoredMessage(this.message);
         return this.message.data.name ?? speaker?.name ?? '';
     }
     set name(value: string | undefined) {
@@ -52,26 +50,28 @@ export class StoredMessageWrapper {
         }
 
         this.message.data.name = value;
-        const speaker = getSpeakerFromMessage(this.message);
+        const speaker = getSpeakerFromStoredMessage(this.message);
         if (speaker) {
             speaker.name = value;
         }
     }
 
     get id() {
-        return this.message.data.id || this.message.data.additional_kwargs?.['id'];
+        const speaker = getSpeakerFromStoredMessage(this.message);
+        return this.message.data.id || speaker?.speakerId || '';
     }
 
     get agentId() {
-        return this.message.data.additional_kwargs?.['dtalk_speaker']?.speakerId;
+        const speaker = getSpeakerFromStoredMessage(this.message);
+        return speaker?.speakerId;
     }
-    set agentId(value: string) {
+    set agentId(value: string | undefined) {
         if (!this.message.data.additional_kwargs) {
-            this.message.data.additional_kwargs = {};
+            this.message.data.additional_kwargs = {
+                [MESSAGE_SPEAKER_KEY]: {}
+            };
         }
-        if (!this.message.data.additional_kwargs['dtalk_speaker']) {
-            this.message.data.additional_kwargs['dtalk_speaker'] = {};
-        }
-        this.message.data.additional_kwargs['dtalk_speaker'].speakerId = value;
+        const speaker = getSpeakerFromStoredMessage(this.message);
+        speaker!.speakerId = value;
     }
 }

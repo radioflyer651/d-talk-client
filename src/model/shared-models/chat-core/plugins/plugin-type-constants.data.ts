@@ -115,7 +115,7 @@ export const pluginInformation: PluginInfo[] = [
             memoryCollectionName: 'memories',
             memoryKeyPrefix: [],
             memorySetPurpose: 'To remember information about ...',
-            projectId: '', // This has to be filled in by the editor.
+            projectId: undefined as any, // This has to be filled in by the editor.
             modelServiceParams: {
                 llmService: '',
                 serviceParams: undefined as any, // This has to be filled in by the editor.

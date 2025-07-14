@@ -4,7 +4,7 @@ import { isMessageSpeaker, MessageSpeaker } from "../model/shared-models/chat-co
 export const MESSAGE_SPEAKER_KEY = 'dtalk_speaker';
 
 /** Attempts to retrieve the speaker data for a specified message. */
-export function getSpeakerFromMessage(message: StoredMessage): MessageSpeaker | undefined {
+export function getSpeakerFromStoredMessage(message: StoredMessage): MessageSpeaker | undefined {
     // Get the data dictinoary.
     const args = message.data.additional_kwargs ?? {};
 
