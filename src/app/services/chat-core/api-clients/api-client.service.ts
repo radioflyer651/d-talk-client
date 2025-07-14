@@ -13,7 +13,7 @@ import { LoginRequest } from '../../../../model/shared-models/login-request.mode
 import { UserRegistration } from '../../../../model/shared-models/user-registration.model';
 import { TokenService } from '../../token.service';
 import { ClientApiServiceBase } from './api-client-base.service';
-import { ChatDocumentData, ChatDocumentDataListItem } from '../../../../model/shared-models/chat-core/chat-document.model';
+import { IChatDocumentData } from '../../../../model/shared-models/chat-core/documents/chat-document.model';
 
 
 
@@ -441,7 +441,7 @@ export class ClientApiService extends ClientApiServiceBase {
    * Gets all chat documents for a project.
    */
   getChatDocumentsForProject(projectId: ObjectId) {
-    return this.http.get<ChatDocumentData[]>(
+    return this.http.get<IChatDocumentData[]>(
       this.constructUrl(`documents/${projectId}`),
       this.optionsBuilder.withAuthorization()
     );
@@ -451,7 +451,7 @@ export class ClientApiService extends ClientApiServiceBase {
    * Gets a single chat document by its ID.
    */
   getChatDocumentById(documentId: ObjectId) {
-    return this.http.get<ChatDocumentData>(
+    return this.http.get<IChatDocumentData>(
       this.constructUrl(`document/${documentId}`),
       this.optionsBuilder.withAuthorization()
     );
@@ -460,8 +460,8 @@ export class ClientApiService extends ClientApiServiceBase {
   /**
    * Creates a new chat document.
    */
-  createChatDocument(document: NewDbItem<ChatDocumentData>) {
-    return this.http.post<ChatDocumentData>(
+  createChatDocument(document: NewDbItem<IChatDocumentData>) {
+    return this.http.post<IChatDocumentData>(
       this.constructUrl('document'),
       document,
       this.optionsBuilder.withAuthorization()
@@ -471,7 +471,7 @@ export class ClientApiService extends ClientApiServiceBase {
   /**
    * Updates a chat document by its ID (ID in body).
    */
-  updateChatDocument(update: Partial<ChatDocumentData> & { _id: ObjectId; }) {
+  updateChatDocument(update: Partial<IChatDocumentData> & { _id: ObjectId; }) {
     return this.http.put<{ success: boolean; }>(
       this.constructUrl('document'),
       update,
@@ -493,7 +493,7 @@ export class ClientApiService extends ClientApiServiceBase {
    * Gets lightweight chat document list items for a project.
    */
   getChatDocumentListItemsForProject(projectId: ObjectId) {
-    return this.http.get<ChatDocumentDataListItem[]>(
+    return this.http.get<IChatDocumentData[]>(
       this.constructUrl(`document-list/${projectId}`),
       this.optionsBuilder.withAuthorization()
     );

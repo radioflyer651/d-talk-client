@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { ChatDocumentData } from '../../../../../model/shared-models/chat-core/chat-document.model';
 import { EditorModule } from 'primeng/editor';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -9,6 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { DomSanitizer } from '@angular/platform-browser';
+import { IChatDocumentData } from '../../../../../model/shared-models/chat-core/documents/chat-document.model';
 
 @Component({
   selector: 'app-chat-document-editor',
@@ -32,7 +32,7 @@ export class ChatDocumentEditorComponent {
   }
 
   @Input({ required: true })
-  document: ChatDocumentData | undefined;
+  document: IChatDocumentData | undefined;
 
   modeOptions = [
     {

@@ -15,10 +15,10 @@ import { DialogModule } from 'primeng/dialog';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
-import { ChatDocumentDataListItem } from '../../../../../model/shared-models/chat-core/chat-document.model';
 import { createDefaultChatDocumentData } from '../../../../../utils/create-chat-document.utils';
 import { UserService } from '../../../../services/user.service';
 import { TextareaModule } from 'primeng/textarea';
+import { IChatDocumentData } from '../../../../../model/shared-models/chat-core/documents/chat-document.model';
 
 @Component({
   selector: 'app-chat-document-list',
@@ -77,7 +77,7 @@ export class ChatDocumentListComponent extends ComponentBase {
     );
   }
 
-  chatDocuments$!: Observable<ChatDocumentDataListItem[]>;
+  chatDocuments$!: Observable<IChatDocumentData[]>;
 
   newDocumentName: string = '';
   newDocumentDescription: string = '';
@@ -107,11 +107,11 @@ export class ChatDocumentListComponent extends ComponentBase {
     });
   }
 
-  selectDocument(doc: ChatDocumentDataListItem) {
+  selectDocument(doc: IChatDocumentData) {
     this.router.navigate([doc._id], { relativeTo: this.route });
   }
 
-  deleteDocument(doc: ChatDocumentDataListItem) {
+  deleteDocument(doc: IChatDocumentData) {
     if (doc._id) {
       this.chatDocumentsService.deleteDocument(doc._id).subscribe();
     }

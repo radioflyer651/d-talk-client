@@ -66,6 +66,7 @@ export class CreateAgentConfigComponent extends ComponentBase {
       description: '',
       identityStatements: [],
       baseInstructions: [],
+      chatDocumentReferences: [],
       plugins: []
     };
   }
@@ -88,6 +89,7 @@ export class CreateAgentConfigComponent extends ComponentBase {
       description: '',
       identityStatements: [],
       baseInstructions: [],
+      chatDocumentReferences: [],
       plugins: []
     };
   }

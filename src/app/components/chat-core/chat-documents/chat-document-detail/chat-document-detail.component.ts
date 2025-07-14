@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { ChatDocumentsService } from '../../../../services/chat-core/chat-documents.service';
-import { ChatDocumentData } from '../../../../../model/shared-models/chat-core/chat-document.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -10,6 +9,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
 import { lastValueFrom } from 'rxjs';
 import { ChatDocumentEditorComponent } from "../chat-document-editor/chat-document-editor.component";
+import { IChatDocumentData } from '../../../../../model/shared-models/chat-core/documents/chat-document.model';
 
 @Component({
   selector: 'app-chat-document-detail',
@@ -21,7 +21,7 @@ import { ChatDocumentEditorComponent } from "../chat-document-editor/chat-docume
     TextareaModule,
     ButtonModule,
     ChatDocumentEditorComponent
-],
+  ],
   templateUrl: './chat-document-detail.component.html',
   styleUrl: './chat-document-detail.component.scss'
 })
@@ -33,7 +33,7 @@ export class ChatDocumentDetailComponent extends ComponentBase {
   }
 
   @Input({ required: true })
-  document: ChatDocumentData | undefined;
+  document: IChatDocumentData | undefined;
 
   async saveDocument() {
     if (!this.document) {

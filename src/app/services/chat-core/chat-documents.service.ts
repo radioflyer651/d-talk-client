@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Observable, of, startWith, Subject, switchMap } from 'rxjs';
 import { ObjectId } from 'mongodb';
 import { ClientApiService } from './api-clients/api-client.service';
-import { ChatDocumentDataListItem, ChatDocumentData } from '../../../model/shared-models/chat-core/chat-document.model';
 import { NewDbItem } from '../../../model/shared-models/db-operation-types.model';
+import { IChatDocumentData } from '../../../model/shared-models/chat-core/documents/chat-document.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class ChatDocumentsService {
   private _reloadDocuments = new Subject<void>();
 
   // Observable for document list items for the current project
-  documentList$: Observable<ChatDocumentDataListItem[]> = this._reloadDocuments.pipe(
+  documentList$: Observable<IChatDocumentData[]> = this._reloadDocuments.pipe(
     startWith(undefined),
     switchMap(() => {
       if (!this.currentProjectId) return of([]);
@@ -27,7 +27,7 @@ export class ChatDocumentsService {
   );
 
   // Observable for full document list for the current project
-  documents$: Observable<ChatDocumentData[]> = this._reloadDocuments.pipe(
+  documents$: Observable<IChatDocumentData[]> = this._reloadDocuments.pipe(
     startWith(undefined),
     switchMap(() => {
       if (!this.currentProjectId) return of([]);
@@ -55,7 +55,7 @@ export class ChatDocumentsService {
   }
 
   // CRUD operations
-  createDocument(document: NewDbItem<ChatDocumentData>) {
+  createDocument(document: NewDbItem<IChatDocumentData>) {
     return this.apiClient.createChatDocument(document).pipe(
       switchMap(result => {
         this.reloadDocuments();
@@ -64,7 +64,7 @@ export class ChatDocumentsService {
     );
   }
 
-  updateDocument(update: Partial<ChatDocumentData> & { _id: ObjectId; }) {
+  updateDocument(update: Partial<IChatDocumentData> & { _id: ObjectId; }) {
     return this.apiClient.updateChatDocument(update).pipe(
       switchMap(result => {
         this.reloadDocuments();
@@ -82,7 +82,7 @@ export class ChatDocumentsService {
     );
   }
 
-  getDocumentById(id: ObjectId): Observable<ChatDocumentData> {
+  getDocumentById(id: ObjectId): Observable<IChatDocumentData> {
     return this.apiClient.getChatDocumentById(id);
   }
 }
