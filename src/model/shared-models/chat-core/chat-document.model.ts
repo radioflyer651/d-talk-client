@@ -50,4 +50,5 @@ export interface ChatDocumentComment {
 }
 
 /** Lightweight form of the ChatDocumentListItem for listing in the UI. */
-export type ChatDocumentDataListItem = Exclude<ChatDocumentData, 'content' | 'comments'>; 
+export type ChatDocumentDataListItem = Exclude<ChatDocumentData, 'content' | 'comments'>;
+

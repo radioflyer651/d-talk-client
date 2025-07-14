@@ -13,6 +13,7 @@ import { LoginRequest } from '../../../../model/shared-models/login-request.mode
 import { UserRegistration } from '../../../../model/shared-models/user-registration.model';
 import { TokenService } from '../../token.service';
 import { ClientApiServiceBase } from './api-client-base.service';
+import { ChatDocumentData, ChatDocumentDataListItem } from '../../../../model/shared-models/chat-core/chat-document.model';
 
 
 
@@ -432,6 +433,68 @@ export class ClientApiService extends ClientApiServiceBase {
     return this.http.put<{ success: boolean; }>(
       this.constructUrl(`project/${projectId}/project-knowledge`),
       { projectKnowledge },
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Gets all chat documents for a project.
+   */
+  getChatDocumentsForProject(projectId: ObjectId) {
+    return this.http.get<ChatDocumentData[]>(
+      this.constructUrl(`documents/${projectId}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Gets a single chat document by its ID.
+   */
+  getChatDocumentById(documentId: ObjectId) {
+    return this.http.get<ChatDocumentData>(
+      this.constructUrl(`document/${documentId}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Creates a new chat document.
+   */
+  createChatDocument(document: ChatDocumentData) {
+    return this.http.post<ChatDocumentData>(
+      this.constructUrl('document'),
+      document,
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Updates a chat document by its ID (ID in body).
+   */
+  updateChatDocument(update: Partial<ChatDocumentData> & { _id: ObjectId }) {
+    return this.http.put<{ success: boolean }>(
+      this.constructUrl('document'),
+      update,
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Deletes a chat document by its ID.
+   */
+  deleteChatDocument(documentId: ObjectId) {
+    return this.http.delete<{ success: boolean }>(
+      this.constructUrl(`document/${documentId}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Gets lightweight chat document list items for a project.
+   */
+  getChatDocumentListItemsForProject(projectId: ObjectId) {
+    return this.http.get<ChatDocumentDataListItem[]>(
+      this.constructUrl(`document-list/${projectId}`),
       this.optionsBuilder.withAuthorization()
     );
   }
