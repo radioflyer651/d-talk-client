@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, startWith, Subject, switchMap } from 'rxjs';
+import { Observable, of, shareReplay, startWith, Subject, switchMap } from 'rxjs';
 import { ObjectId } from 'mongodb';
 import { ClientApiService } from './api-clients/api-client.service';
 import { NewDbItem } from '../../../model/shared-models/db-operation-types.model';
@@ -23,7 +23,8 @@ export class ChatDocumentsService {
     switchMap(() => {
       if (!this.currentProjectId) return of([]);
       return this.apiClient.getChatDocumentListItemsForProject(this.currentProjectId);
-    })
+    }),
+    shareReplay(1)
   );
 
   // Observable for full document list for the current project

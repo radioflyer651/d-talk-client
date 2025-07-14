@@ -6,6 +6,9 @@
         <p-tab [value]="1">
             Room Messages
         </p-tab>
+        <p-tab [value]="2">
+            Documents
+        </p-tab>
     </p-tablist>
 </p-tabs>
 
@@ -124,6 +127,14 @@
 <div class="tab-content" *ngIf="selectedTabId===1">
     <app-positionable-message-list *ngIf="chatRoom"
         [messages]="chatRoom.roomInstructions"></app-positionable-message-list>
+
+    <div class="footer-button-controls">
+        <p-button label="Save" (click)="saveRoom()"></p-button>
+    </div>
+</div>
+
+<div class="tab-content" *ngIf="selectedTabId===2">
+    <app-document-permissions [permissions]="chatRoom?.chatDocumentReferences"></app-document-permissions>
 
     <div class="footer-button-controls">
         <p-button label="Save" (click)="saveRoom()"></p-button>

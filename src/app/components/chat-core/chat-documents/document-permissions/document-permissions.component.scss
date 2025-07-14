@@ -1,0 +1,12 @@
+.permission-row {
+    display: flex;
+    > * {
+        margin-right: 1em;
+    }
+
+    .checkbox-container {
+        p-checkbox {
+            margin-right: 0.5em;
+        }
+    }
+}

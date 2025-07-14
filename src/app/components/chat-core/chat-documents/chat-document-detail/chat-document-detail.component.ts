@@ -8,7 +8,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
 import { lastValueFrom } from 'rxjs';
-import { TextDocumentEditorComponent } from "../text-document-editor/text-document-editor.component";
 import { IChatDocumentData } from '../../../../../model/shared-models/chat-core/documents/chat-document.model';
 import { ChatDocumentEditorComponent } from "../chat-document-editor/chat-document-editor.component";
 
@@ -21,8 +20,7 @@ import { ChatDocumentEditorComponent } from "../chat-document-editor/chat-docume
     InputTextModule,
     TextareaModule,
     ButtonModule,
-    TextDocumentEditorComponent,
-    ChatDocumentEditorComponent
+    ChatDocumentEditorComponent,
 ],
   templateUrl: './chat-document-detail.component.html',
   styleUrl: './chat-document-detail.component.scss'

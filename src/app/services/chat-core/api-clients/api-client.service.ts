@@ -499,4 +499,17 @@ export class ClientApiService extends ClientApiServiceBase {
     );
   }
 
+  /**
+   * Updates the chatDocumentReferences property of a chat room.
+   * @param roomId The chat room ID
+   * @param chatDocumentReferences The new document permissions array/object
+   */
+  updateChatRoomDocumentPermissions(roomId: ObjectId, chatDocumentReferences: any) {
+    return this.http.put<{ success: boolean; }>(
+      this.constructUrl(`chat-room/${roomId}/document-permissions`),
+      { chatDocumentReferences },
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
 }

@@ -1,0 +1,44 @@
+<div *ngIf="permissions && documents && permissionOptions">
+    <div *ngFor="let permission of permissionOptions" class="permission-row">
+        <div>
+            {{permission.documentName}}
+        </div>
+        <div class="checkbox-container">
+            <p-checkbox [binary]="true" [(ngModel)]="permission.permissions.canRead"></p-checkbox>
+            <label>Read</label>
+        </div>
+        <div class="checkbox-container">
+            <p-checkbox [binary]="true" [(ngModel)]="permission.permissions.canEdit"></p-checkbox>
+            <label>Write</label>
+        </div>
+        <div class="checkbox-container">
+            <p-checkbox [binary]="true" [(ngModel)]="permission.permissions.canChangeName"></p-checkbox>
+            <label>Change Name</label>
+        </div>
+        <div class="checkbox-container">
+            <p-checkbox [binary]="true" [(ngModel)]="permission.permissions.canUpdateComments"></p-checkbox>
+            <label>Update Comments</label>
+        </div>
+        <div class="checkbox-container">
+            <p-checkbox [binary]="true" [(ngModel)]="permission.permissions.canUpdateDescription"></p-checkbox>
+            <label>Update Description</label>
+        </div>
+        <div>
+            <p-button (click)="deletePermission(permission)" label="Delete" severity="danger"></p-button>
+        </div>
+    </div>
+
+    <div class="footer-button-controls">
+        <p-button label="New Permission" (click)="createNewPermission()"></p-button>
+    </div>
+</div>
+
+<p-dialog [(visible)]="isNewPermissionVisible">
+    <app-document-selector [(selectedDocumentId)]="selectedDocumentId"></app-document-selector>
+    <ng-template #footer>
+        <div class="footer-button-controls">
+            <p-button label="Cancel" (click)="newPermissionClosed(true)"></p-button>
+            <p-button label="OK" (click)="newPermissionClosed(false)"></p-button>
+        </div>
+    </ng-template>
+</p-dialog>

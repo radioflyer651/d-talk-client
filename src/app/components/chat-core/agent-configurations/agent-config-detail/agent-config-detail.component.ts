@@ -14,14 +14,13 @@ import { ComponentBase } from '../../../component-base/component-base.component'
 import { AgentConfigurationService } from '../../../../services/chat-core/agent-configuration.service';
 import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-models/chat-core/agent-configuration.model';
 import { AgentTypeSelectorComponent } from "../agent-type-selector/agent-type-selector.component";
-import { AgentConfigEditorComponent } from "../agent-config-editors/agent-config-editor/agent-config-editor.component";
 import { NewDbItem } from '../../../../../model/shared-models/db-operation-types.model';
 import { lastValueFrom, takeUntil } from 'rxjs';
 import { TabsModule } from 'primeng/tabs';
-import { InstructionEditorComponent } from "../../../instruction-editor/instruction-editor.component";
 import { PositionableMessageListComponent } from "../../positionable-messages/positionable-message-list/positionable-message-list.component";
 import { ActivatedRoute } from '@angular/router';
 import { PluginSelectorComponent } from "../../plugins/plugin-selector/plugin-selector.component";
+import { DocumentPermissionsComponent } from "../../chat-documents/document-permissions/document-permissions.component";
 
 @Component({
   selector: 'app-agent-config-detail',
@@ -38,8 +37,9 @@ import { PluginSelectorComponent } from "../../plugins/plugin-selector/plugin-se
     AgentTypeSelectorComponent,
     TabsModule,
     PositionableMessageListComponent,
-    PluginSelectorComponent
-],
+    PluginSelectorComponent,
+    DocumentPermissionsComponent
+  ],
   templateUrl: './agent-config-detail.component.html',
   styleUrl: './agent-config-detail.component.scss'
 })
@@ -77,6 +77,10 @@ export class AgentConfigDetailComponent extends ComponentBase {
     this.agentConfigService.selectedAgentConfig$.pipe(
       takeUntil(this.ngDestroy$),
     ).subscribe(config => {
+      if (config) {
+        config.chatDocumentReferences ??= [];
+      }
+
       this.agentConfig = config;
     });
   }

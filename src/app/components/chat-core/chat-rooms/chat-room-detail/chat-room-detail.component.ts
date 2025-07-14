@@ -25,6 +25,7 @@ import { TabsModule } from 'primeng/tabs';
 import { PositionableMessageListComponent } from "../../positionable-messages/positionable-message-list/positionable-message-list.component";
 import { ChatRoomData } from '../../../../../model/shared-models/chat-core/chat-room-data.model';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { DocumentPermissionsComponent } from "../../chat-documents/document-permissions/document-permissions.component";
 
 @Component({
   selector: 'app-chat-room-detail',
@@ -39,7 +40,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     CheckboxModule,
     TabsModule,
     FloatLabelModule,
-    PositionableMessageListComponent
+    PositionableMessageListComponent,
+    DocumentPermissionsComponent
   ],
   templateUrl: './chat-room-detail.component.html',
   styleUrl: './chat-room-detail.component.scss',
@@ -103,15 +105,11 @@ export class ChatRoomDetailComponent extends ComponentBase {
     this.chatRoomService.selectedChatRoom$.pipe(
       takeUntil(this.ngDestroy$),
     ).subscribe(room => {
-      this.chatRoom = room;
-
       if (room) {
-        // Ensure we have roomInstructions on the room.
-        if (!room.roomInstructions) {
-          room.roomInstructions = [];
-        }
+        room.chatDocumentReferences ??= [];
+        room.roomInstructions ??= [];
       }
-
+      this.chatRoom = room;
     });
   }
 
@@ -295,6 +293,9 @@ export class ChatRoomDetailComponent extends ComponentBase {
     if (!this.chatRoom) {
       throw new Error(`chatRoom is not set.`);
     }
+
+    const updatePermissionsP = lastValueFrom(this.chatRoomService.updateChatRoomDocumentPermissions(this.chatRoom._id, this.chatRoom.chatDocumentReferences));
     await lastValueFrom(this.chatRoomService.updateChatRoomInstructions(this.chatRoom._id, this.chatRoom.roomInstructions));
+    await updatePermissionsP;
   }
 }

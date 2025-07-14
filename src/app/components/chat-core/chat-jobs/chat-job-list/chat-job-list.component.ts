@@ -133,6 +133,7 @@ export class ChatJobListComponent extends ComponentBase {
       disabled: false,
       agentId: undefined,
       instructions: [],
+      chatDocumentReferences: [],
       plugins: []
     };
 

@@ -57,12 +57,10 @@ export class ChatDocumentListComponent extends ComponentBase {
     this.params.params$.pipe(
       takeUntil(this.ngDestroy$)
     ).subscribe(params => {
-      this.projectService.currentProjectId = params['projectId'];
       this.chatDocumentsService.currentProjectId = params['projectId'];
     });
 
     this.chatDocuments$ = this.chatDocumentsService.documentList$.pipe(
-      startWith([]),
       takeUntil(this.ngDestroy$),
       map(docs => {
         if (!docs) {

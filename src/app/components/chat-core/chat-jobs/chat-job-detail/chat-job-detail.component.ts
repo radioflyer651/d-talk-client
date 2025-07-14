@@ -16,6 +16,7 @@ import { lastValueFrom, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 import { PositionableMessageListComponent } from "../../positionable-messages/positionable-message-list/positionable-message-list.component";
 import { ActivatedRoute } from '@angular/router';
 import { PluginSelectorComponent } from "../../plugins/plugin-selector/plugin-selector.component";
+import { DocumentPermissionsComponent } from "../../chat-documents/document-permissions/document-permissions.component";
 
 @Component({
   selector: 'app-chat-job-detail',
@@ -31,7 +32,8 @@ import { PluginSelectorComponent } from "../../plugins/plugin-selector/plugin-se
     ButtonModule,
     TabsModule,
     PositionableMessageListComponent,
-    PluginSelectorComponent
+    PluginSelectorComponent,
+    DocumentPermissionsComponent
 ],
   templateUrl: './chat-job-detail.component.html',
   styleUrl: './chat-job-detail.component.scss'
@@ -74,6 +76,9 @@ export class ChatJobDetailComponent extends ComponentBase {
         takeUntil(this.ngDestroy$)
       ))
     ).subscribe(job => {
+      if (job) {
+        job.chatDocumentReferences ??= [];
+      }
       this.jobConfig = job;
     });
   }

@@ -11,6 +11,7 @@
         <p-tablist>
             <p-tab [value]="0">Instructions</p-tab>
             <p-tab [value]="1">Plugins</p-tab>
+            <p-tab [value]="2">Documents</p-tab>
         </p-tablist>
 
         <p-tabpanels>
@@ -19,7 +20,6 @@
                     <div>
                         Instructions for the agent to fulfill this job.
                     </div>
-                    <!-- Placeholder for instructions editor -->
                     <div>
                         <app-positionable-message-list
                             [messages]="jobConfig.instructions"></app-positionable-message-list>
@@ -30,6 +30,13 @@
             <p-tabpanel [value]="1">
                 <div class="tab-panel-container">
                     <app-plugin-selector [attachmentTarget]="jobConfig" attachedObjectType="job"></app-plugin-selector>
+                </div>
+            </p-tabpanel>
+
+            <p-tabpanel [value]="2">
+                <div class="tab-panel-container">
+                    <app-document-permissions
+                        [permissions]="jobConfig.chatDocumentReferences"></app-document-permissions>
                 </div>
             </p-tabpanel>
         </p-tabpanels>

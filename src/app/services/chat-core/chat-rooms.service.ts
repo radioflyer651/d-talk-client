@@ -265,4 +265,8 @@ export class ChatRoomsService {
   updateChatRoomInstructions(roomId: ObjectId, newInstructions: PositionableMessage<StoredMessage>[]) {
     return this.apiClient.updateChatRoomInstructions(roomId, newInstructions);
   }
+
+  updateChatRoomDocumentPermissions(roomId: ObjectId, chatDocumentReferences: any) {
+    return this.apiClient.updateChatRoomDocumentPermissions(roomId, chatDocumentReferences);
+  }
 }
