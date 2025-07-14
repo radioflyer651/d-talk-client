@@ -24,6 +24,8 @@
                 <ng-container
                     *ngTemplateOutlet="projectTab; context:{ title: 'Project Knowledge', selectionIndex: 'project-knowledge', icon: 'fa-solid fa-book'}"></ng-container>
                 <ng-container
+                    *ngTemplateOutlet="projectTab; context:{ title: 'Documents', selectionIndex: 'chat-documents', icon: 'fa-users-between-lines'}"></ng-container>
+                <ng-container
                     *ngTemplateOutlet="projectTab; context:{ title: 'Partner Templates', selectionIndex: 'agents', icon: 'fa-address-book'}"></ng-container>
                 <ng-container
                     *ngTemplateOutlet="projectTab; context:{ title: 'Task Templates', selectionIndex: 'jobs', icon: 'fa-timeline-arrow'}"></ng-container>
@@ -69,6 +71,10 @@
         </p-panel>
 
         <p-panel class="project-tab-content" *ngIf="selectedTab==='project-knowledge'" [showHeader]="false">
+            <router-outlet></router-outlet>
+        </p-panel>
+        
+        <p-panel class="project-tab-content" *ngIf="selectedTab==='chat-documents'" [showHeader]="false">
             <router-outlet></router-outlet>
         </p-panel>
     </div>

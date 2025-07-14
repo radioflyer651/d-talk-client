@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, EMPTY, Observable, of, startWith, Subject, switchMap, shareReplay } from 'rxjs';
+import { Observable, of, startWith, Subject, switchMap } from 'rxjs';
 import { ObjectId } from 'mongodb';
 import { ClientApiService } from './api-clients/api-client.service';
 import { ChatDocumentDataListItem, ChatDocumentData } from '../../../model/shared-models/chat-core/chat-document.model';
+import { NewDbItem } from '../../../model/shared-models/db-operation-types.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatDocumentsService {
-  constructor(private readonly apiClient: ClientApiService) {
+  constructor(
+    private readonly apiClient: ClientApiService
+  ) {
     this.initialize();
   }
 
@@ -52,7 +55,7 @@ export class ChatDocumentsService {
   }
 
   // CRUD operations
-  createDocument(document: ChatDocumentData) {
+  createDocument(document: NewDbItem<ChatDocumentData>) {
     return this.apiClient.createChatDocument(document).pipe(
       switchMap(result => {
         this.reloadDocuments();
@@ -79,4 +82,7 @@ export class ChatDocumentsService {
     );
   }
 
+  getDocumentById(id: ObjectId): Observable<ChatDocumentData> {
+    return this.apiClient.getChatDocumentById(id);
+  }
 }

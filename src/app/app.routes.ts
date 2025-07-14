@@ -14,6 +14,7 @@ import { ChatRoomDetailComponent } from './components/chat-core/chat-rooms/chat-
 import { ChattingComponent } from './components/chat-core/chatting/chatting/chatting.component';
 import { ProjectListComponent } from './components/chat-core/projects/project-list/project-list.component';
 import { ProjectKnowledgeComponent } from './components/chat-core/projects/project-knowledge/project-knowledge.component';
+import { ChatDocumentsComponent } from './components/chat-core/chat-documents/chat-documents.component';
 
 export const routes: Routes = [
     {
@@ -69,6 +70,16 @@ export const routes: Routes = [
                                             {
                                                 path: ':chatRoomId',
                                                 component: ChatRoomDetailComponent,
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        path: 'chat-documents',
+                                        component: ChatDocumentsComponent,
+                                        children: [
+                                            {
+                                                path: ':documentId',
+                                                component: ChatDocumentsComponent,
                                             }
                                         ]
                                     },

@@ -1,0 +1,10 @@
+.content-container {
+    display: flex;
+
+    .document-list {
+    }
+
+    .document-details {
+        flex: 1 1 auto;
+    }
+}

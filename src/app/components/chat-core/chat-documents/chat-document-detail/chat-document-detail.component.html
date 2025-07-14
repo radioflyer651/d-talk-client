@@ -1,0 +1,32 @@
+<div *ngIf="document" class="document-detail-container">
+    <div class="document-info-block">
+        <p-floatlabel>
+            <input id="document-name" autocomplete="off" pInputText [(ngModel)]="document.name" />
+            <label for="document-name">Name</label>
+        </p-floatlabel>
+
+        <p-floatlabel>
+            <input id="document-path" autocomplete="off" pInputText [(ngModel)]="document.folderLocation" />
+            <label for="document-path">Folder Location</label>
+        </p-floatlabel>
+    </div>
+
+    <div class="document-extended-block">
+        <p-floatlabel>
+            <textarea pTextarea id="description" autocomplete="off" pInputText
+                [(ngModel)]="document.description"></textarea>
+
+            <label for="description">Description</label>
+        </p-floatlabel>
+
+        <p-floatlabel>
+            <textarea pTextarea id="description" autocomplete="off" pInputText
+                [(ngModel)]="document.content"></textarea>
+            <label for="document-content">Content</label>
+        </p-floatlabel>
+    </div>
+
+    <div class="footer-button-controls">
+        <p-button label="Save" (click)="saveDocument()"></p-button>
+    </div>
+</div>

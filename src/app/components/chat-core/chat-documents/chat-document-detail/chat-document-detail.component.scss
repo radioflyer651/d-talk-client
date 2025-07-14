@@ -1,0 +1,11 @@
+.document-detail-container {
+    .document-info-block,
+    .document-extended-block {
+        width: 100%;
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 8em;
+    }
+}

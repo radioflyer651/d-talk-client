@@ -1,0 +1,79 @@
+<div class="chat-document-list-component">
+    <p-card class="h-100 d-block top-panel">
+        <p-panel showHeader="false">
+            <p-floatlabel>
+                <input id="chat-document-search" autocomplete="off" pInputText [(ngModel)]="searchText" />
+                <label for="chat-document-search">Search</label>
+            </p-floatlabel>
+
+            <p-button class="new-chat-document-btn" icon="fa fa-plus" label="New Document"
+                (click)="showNewDocumentDialog()"></p-button>
+        </p-panel>
+
+        <ng-container *ngIf="!!(chatDocuments$ | async)">
+            <p-dataview [value]="(chatDocuments$ | async)!">
+                <ng-template #header>
+                    Documents
+                </ng-template>
+
+                <ng-template #list let-items>
+                    <div *ngFor="let doc of items" class="chat-document-card-container">
+                        <p-panel [showHeader]="false">
+                            <div class="chat-document-title" (click)="selectDocument(doc)">
+                                <h5>
+                                    {{doc.name}}
+                                </h5>
+                                <div class="chat-document-folder">{{doc.folderLocation}}</div>
+                            </div>
+
+                            <div class="chat-document-card-wrapper">
+                                <div class="chat-document-card-content">
+                                    <div>
+                                        <b>Created:</b> {{doc.createdDate | date:'short'}}
+                                    </div>
+                                    <div>
+                                        <b>Updated:</b> {{doc.updatedDate | date:'short'}}
+                                    </div>
+                                </div>
+                                <div class="chat-document-card-controls">
+                                    <p-button icon="fa fa-trash" severity="danger" size="small" [rounded]="true"
+                                        (click)="deleteDocument(doc)"></p-button>
+                                </div>
+                            </div>
+                        </p-panel>
+                    </div>
+                </ng-template>
+            </p-dataview>
+        </ng-container>
+    </p-card>
+
+    <!-- New Document Dialog -->
+    <p-dialog header="Create New Document" [(visible)]="isNewDocumentDialogVisible" [modal]="true" [closable]="true"
+        [dismissableMask]="true">
+        <div class="p-fluid new-document-content">
+            <p-floatlabel>
+                <input id="new-document-name" autocomplete="off" pInputText [(ngModel)]="newDocumentName" />
+                <label for="new-document-name">Document Name</label>
+            </p-floatlabel>
+
+            <p-floatlabel>
+                <input id="new-document-path" autocomplete="off" pInputText [(ngModel)]="newDocumentPath" />
+                <label for="new-document-path">Path</label>
+            </p-floatlabel>
+
+            <p-floatlabel class="textarea-container">
+                <textarea pTextarea id="new-document-description" autocomplete="off" pInputText
+                    [(ngModel)]="newDocumentDescription"></textarea>
+                <label for="new-document-description">Description</label>
+            </p-floatlabel>
+        </div>
+        <ng-template #footer>
+            <div class="footer-button-controls">
+                <button pButton type="button" label="Create" (click)="createDocumentFromDialog()"
+                    [disabled]="!newDocumentName.trim()"></button>
+            </div>
+        </ng-template>
+    </p-dialog>
+</div>
+
+<!-- Dialog for creating a new document could go here if needed -->

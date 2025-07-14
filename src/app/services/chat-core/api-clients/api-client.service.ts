@@ -460,7 +460,7 @@ export class ClientApiService extends ClientApiServiceBase {
   /**
    * Creates a new chat document.
    */
-  createChatDocument(document: ChatDocumentData) {
+  createChatDocument(document: NewDbItem<ChatDocumentData>) {
     return this.http.post<ChatDocumentData>(
       this.constructUrl('document'),
       document,
@@ -471,8 +471,8 @@ export class ClientApiService extends ClientApiServiceBase {
   /**
    * Updates a chat document by its ID (ID in body).
    */
-  updateChatDocument(update: Partial<ChatDocumentData> & { _id: ObjectId }) {
-    return this.http.put<{ success: boolean }>(
+  updateChatDocument(update: Partial<ChatDocumentData> & { _id: ObjectId; }) {
+    return this.http.put<{ success: boolean; }>(
       this.constructUrl('document'),
       update,
       this.optionsBuilder.withAuthorization()
@@ -483,7 +483,7 @@ export class ClientApiService extends ClientApiServiceBase {
    * Deletes a chat document by its ID.
    */
   deleteChatDocument(documentId: ObjectId) {
-    return this.http.delete<{ success: boolean }>(
+    return this.http.delete<{ success: boolean; }>(
       this.constructUrl(`document/${documentId}`),
       this.optionsBuilder.withAuthorization()
     );
