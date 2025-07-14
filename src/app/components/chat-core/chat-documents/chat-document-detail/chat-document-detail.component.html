@@ -18,12 +18,8 @@
 
             <label for="description">Description</label>
         </p-floatlabel>
-
-        <p-floatlabel>
-            <textarea pTextarea id="description" autocomplete="off" pInputText
-                [(ngModel)]="document.content"></textarea>
-            <label for="document-content">Content</label>
-        </p-floatlabel>
+        
+        <app-chat-document-editor [document]="document"></app-chat-document-editor>
     </div>
 
     <div class="footer-button-controls">

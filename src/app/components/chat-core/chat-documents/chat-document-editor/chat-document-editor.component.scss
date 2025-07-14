@@ -1,0 +1,16 @@
+.editor-container {
+    width: 100%;
+
+    .text-container {
+        width: 100%;
+
+        textarea {
+            width: 100%;
+            min-height: 14em;
+        }
+
+        .markup {
+            width: 100%;
+        }
+    }
+}

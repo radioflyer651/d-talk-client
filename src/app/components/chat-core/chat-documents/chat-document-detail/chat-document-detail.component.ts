@@ -9,6 +9,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
 import { lastValueFrom } from 'rxjs';
+import { ChatDocumentEditorComponent } from "../chat-document-editor/chat-document-editor.component";
 
 @Component({
   selector: 'app-chat-document-detail',
@@ -19,7 +20,8 @@ import { lastValueFrom } from 'rxjs';
     InputTextModule,
     TextareaModule,
     ButtonModule,
-  ],
+    ChatDocumentEditorComponent
+],
   templateUrl: './chat-document-detail.component.html',
   styleUrl: './chat-document-detail.component.scss'
 })
