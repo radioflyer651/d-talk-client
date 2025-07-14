@@ -1,0 +1,37 @@
+<p-dialog [(visible)]="visible" header="New Document">
+    <div class="content-container">
+        <p-floatlabel>
+            <p-select [options]="documentTypes" [(ngModel)]="documentType" dataKey="type"
+                optionLabel="displayName"></p-select>
+            <label for="document-selection">Document Type</label>
+        </p-floatlabel>
+
+        <p-floatlabel>
+            <input id="new-document-name" autocomplete="off" pInputText [(ngModel)]="newDocumentName" />
+            <label for="new-document-name">Document Name</label>
+        </p-floatlabel>
+
+        <p-floatlabel>
+            <input id="new-document-path" autocomplete="off" pInputText [(ngModel)]="newDocumentPath" />
+            <label for="new-document-path">Path</label>
+        </p-floatlabel>
+
+        <p-floatlabel class="textarea-container">
+            <textarea pTextarea id="new-document-description" autocomplete="off" pInputText
+                [(ngModel)]="newDocumentDescription"></textarea>
+            <label for="new-document-description">Description</label>
+        </p-floatlabel>
+    </div>
+
+    <!-- When new document types are created, their creation parameters must go here. -->
+
+    <ng-template #footer>
+        <div class="footer-button-controls">
+            <button pButton type="button" label="Cancel" (click)="closeDialog(true)"
+                [disabled]="!newDocumentName.trim()"></button>
+
+            <button pButton type="button" label="OK" (click)="closeDialog(false)"
+                [disabled]="!newDocumentName.trim()"></button>
+        </div>
+    </ng-template>
+</p-dialog>

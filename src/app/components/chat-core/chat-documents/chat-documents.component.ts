@@ -6,8 +6,8 @@ import { ComponentBase } from '../../component-base/component-base.component';
 import { CurrentRouteParamsService } from '../../../services/current-route-params.service';
 import { of, switchMap, takeUntil } from 'rxjs';
 import { ChatDocumentsService } from '../../../services/chat-core/chat-documents.service';
-import { ChatDocumentData } from '../../../../model/shared-models/chat-core/chat-document.model';
 import { CommonModule } from '@angular/common';
+import { IChatDocumentData } from '../../../../model/shared-models/chat-core/documents/chat-document.model';
 
 @Component({
   selector: 'app-chat-documents',
@@ -44,5 +44,5 @@ export class ChatDocumentsComponent extends ComponentBase {
     });
   }
 
-  document?: ChatDocumentData;
+  document?: IChatDocumentData;
 }

@@ -3,7 +3,7 @@ import { Observable, of, startWith, Subject, switchMap } from 'rxjs';
 import { ObjectId } from 'mongodb';
 import { ClientApiService } from './api-clients/api-client.service';
 import { NewDbItem } from '../../../model/shared-models/db-operation-types.model';
-import { IChatDocumentData } from '../../../model/shared-models/chat-core/documents/chat-document.model';
+import { IChatDocumentCreationParams, IChatDocumentData } from '../../../model/shared-models/chat-core/documents/chat-document.model';
 
 @Injectable({
   providedIn: 'root'
@@ -55,7 +55,7 @@ export class ChatDocumentsService {
   }
 
   // CRUD operations
-  createDocument(document: NewDbItem<IChatDocumentData>) {
+  createDocument(document: IChatDocumentCreationParams) {
     return this.apiClient.createChatDocument(document).pipe(
       switchMap(result => {
         this.reloadDocuments();

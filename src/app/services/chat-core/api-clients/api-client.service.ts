@@ -13,7 +13,7 @@ import { LoginRequest } from '../../../../model/shared-models/login-request.mode
 import { UserRegistration } from '../../../../model/shared-models/user-registration.model';
 import { TokenService } from '../../token.service';
 import { ClientApiServiceBase } from './api-client-base.service';
-import { IChatDocumentData } from '../../../../model/shared-models/chat-core/documents/chat-document.model';
+import { IChatDocumentCreationParams, IChatDocumentData } from '../../../../model/shared-models/chat-core/documents/chat-document.model';
 
 
 
@@ -460,7 +460,7 @@ export class ClientApiService extends ClientApiServiceBase {
   /**
    * Creates a new chat document.
    */
-  createChatDocument(document: NewDbItem<IChatDocumentData>) {
+  createChatDocument(document: IChatDocumentCreationParams) {
     return this.http.post<IChatDocumentData>(
       this.constructUrl('document'),
       document,

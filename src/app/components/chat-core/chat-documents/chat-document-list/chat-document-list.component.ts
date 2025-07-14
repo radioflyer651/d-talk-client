@@ -15,10 +15,10 @@ import { DialogModule } from 'primeng/dialog';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { PanelModule } from 'primeng/panel';
-import { createDefaultChatDocumentData } from '../../../../../utils/create-chat-document.utils';
 import { UserService } from '../../../../services/user.service';
 import { TextareaModule } from 'primeng/textarea';
 import { IChatDocumentData } from '../../../../../model/shared-models/chat-core/documents/chat-document.model';
+import { NewDocumentComponent } from "../document-creation/new-document/new-document.component";
 
 @Component({
   selector: 'app-chat-document-list',
@@ -34,7 +34,8 @@ import { IChatDocumentData } from '../../../../../model/shared-models/chat-core/
     DataViewModule,
     ConfirmDialogModule,
     DialogModule,
-  ],
+    NewDocumentComponent
+],
   templateUrl: './chat-document-list.component.html',
   styleUrl: './chat-document-list.component.scss'
 })
@@ -88,23 +89,6 @@ export class ChatDocumentListComponent extends ComponentBase {
     this.isNewDocumentDialogVisible = true;
     this.newDocumentName = '';
     this.newDocumentDescription = '';
-  }
-
-  createDocumentFromDialog() {
-    if (!this.newDocumentName.trim()) {
-      return;
-    }
-
-    const newDoc = createDefaultChatDocumentData(
-      this.projectService.currentProjectId!,
-      this.userService.user!.userId,
-      this.newDocumentPath,
-      this.newDocumentName
-    );
-
-    this.chatDocumentsService.createDocument(newDoc).subscribe(() => {
-      this.isNewDocumentDialogVisible = false;
-    });
   }
 
   selectDocument(doc: IChatDocumentData) {

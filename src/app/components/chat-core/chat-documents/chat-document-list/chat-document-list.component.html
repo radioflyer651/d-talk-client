@@ -46,34 +46,6 @@
             </p-dataview>
         </ng-container>
     </p-card>
-
-    <!-- New Document Dialog -->
-    <p-dialog header="Create New Document" [(visible)]="isNewDocumentDialogVisible" [modal]="true" [closable]="true"
-        [dismissableMask]="true">
-        <div class="p-fluid new-document-content">
-            <p-floatlabel>
-                <input id="new-document-name" autocomplete="off" pInputText [(ngModel)]="newDocumentName" />
-                <label for="new-document-name">Document Name</label>
-            </p-floatlabel>
-
-            <p-floatlabel>
-                <input id="new-document-path" autocomplete="off" pInputText [(ngModel)]="newDocumentPath" />
-                <label for="new-document-path">Path</label>
-            </p-floatlabel>
-
-            <p-floatlabel class="textarea-container">
-                <textarea pTextarea id="new-document-description" autocomplete="off" pInputText
-                    [(ngModel)]="newDocumentDescription"></textarea>
-                <label for="new-document-description">Description</label>
-            </p-floatlabel>
-        </div>
-        <ng-template #footer>
-            <div class="footer-button-controls">
-                <button pButton type="button" label="Create" (click)="createDocumentFromDialog()"
-                    [disabled]="!newDocumentName.trim()"></button>
-            </div>
-        </ng-template>
-    </p-dialog>
 </div>
 
-<!-- Dialog for creating a new document could go here if needed -->
+<app-new-document [(visible)]="isNewDocumentDialogVisible"></app-new-document>

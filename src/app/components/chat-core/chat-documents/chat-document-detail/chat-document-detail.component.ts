@@ -8,8 +8,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
 import { lastValueFrom } from 'rxjs';
-import { ChatDocumentEditorComponent } from "../chat-document-editor/chat-document-editor.component";
+import { TextDocumentEditorComponent } from "../text-document-editor/text-document-editor.component";
 import { IChatDocumentData } from '../../../../../model/shared-models/chat-core/documents/chat-document.model';
+import { ChatDocumentEditorComponent } from "../chat-document-editor/chat-document-editor.component";
 
 @Component({
   selector: 'app-chat-document-detail',
@@ -20,8 +21,9 @@ import { IChatDocumentData } from '../../../../../model/shared-models/chat-core/
     InputTextModule,
     TextareaModule,
     ButtonModule,
+    TextDocumentEditorComponent,
     ChatDocumentEditorComponent
-  ],
+],
   templateUrl: './chat-document-detail.component.html',
   styleUrl: './chat-document-detail.component.scss'
 })
