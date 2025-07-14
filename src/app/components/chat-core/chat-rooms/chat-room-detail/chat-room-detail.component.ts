@@ -6,7 +6,7 @@ import { AgentConfigurationService } from '../../../../services/chat-core/agent-
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
 import { ChatRoomsService } from '../../../../services/chat-core/chat-rooms.service';
 import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-models/chat-core/agent-configuration.model';
-import { lastValueFrom, Observable, takeUntil } from 'rxjs';
+import { lastValueFrom, Observable, shareReplay, takeUntil } from 'rxjs';
 import { ChatJobConfiguration } from '../../../../../model/shared-models/chat-core/chat-job-data.model';
 import { PanelModule } from 'primeng/panel';
 import { ChatJobInstance } from '../../../../../model/shared-models/chat-core/chat-job-instance.model';
@@ -24,6 +24,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { TabsModule } from 'primeng/tabs';
 import { PositionableMessageListComponent } from "../../positionable-messages/positionable-message-list/positionable-message-list.component";
 import { ChatRoomData } from '../../../../../model/shared-models/chat-core/chat-room-data.model';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
   selector: 'app-chat-room-detail',
@@ -37,6 +38,7 @@ import { ChatRoomData } from '../../../../../model/shared-models/chat-core/chat-
     ConfirmDialogModule,
     CheckboxModule,
     TabsModule,
+    FloatLabelModule,
     PositionableMessageListComponent
   ],
   templateUrl: './chat-room-detail.component.html',
@@ -79,17 +81,27 @@ export class ChatRoomDetailComponent extends ComponentBase {
       this.agentInstanceService.selectedChatRoomId = params['chatRoomId'];
     });
 
-    this.agentConfigurations$ = this.chatAgentService.agentConfigurations$;
-    this.chatJobConfigurations$ = this.chatJobsService.jobs$;
-    this.agentInstances$ = this.agentInstanceService.agentInstances$;
+    this.agentConfigurations$ = this.chatAgentService.agentConfigurations$.pipe(
+      takeUntil(this.ngDestroy$),
+      shareReplay(),
+    );
+    this.chatJobConfigurations$ = this.chatJobsService.jobs$.pipe(
+      takeUntil(this.ngDestroy$),
+      shareReplay(),
+    );
+    this.agentInstances$ = this.agentInstanceService.agentInstances$.pipe(
+      takeUntil(this.ngDestroy$),
+      shareReplay(),
+    );
 
     this.chatJobInstances$ = this.chatRoomService.selectedChatRoomJobInstances$;
     this.chatJobInstances$.pipe(
-      takeUntil(this.ngDestroy$)
+      takeUntil(this.ngDestroy$),
+      shareReplay(),
     ).subscribe();
 
     this.chatRoomService.selectedChatRoom$.pipe(
-      takeUntil(this.ngDestroy$)
+      takeUntil(this.ngDestroy$),
     ).subscribe(room => {
       this.chatRoom = room;
 
@@ -115,10 +127,12 @@ export class ChatRoomDetailComponent extends ComponentBase {
     const agent = this.agentNameDialogAgent;
     const chatRoomId = this.chatRoomService.selectedChatRoomId;
     const name = this.agentNameDialogValue.trim();
+
     if (!chatRoomId || !agent?._id || !name) {
       this.agentNameDialogVisible = false;
       return;
     }
+
     this.chatRoomService.createAgentInstanceForChatRoom(chatRoomId, agent._id, name).subscribe(() => {
       this.chatRoomService.reloadSelectedChatRoom();
       this.agentInstanceService.reloadAgentInstances();
@@ -177,11 +191,6 @@ export class ChatRoomDetailComponent extends ComponentBase {
     this.chatRoomService.createJobInstanceForChatRoom(chatRoomId, job._id).subscribe(() => {
       this.chatRoomService.reloadSelectedChatRoom();
     });
-  }
-
-  // Placeholder for agent add/remove logic for job instances
-  onAddAgent(instance: LinkedJobInstance) {
-    // TODO: Implement agent assignment logic
   }
 
   onRemoveAgent(instance: LinkedJobInstance) {

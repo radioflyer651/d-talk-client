@@ -1,21 +1,10 @@
 <form #jobConfigForm="ngForm" *ngIf="jobConfig">
-    <div class="grid">
-        <div class="row">
-            <div class="form-group col-6 full-width">
-                <p-floatlabel>
-                    <input pInputText id="job-name" class="full-width" name="name" [(ngModel)]="jobConfig.name" required
-                        autocomplete="off" />
-                    <label for="job-name">Job Name</label>
-                </p-floatlabel>
-            </div>
-            <div class="form-group col-6 full-width">
-                <p-floatlabel>
-                    <input pInputText id="job-order" class="full-width" name="order" type="number"
-                        [(ngModel)]="jobConfig.order" required autocomplete="off" />
-                    <label for="job-order">Order</label>
-                </p-floatlabel>
-            </div>
-        </div>
+    <div class="form-group full-width">
+        <p-floatlabel>
+            <input pInputText id="job-name" class="full-width" name="name" [(ngModel)]="jobConfig.name" required
+                autocomplete="off" />
+            <label for="job-name">Job Name</label>
+        </p-floatlabel>
     </div>
 
     <p-tabs [value]="tabIndex">
