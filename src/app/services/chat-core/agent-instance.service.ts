@@ -1,4 +1,4 @@
-import { Subject, BehaviorSubject, of, startWith, switchMap, distinctUntilChanged, Observable } from 'rxjs';
+import { Subject, BehaviorSubject, of, startWith, switchMap, distinctUntilChanged, Observable, shareReplay } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { AgentInstanceConfiguration } from '../../../model/shared-models/chat-core/agent-instance-configuration.model';
 import { ClientApiService } from './api-clients/api-client.service';
@@ -55,7 +55,8 @@ export class AgentInstanceService {
           switchMap(() => this.apiClient.getAgentInstancesForChatRoom(chatRoomId))
         );
       }),
-      startWith([] as AgentInstanceConfiguration[])
+      startWith([] as AgentInstanceConfiguration[]),
+      shareReplay(1),
     );
 
     this._selectedAgentInstance = new ReadonlySubject<AgentInstanceConfiguration | undefined>(

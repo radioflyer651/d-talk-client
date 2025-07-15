@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { StoredMessage } from '@langchain/core/messages';
-import { StoredMessageWrapper } from '../../../../../../model/shared-models/chat-core/stored-messae-wrapper.utils';
+import { StoredMessageWrapper } from '../../../../../../model/shared-models/chat-core/stored-message-wrapper.utils';
 import { StoredMessageAgentTypes } from '../../../../../../model/shared-models/chat-core/stored-message-agent-types.data';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';

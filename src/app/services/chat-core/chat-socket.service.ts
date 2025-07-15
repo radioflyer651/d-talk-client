@@ -4,7 +4,7 @@ import { MESSAGE_CHUNK_MESSAGE, MessageChunkMessage } from '../../../model/share
 import { ChatRoomsService } from './chat-rooms.service';
 import { EMPTY, filter, map, startWith, switchMap, tap } from 'rxjs';
 import { createStoredMessage } from '../../../utils/create-stored-message.utils';
-import { StoredMessageWrapper } from '../../../model/shared-models/chat-core/stored-messae-wrapper.utils';
+import { StoredMessageWrapper } from '../../../model/shared-models/chat-core/stored-message-wrapper.utils';
 import { ObjectId } from 'mongodb';
 import { ENTER_CHAT_ROOM, EnterChatRoomMessage, EXIT_CHAT_ROOM, ExitChatRoomMessage } from '../../../model/shared-models/chat-core/socket-messaging/general-messaging.socket-model';
 import { ChattingService } from './chatting.service';
