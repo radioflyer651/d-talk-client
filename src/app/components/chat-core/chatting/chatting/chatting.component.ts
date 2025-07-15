@@ -45,14 +45,14 @@ export class ChattingComponent extends ComponentBase {
       takeUntil(this.ngDestroy$),
     ).subscribe(params => {
       this.chatRoomService.selectedChatRoomId = params['chatRoomId'];
-      this.chatRoomId = params['chatRoomId']; 
+      this.chatRoomId = params['chatRoomId'];
       this.projectId = params['projectId'];
     });
 
     this.chatHistory$ = this.chattingService.chatHistory$.pipe(
       takeUntil(this.ngDestroy$),
       map(value => {
-        const result = value?.filter(m => m.type !== 'tool' && (!m.data.tool_calls || m.data.tool_calls.length < 1)) ?? [];
+        const result = value?.filter(m => m.type !== 'tool' && ((m.data.content?.length ?? 0) > 0)) ?? [];
         return result;
       })
     );
