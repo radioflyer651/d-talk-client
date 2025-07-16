@@ -7,7 +7,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { DialogModule } from 'primeng/dialog';
-import { ChatDocumentsService } from '../../../../../services/chat-core/chat-documents.service';
+import { ChatDocumentsService } from '../../../../../services/chat-core/chat-documents/chat-documents.service';
 import { ObjectId } from 'mongodb';
 import { ComponentBase } from '../../../../component-base/component-base.component';
 import { CurrentRouteParamsService } from '../../../../../services/current-route-params.service';

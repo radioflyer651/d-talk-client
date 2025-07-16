@@ -10,6 +10,7 @@ import { routes } from './app.routes';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { dateConverterInterceptor } from '../http-interceptor';
 import { DialogService } from 'primeng/dynamicdialog';
+import { DocumentSupportServicesProvider } from './services/chat-core/chat-documents/document-support-services.service';
 
 
 export const appConfig: ApplicationConfig = {
@@ -20,11 +21,12 @@ export const appConfig: ApplicationConfig = {
     DialogService,
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    DocumentSupportServicesProvider,
     providePrimeNG({
       theme: {
         preset: Lara,
         options: {
-            darkModeSelector: false || 'none'
+          darkModeSelector: false || 'none'
         }
       }
     }),

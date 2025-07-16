@@ -1,16 +1,16 @@
-<div *ngIf="!!document" class="editor-container">
+<div *ngIf="!!wrapper" class="editor-container">
 
     <p-selectbutton [options]="modeOptions" [(ngModel)]="mode"></p-selectbutton>
 
     <div *ngIf="mode==='text'" class="text-container">
         <p-floatlabel>
-            <textarea pTextarea id="text-input" autocomplete="off" pInputText [(ngModel)]="document.content"></textarea>
+            <textarea pTextarea id="text-input" autocomplete="off" pInputText [(ngModel)]="wrapper.content"></textarea>
             <label for="text-input">Content</label>
         </p-floatlabel>
     </div>
 
     <div *ngIf="mode==='formatted'">
-        <p-editor [(ngModel)]="document.content" [style]="{ height: '14em' }" />
+        <p-editor [(ngModel)]="wrapper.content" [style]="{ height: '14em' }" />
     </div>
 
     <div [innerHTML]="htmlContent" class="markup" *ngIf="mode==='rendered'">

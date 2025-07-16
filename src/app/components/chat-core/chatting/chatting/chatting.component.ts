@@ -53,6 +53,7 @@ export class ChattingComponent extends ComponentBase {
       takeUntil(this.ngDestroy$),
       map(value => {
         const result = value?.filter(m => m.type !== 'tool' && ((m.data.content?.length ?? 0) > 0)) ?? [];
+        // const result = value
         return result;
       })
     );

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentBase } from '../../../component-base/component-base.component';
-import { ChatDocumentsService } from '../../../../services/chat-core/chat-documents.service';
+import { ChatDocumentsService } from '../../../../services/chat-core/chat-documents/chat-documents.service';
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CurrentRouteParamsService } from '../../../../services/current-route-params.service';

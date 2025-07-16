@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { SocketService } from '../socket.service';
 import { MESSAGE_CHUNK_MESSAGE, MessageChunkMessage } from '../../../model/shared-models/chat-core/socket-messaging/message-chunk-message.socket-model';
 import { ChatRoomsService } from './chat-rooms.service';
-import { EMPTY, filter, map, startWith, switchMap, tap } from 'rxjs';
+import { EMPTY, filter, map, startWith, switchMap } from 'rxjs';
 import { createStoredMessage } from '../../../utils/create-stored-message.utils';
 import { StoredMessageWrapper } from '../../../model/shared-models/chat-core/stored-message-wrapper.utils';
 import { ObjectId } from 'mongodb';
 import { ENTER_CHAT_ROOM, EnterChatRoomMessage, EXIT_CHAT_ROOM, ExitChatRoomMessage } from '../../../model/shared-models/chat-core/socket-messaging/general-messaging.socket-model';
 import { ChattingService } from './chatting.service';
-import { ChatRoomData } from '../../../model/shared-models/chat-core/chat-room-data.model';
 
 @Injectable({
   providedIn: 'root'

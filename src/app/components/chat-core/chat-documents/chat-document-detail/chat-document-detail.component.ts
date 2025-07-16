@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ComponentBase } from '../../../component-base/component-base.component';
-import { ChatDocumentsService } from '../../../../services/chat-core/chat-documents.service';
+import { ChatDocumentsService } from '../../../../services/chat-core/chat-documents/chat-documents.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FloatLabelModule } from 'primeng/floatlabel';

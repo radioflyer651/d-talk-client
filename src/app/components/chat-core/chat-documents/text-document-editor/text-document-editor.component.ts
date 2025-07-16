@@ -9,6 +9,10 @@ import { TextareaModule } from 'primeng/textarea';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TextDocumentData } from '../../../../../model/shared-models/chat-core/documents/document-types/text-document.model';
+import { ChatDocumentsService } from '../../../../services/chat-core/chat-documents/chat-documents.service';
+import { TextDocumentWrapper } from '../../../../../model/chat-documents/text-document.wrapper';
+import { ComponentBase } from '../../../component-base/component-base.component';
+import { BehaviorSubject, from, of, switchMap, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-text-document-editor',
@@ -25,14 +29,50 @@ import { TextDocumentData } from '../../../../../model/shared-models/chat-core/d
   templateUrl: './text-document-editor.component.html',
   styleUrl: './text-document-editor.component.scss'
 })
-export class TextDocumentEditorComponent {
+export class TextDocumentEditorComponent extends ComponentBase {
   constructor(
     readonly sanitizer: DomSanitizer,
+    readonly documentService: ChatDocumentsService,
   ) {
+    super();
   }
 
+
+  // #region document
+  private readonly _document = new BehaviorSubject<TextDocumentData | undefined>(undefined);
+  readonly document$ = this._document.asObservable();
+
   @Input({ required: true })
-  document: TextDocumentData | undefined;
+  get document(): TextDocumentData | undefined {
+    return this._document.getValue();
+  }
+
+  set document(newVal: TextDocumentData | undefined) {
+    this._document.next(newVal);
+  }
+  // #endregion
+
+  ngOnInit() {
+    this.document$.pipe(
+      takeUntil(this.ngDestroy$),
+      switchMap(val => {
+        if (!val) {
+          return of(undefined);
+        }
+
+        return from(this.documentService.getDocumentWrapperFor(val, this.ngDestroy$));
+      })
+    ).subscribe(val => {
+      if (this.wrapper) {
+        this.wrapper.dispose();
+      }
+
+      this.wrapper = val as TextDocumentWrapper;
+    });
+  }
+
+  wrapper: TextDocumentWrapper | undefined;
+
 
   modeOptions = [
     {

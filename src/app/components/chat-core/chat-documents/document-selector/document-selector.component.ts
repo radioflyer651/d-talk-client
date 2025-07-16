@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { takeUntil, startWith, map, Observable } from 'rxjs';
 import { IChatDocumentData } from '../../../../../model/shared-models/chat-core/documents/chat-document.model';
-import { ChatDocumentsService } from '../../../../services/chat-core/chat-documents.service';
+import { ChatDocumentsService } from '../../../../services/chat-core/chat-documents/chat-documents.service';
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
 import { CurrentRouteParamsService } from '../../../../services/current-route-params.service';
 import { UserService } from '../../../../services/user.service';

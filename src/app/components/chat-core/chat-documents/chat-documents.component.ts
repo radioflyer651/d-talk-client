@@ -5,7 +5,7 @@ import { ChatDocumentDetailComponent } from "./chat-document-detail/chat-documen
 import { ComponentBase } from '../../component-base/component-base.component';
 import { CurrentRouteParamsService } from '../../../services/current-route-params.service';
 import { of, switchMap, takeUntil } from 'rxjs';
-import { ChatDocumentsService } from '../../../services/chat-core/chat-documents.service';
+import { ChatDocumentsService } from '../../../services/chat-core/chat-documents/chat-documents.service';
 import { CommonModule } from '@angular/common';
 import { IChatDocumentData } from '../../../../model/shared-models/chat-core/documents/chat-document.model';
 

@@ -23,7 +23,6 @@ import { LoadingComponent } from "./components/loading/loading.component";
   selector: 'app-root',
   imports: [
     CommonModule,
-    SiteHeaderComponent,
     RouterOutlet,
     DrawerModule,
     TextareaModule,

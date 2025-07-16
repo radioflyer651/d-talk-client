@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ComponentBase } from '../../../component-base/component-base.component';
-import { ChatDocumentsService } from '../../../../services/chat-core/chat-documents.service';
+import { ChatDocumentsService } from '../../../../services/chat-core/chat-documents/chat-documents.service';
 import { IChatDocumentData } from '../../../../../model/shared-models/chat-core/documents/chat-document.model';
 import { takeUntil } from 'rxjs';
 import { ChatDocumentPermissions, createChatDocumentPermissions } from '../../../../../model/shared-models/chat-core/documents/chat-document-permissions.model';
