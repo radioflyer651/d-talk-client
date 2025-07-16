@@ -36,13 +36,18 @@
 
     .chat-document-title {
         cursor: pointer;
+        margin-bottom: 0.5em;
+
+        h5 {
+            text-align: center;
+        }
     }
 
     .chat-document-card-wrapper {
-        display: flex;
+        // display: flex;
 
         .chat-document-card-content {
-            flex: 1 1 auto;
+            // flex: 1 1 auto;
         }
     }
 

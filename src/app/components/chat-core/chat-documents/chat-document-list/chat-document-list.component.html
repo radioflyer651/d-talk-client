@@ -23,11 +23,11 @@
                                 <h5>
                                     {{doc.name}}
                                 </h5>
-                                <div class="chat-document-folder">{{doc.folderLocation}}</div>
                             </div>
 
                             <div class="chat-document-card-wrapper">
                                 <div class="chat-document-card-content">
+                                <div class="chat-document-folder">{{doc.folderLocation}}</div>
                                     <div>
                                         <b>Created:</b> {{doc.createdDate | date:'short'}}
                                     </div>
@@ -35,12 +35,13 @@
                                         <b>Updated:</b> {{doc.updatedDate | date:'short'}}
                                     </div>
                                 </div>
-                                <div class="chat-document-card-controls">
+
+                                <div class="footer-button-controls">
                                     <p-button icon="fa fa-trash" severity="danger" size="small" [rounded]="true"
                                         (click)="deleteDocument(doc)"></p-button>
 
                                     <a [href]="`/document/${doc._id}`" target="_blank">
-                                        <p-button icon="fa fa-screen" severity="primary" size="small"
+                                        <p-button icon="fa fa-external-link-alt" severity="primary" size="small"
                                             [rounded]="true"></p-button>
                                     </a>
                                 </div>
