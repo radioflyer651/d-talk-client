@@ -15,6 +15,7 @@ import { ChattingComponent } from './components/chat-core/chatting/chatting/chat
 import { ProjectListComponent } from './components/chat-core/projects/project-list/project-list.component';
 import { ProjectKnowledgeComponent } from './components/chat-core/projects/project-knowledge/project-knowledge.component';
 import { ChatDocumentsComponent } from './components/chat-core/chat-documents/chat-documents.component';
+import { DocumentPopoutComponent } from './components/chat-core/chat-documents/document-popout/document-popout.component';
 
 export const routes: Routes = [
     {
@@ -92,6 +93,10 @@ export const routes: Routes = [
                                 ]
                             }
                         ]
+                    },
+                    {
+                        path: 'document/:documentId',
+                        component: DocumentPopoutComponent
                     },
                     {
                         path: 'chatting',

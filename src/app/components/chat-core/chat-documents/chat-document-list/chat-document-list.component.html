@@ -38,6 +38,11 @@
                                 <div class="chat-document-card-controls">
                                     <p-button icon="fa fa-trash" severity="danger" size="small" [rounded]="true"
                                         (click)="deleteDocument(doc)"></p-button>
+
+                                    <a [href]="`/document/${doc._id}`" target="_blank">
+                                        <p-button icon="fa fa-screen" severity="primary" size="small"
+                                            [rounded]="true"></p-button>
+                                    </a>
                                 </div>
                             </div>
                         </p-panel>

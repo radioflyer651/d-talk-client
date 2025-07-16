@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { Observable, of, shareReplay, startWith, Subject, switchMap } from 'rxjs';
+import { from, lastValueFrom, Observable, of, shareReplay, startWith, Subject, switchMap } from 'rxjs';
 import { ObjectId } from 'mongodb';
 import { ClientApiService } from '../api-clients/api-client.service';
 import { NewDbItem } from '../../../../model/shared-models/db-operation-types.model';
@@ -103,5 +103,17 @@ export class ChatDocumentsService {
 
     // Return the result.
     return await service.registerDocument(target, componentDestroyer$);
+  }
+
+  getDocumentWrapperForId<T extends IChatDocumentData>(documentId: ObjectId, componentDestroyer$: Observable<void>): Promise<ChatDocumentWrapperBase<T>> {
+    return lastValueFrom(this.getDocumentById(documentId).pipe(
+      switchMap(doc => {
+        if (!doc) {
+          return of(undefined);
+        }
+
+        return from(this.getDocumentWrapperFor<T>(doc as T, componentDestroyer$));
+      })
+    )) as Promise<ChatDocumentWrapperBase<T>>;
   }
 }
