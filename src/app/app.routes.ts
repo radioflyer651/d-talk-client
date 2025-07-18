@@ -16,6 +16,8 @@ import { ProjectListComponent } from './components/chat-core/projects/project-li
 import { ProjectKnowledgeComponent } from './components/chat-core/projects/project-knowledge/project-knowledge.component';
 import { ChatDocumentsComponent } from './components/chat-core/chat-documents/chat-documents.component';
 import { DocumentPopoutComponent } from './components/chat-core/chat-documents/document-popout/document-popout.component';
+import { OllamaConfigEditorComponent } from './components/chat-core/agent-configurations/agent-config-editors/ollama-config-editor/ollama-config-editor.component';
+import { OllamaConfigurationsComponent } from './components/chat-core/admin/ollama-configurations/ollama-configurations.component';
 
 export const routes: Routes = [
     {
@@ -97,6 +99,15 @@ export const routes: Routes = [
                     {
                         path: 'document/:documentId',
                         component: DocumentPopoutComponent
+                    },
+                    {
+                        path: 'admin',
+                        children: [
+                            {
+                                path: 'ollama-configurations',
+                                component: OllamaConfigurationsComponent
+                            }
+                        ]
                     },
                     {
                         path: 'chatting',

@@ -10,7 +10,7 @@ export class OllamaModelService implements ILlmModelServiceBase<OllamaModelParam
         return {
             llmService: this.identifier,
             serviceParams: {
-                model: '' // There's no way we can tell what's installed on the local machine, so we can't provide a valid value here.
+                modelId: '', // There's no way to know what this is to start.
             }
         };
     }

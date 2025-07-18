@@ -7,6 +7,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CheckboxModule } from 'primeng/checkbox';
+import { OllamaConfigurationService } from '../../../../../services/chat-core/ollama-configuration.service';
+import { OllamaModelListComponent } from "./ollama-model-list/ollama-model-list.component";
 
 @Component({
   selector: 'app-ollama-config-editor',
@@ -17,12 +19,15 @@ import { CheckboxModule } from 'primeng/checkbox';
     InputNumberModule,
     FloatLabelModule,
     CheckboxModule,
-  ],
+    OllamaModelListComponent
+],
   templateUrl: './ollama-config-editor.component.html',
   styleUrl: './ollama-config-editor.component.scss'
 })
 export class OllamaConfigEditorComponent extends ComponentBase {
-  constructor() {
+  constructor(
+    readonly ollamaConfigurationService: OllamaConfigurationService,
+  ) {
     super();
   }
 
@@ -40,6 +45,7 @@ export class OllamaConfigEditorComponent extends ComponentBase {
     return this.params.serviceParams.numPredict;
   }
   set numPredict(value: number | undefined) {
+    
     this.params.serviceParams.numPredict = value;
   }
 

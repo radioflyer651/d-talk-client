@@ -1,1 +1,82 @@
-<p>ollama-configurations works!</p>
+<ng-template #formatItem let-item="item" let-markerName="markerName">
+    <div class="format-item">
+        <p-floatlabel>
+            <input id="{{markerName}}-start" autocomplete="off" pInputText [(ngModel)]="item.openDelimiter" />
+            <label for="{{markerName}}-start">{{markerName}} Start Marker</label>
+        </p-floatlabel>
+
+        <p-floatlabel>
+            <input id="{{markerName}}-end" autocomplete="off" pInputText [(ngModel)]="item.closeDelimiter" />
+            <label for="{{markerName}}-end">{{markerName}} End Marker</label>
+        </p-floatlabel>
+    </div>
+</ng-template>
+
+
+<div class="ollama-configurations">
+    <div class="configuration-list-container">
+        <p-panel [showHeader]="false">
+            <div>
+                <p-button label="New Config" (click)="createNewConfiguration()"></p-button>
+            </div>
+            <div *ngIf="(ollamaConfigurationService.allConfigurations$ | async) as configurations">
+                <p-dataview [value]="configurations">
+                    <ng-template #list let-configurations>
+                        <div class="configuration-list-item" *ngFor="let config of configurations"
+                            (click)="selectConfiguration(config)">
+                            <h5 class="list-item-title">
+                                {{config.displayName}}
+                            </h5>
+                            <div class="list-item-detail">
+                                <div>
+                                    {{config.modelName}}
+                                </div>
+                                <div>
+                                    {{config.description}}
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                </p-dataview>
+            </div>
+        </p-panel>
+    </div>
+    <div class="configuration-detail-container">
+        <div *ngIf="selectedConfiguration">
+            <p-panel [showHeader]="false">
+                <p-floatlabel>
+                    <input id="display-name" autocomplete="off" pInputText
+                        [(ngModel)]="selectedConfiguration.displayName" />
+                    <label for="display-name">Display Name</label>
+                </p-floatlabel>
+
+                <p-floatlabel>
+                    <input id="configuration-name" autocomplete="off" pInputText
+                        [(ngModel)]="selectedConfiguration.modelName" />
+
+                    <label for="configuration-name">Name</label>
+                </p-floatlabel>
+
+                <p-floatlabel>
+                    <textarea pTextarea id="description" autocomplete="off" pInputText
+                        [(ngModel)]="selectedConfiguration.description"></textarea>
+                    <label for="description">description</label>
+                </p-floatlabel>
+
+                <div class="format-container">
+                    <ng-container
+                        *ngTemplateOutlet="formatItem; context: { item: selectedConfiguration.customFormatting.systemMarkers, markerName: 'System' }"></ng-container>
+                    <ng-container
+                        *ngTemplateOutlet="formatItem; context: { item: selectedConfiguration.customFormatting.userMarkers, markerName: 'User' }"></ng-container>
+                    <ng-container
+                        *ngTemplateOutlet="formatItem; context: { item: selectedConfiguration.customFormatting.aiMarkers, markerName: 'AI' }"></ng-container>
+                </div>
+                <div class="footer-button-controls">
+                    <p-button label="Cancel" (click)="cancel()"></p-button>
+                    <p-button label="OK" (click)="save()"></p-button>
+                </div>
+            </p-panel>
+        </div>
+
+    </div>
+</div>

@@ -12,43 +12,27 @@ export class OllamaConfigurationService {
   private _reloadConfigs = new Subject<void>();
   private _selectedConfigId = new BehaviorSubject<ObjectId | undefined>(undefined);
 
-  constructor(private readonly apiClient: ClientApiService) { }
+  constructor(private readonly apiClient: ClientApiService) {
+    this.initialize();
+  }
 
   reloadConfigs() {
     this._reloadConfigs.next();
   }
 
-  // Observable for all configs
-  get configs$(): Observable<OllamaModelConfiguration[]> {
-    return this._reloadConfigs.pipe(
+  private initialize() {
+    this.allConfigurations$ = this._reloadConfigs.pipe(
       startWith(undefined),
       switchMap(() => this.apiClient.getOllamaModelConfigurations()),
       startWith([])
     );
   }
 
-  // Observable for selected config
-  get selectedConfig$(): Observable<OllamaModelConfiguration | undefined> {
-    return this._selectedConfigId.asObservable().pipe(
-      switchMap((id) => {
-        if (!id) {
-          return of(undefined);
-        }
-        
-        return this.apiClient.getOllamaModelConfigurationById(id);
-      })
-    );
-  }
-
-  get selectedConfigId(): ObjectId | undefined {
-    return this._selectedConfigId.value;
-  }
-  set selectedConfigId(id: ObjectId | undefined) {
-    this._selectedConfigId.next(id);
-  }
+  // Observable for all configs
+  allConfigurations$!: Observable<OllamaModelConfiguration[]>;
 
   // CRUD operations
-  createConfig(config: NewDbItem<OllamaModelConfiguration>) {
+  createConfiguration(config: NewDbItem<OllamaModelConfiguration>) {
     return this.apiClient.createOllamaModelConfiguration(config).pipe(
       switchMap(result => {
         this.reloadConfigs();
@@ -57,7 +41,7 @@ export class OllamaConfigurationService {
     );
   }
 
-  updateConfig(update: Partial<OllamaModelConfiguration> & { _id: ObjectId; }) {
+  updateConfiguration(update: Partial<OllamaModelConfiguration> & { _id: ObjectId; }) {
     return this.apiClient.updateOllamaModelConfiguration(update).pipe(
       switchMap(result => {
         this.reloadConfigs();
@@ -66,12 +50,9 @@ export class OllamaConfigurationService {
     );
   }
 
-  deleteConfig(id: ObjectId) {
+  deleteConfiguration(id: ObjectId) {
     return this.apiClient.deleteOllamaModelConfiguration(id).pipe(
       switchMap(result => {
-        if (this.selectedConfigId && this.selectedConfigId.toString() === id.toString()) {
-          this.selectedConfigId = undefined;
-        }
         this.reloadConfigs();
         return of(result);
       })
@@ -81,7 +62,7 @@ export class OllamaConfigurationService {
   /**
    * Returns an observable of all Ollama model configurations, always up-to-date with reloads.
    */
-  getAllConfigs$(): Observable<OllamaModelConfiguration[]> {
+  getAllConfigurations$(): Observable<OllamaModelConfiguration[]> {
     return this._reloadConfigs.pipe(
       startWith(undefined),
       switchMap(() => this.apiClient.getOllamaModelConfigurations()),

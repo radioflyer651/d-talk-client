@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import { CustomChatFormatting, ModelServiceParams } from "../model-service-params.model";
+import { NewDbItem } from "../../db-operation-types.model";
 
 export interface OllamaModelParams extends ModelServiceParams<OllamaModelServiceParams> {
     llmService: 'ollama';
@@ -28,4 +29,24 @@ export interface OllamaModelConfiguration {
 
     /** Gets or sets the custom formattinf for this configuration. */
     customFormatting: CustomChatFormatting;
+}
+
+export function createOllamaConfiguration(): NewDbItem<OllamaModelConfiguration> {
+    function createFormatItem() {
+        return {
+            openDelimiter: '',
+            closeDelimiter: '',
+        };
+    }
+
+    return {
+        modelName: '',
+        displayName: '',
+        description: '',
+        customFormatting: {
+            systemMarkers: createFormatItem(),
+            userMarkers: createFormatItem(),
+            aiMarkers: createFormatItem(),
+        }
+    };
 }

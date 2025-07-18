@@ -18,7 +18,7 @@
       <ng-container *ngIf="isNavigationVisible">
         <a routerLink="/projects">Projects</a>
         <ng-container *ngIf="isAdminUser">
-          <a>Admin Items</a>
+          <a routerLink="/admin/ollama-configurations">Ollama Models</a>
         </ng-container>
         <a (click)="logout()">Log Out</a>
       </ng-container>
