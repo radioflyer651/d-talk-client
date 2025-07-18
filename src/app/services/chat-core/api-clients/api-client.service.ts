@@ -14,6 +14,7 @@ import { UserRegistration } from '../../../../model/shared-models/user-registrat
 import { TokenService } from '../../token.service';
 import { ClientApiServiceBase } from './api-client-base.service';
 import { IChatDocumentCreationParams, IChatDocumentData } from '../../../../model/shared-models/chat-core/documents/chat-document.model';
+import { OllamaModelConfiguration } from '../../../../model/shared-models/chat-core/chat-model-params/ollama.model-params';
 
 
 
@@ -508,6 +509,58 @@ export class ClientApiService extends ClientApiServiceBase {
     return this.http.put<{ success: boolean; }>(
       this.constructUrl(`chat-room/${roomId}/document-permissions`),
       { chatDocumentReferences },
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Gets all Ollama model configurations.
+   */
+  getOllamaModelConfigurations() {
+    return this.http.get<OllamaModelConfiguration[]>(
+      this.constructUrl('ollama-model-configs'),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Gets a single Ollama model configuration by its ID.
+   */
+  getOllamaModelConfigurationById(id: ObjectId) {
+    return this.http.get<OllamaModelConfiguration>(
+      this.constructUrl(`ollama-model-config/${id}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Creates a new Ollama model configuration.
+   */
+  createOllamaModelConfiguration(config: NewDbItem<OllamaModelConfiguration>) {
+    return this.http.post<OllamaModelConfiguration>(
+      this.constructUrl('ollama-model-config'),
+      config,
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Updates an Ollama model configuration by its ID.
+   */
+  updateOllamaModelConfiguration(update: Partial<OllamaModelConfiguration> & { _id: ObjectId }) {
+    return this.http.put<{ success: boolean }>(
+      this.constructUrl('ollama-model-config'),
+      update,
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Deletes an Ollama model configuration by its ID.
+   */
+  deleteOllamaModelConfiguration(id: ObjectId) {
+    return this.http.delete<{ success: boolean }>(
+      this.constructUrl(`ollama-model-config/${id}`),
       this.optionsBuilder.withAuthorization()
     );
   }
