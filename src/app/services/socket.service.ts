@@ -188,18 +188,18 @@ export class SocketService {
             });
 
             // We need to disconnect when the socket disconnects.
-            socket.on('disconnect', onComplete);
+            // socket.on('disconnect', onComplete);
 
-            const disconnectWatcher = () => {
-              console.error(`Disconnected: Was this supposed to be called???  Calling onComplete on disconnect may be a bug!`);
-            };
-            socket.on('disconnect', disconnectWatcher);
+            // const disconnectWatcher = () => {
+            //   console.error(`Disconnected: Was this supposed to be called???  Calling onComplete on disconnect may be a bug!`);
+            // };
+            // socket.on('disconnect', disconnectWatcher);
 
             // Send the cleanup function.
             return () => {
               // Remove the event handlers.
-              socket.off('disconnect', disconnectWatcher);
-              socket.off('disconnect', onComplete);
+              // socket.off('disconnect', disconnectWatcher);
+              // socket.off('disconnect', onComplete);
               socket.off(event, subscriptionFunction);
             };
           };
