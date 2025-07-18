@@ -17,6 +17,6 @@ export class TextDocumentService implements IDocumentSupportService {
   readonly documentType = TEXT_DOCUMENT_TYPE;
 
   async registerDocument(document: TextDocumentData, destroyer$: Observable<void>): Promise<TextDocumentWrapper> {
-    return new TextDocumentWrapper(document, this.socketService);
+    return new TextDocumentWrapper(document, this.socketService, destroyer$);
   }
 }

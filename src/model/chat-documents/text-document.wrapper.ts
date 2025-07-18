@@ -1,4 +1,4 @@
-import { filter, Observable, takeUntil } from "rxjs";
+import { filter, Observable, takeUntil, debounceTime } from "rxjs";
 import { TextDocumentData } from "../shared-models/chat-core/documents/document-types/text-document.model";
 import { ChatDocumentWrapperBase } from "./chat-document-base.wrapper";
 import { type SocketService } from "../../app/services/socket.service";
@@ -36,7 +36,10 @@ export class TextDocumentWrapper extends ChatDocumentWrapperBase<TextDocumentDat
         });
 
         this.propertyChanged$
-            .pipe(filter(v => v.property === 'content'))
+            .pipe(
+                filter(v => v.property === 'content'),
+                debounceTime(500)
+            )
             .subscribe(v => {
                 this.socketService.sendMessage(TEXT_DOCUMENT_CONTENT_CHANGE, <TextDocumentContentChangeMessage>{
                     documentId: this.document._id,
