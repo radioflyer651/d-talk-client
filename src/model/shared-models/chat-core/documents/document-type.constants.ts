@@ -22,6 +22,7 @@ function createDefaultParamsBase(docType: string, projectId: ObjectId, userId: O
         name: "New Document",
         type: docType,
         folderLocation: 'documents',
+        description: '',
         projectId: projectId,
         lastChangedBy: { entityType: 'user', id: userId }
     };

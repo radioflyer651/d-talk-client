@@ -97,6 +97,9 @@ export class NewDocumentComponent extends ComponentBase {
     const userId = this.userService.user!.userId;
 
     const creationProps = docInfo.createDefaultParameters(projectId, userId);
+    creationProps.name = this.newDocumentName;
+    creationProps.folderLocation = this.newDocumentPath;
+    creationProps.description = this.newDocumentDescription;
 
     this.chatDocumentsService.createDocument(creationProps).subscribe(() => {
       this.visible = false;
