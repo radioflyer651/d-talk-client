@@ -16,7 +16,19 @@ export class TextDocumentWrapper extends ChatDocumentWrapperBase<TextDocumentDat
     }
 
     private initialize() {
-        this.socketService.sendMessage(ENTER_TEXT_DOCUMENT_ROOM, <EnterTextDocumentRoomMessage>{ documentId: this.document._id });
+        const enterTextDocumentRoom = () => {
+            this.socketService.sendMessage(ENTER_TEXT_DOCUMENT_ROOM, <EnterTextDocumentRoomMessage>{ documentId: this.document._id });
+        };
+        // Enter the text document room.
+        enterTextDocumentRoom();
+
+        // If we lose connection and reconnect, we need to enter the text document room again.
+        this.socketService.subscribeToReconnect().pipe(
+            takeUntil(this.ngDestroy$)
+        ).subscribe(() => {
+            enterTextDocumentRoom();
+        });
+
         this.socketService.subscribeToSocketEvent(TEXT_DOCUMENT_CONTENT_CHANGE).pipe(
             takeUntil(this.ngDestroy$),
             filter(ev => {

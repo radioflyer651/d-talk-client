@@ -1,3 +1,3 @@
-<div *ngIf="!!document">
-    <app-text-document-editor *ngIf="document.type==='text'" [document]="$any(document)"></app-text-document-editor>
+<div *ngIf="!!document" class="document-container">
+    <app-text-document-editor [inPopoutScreen]="inPopoutScreen" *ngIf="document.type==='text'" [document]="$any(document)"></app-text-document-editor>
 </div>

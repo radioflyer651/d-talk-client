@@ -17,4 +17,7 @@ export class ChatDocumentEditorComponent {
   /** Gets or sets the document being edited in this editor. */
   @Input({ required: true })
   document?: IChatDocumentData;
+
+  @Input()
+  inPopoutScreen: boolean = false;
 }

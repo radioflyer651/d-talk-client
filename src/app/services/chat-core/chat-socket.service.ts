@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { SocketService } from '../socket.service';
 import { MESSAGE_CHUNK_MESSAGE, MessageChunkMessage } from '../../../model/shared-models/chat-core/socket-messaging/message-chunk-message.socket-model';
 import { ChatRoomsService } from './chat-rooms.service';
-import { EMPTY, filter, map, startWith, switchMap } from 'rxjs';
+import { EMPTY, filter, map, startWith, Subscription, switchMap } from 'rxjs';
 import { createStoredMessage } from '../../../utils/create-stored-message.utils';
 import { StoredMessageWrapper } from '../../../model/shared-models/chat-core/stored-message-wrapper.utils';
 import { ObjectId } from 'mongodb';
@@ -40,18 +40,30 @@ export class ChatSocketService {
       })
     );
 
-    connectedRoom$.subscribe(room => {
-      if (previousRoomId && (!room || previousRoomId !== room._id)) {
-        this.leaveChatRoom(previousRoomId);
-      }
+    let rejoinSubscription: Subscription | undefined;
+    connectedRoom$.subscribe({
+      next: room => {
+        if (previousRoomId && (!room || previousRoomId !== room._id)) {
+          this.leaveChatRoom(previousRoomId);
+        }
+        rejoinSubscription?.unsubscribe();
 
-      if (room && previousRoomId !== room._id) {
-        this.joinChatRoom(room._id);
-        previousRoomId = room._id;
-      }
+        if (room && previousRoomId !== room._id) {
+          this.joinChatRoom(room._id);
+          previousRoomId = room._id;
+          rejoinSubscription = this.socketService.subscribeToReconnect()
+            .subscribe(() => {
+              this.joinChatRoom(room._id);
+            });
+        }
 
-      if (!room) {
-        previousRoomId = null;
+        if (!room) {
+          previousRoomId = null;
+          rejoinSubscription = undefined;
+        }
+      },
+      complete: () => {
+
       }
     });
 

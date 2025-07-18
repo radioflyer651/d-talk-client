@@ -73,6 +73,9 @@ export class TextDocumentEditorComponent extends ComponentBase {
 
   wrapper: TextDocumentWrapper | undefined;
 
+  @Input()
+  inPopoutScreen: boolean = false;
+
 
   modeOptions = [
     {

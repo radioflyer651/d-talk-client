@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
-import { switchMap, of, Observable, EMPTY, Subject } from 'rxjs';
-import { io } from 'socket.io-client';
+import { switchMap, of, Observable, EMPTY, Subject, BehaviorSubject } from 'rxjs';
+import { io, Socket } from 'socket.io-client';
 import { environment } from '../../environments/environment';
 import { ReadonlySubject } from '../../utils/readonly-subject';
 import { ClientApiService } from './chat-core/api-clients/api-client.service';
 import { TokenService } from './token.service';
 import { IoSocketType } from '../../model/io-sockets.model';
 import { SocketEvent } from '../../model/socket-event.model';
+
+export type SocketConnectionStateTypes = 'connected' | 'disconnected';
 
 /** This service handles socket.io management, and is responsible
  *   for advertising sockets as they are connected and disconnected. */
@@ -35,7 +37,7 @@ export class SocketService {
         console.log('Connected.');
       });
 
-      s.on('disconnected', () => {
+      s.on('disconnect', () => {
         console.warn(`Socket Disconnected.`);
       });
 
@@ -175,6 +177,7 @@ export class SocketService {
             }
 
             const onComplete = () => {
+              console.log(`Disconnected`);
               subscriber.complete();
             };
 
@@ -187,9 +190,15 @@ export class SocketService {
             // We need to disconnect when the socket disconnects.
             socket.on('disconnect', onComplete);
 
+            const disconnectWatcher = () => {
+              console.error(`Disconnected: Was this supposed to be called???  Calling onComplete on disconnect may be a bug!`);
+            };
+            socket.on('disconnect', disconnectWatcher);
+
             // Send the cleanup function.
             return () => {
               // Remove the event handlers.
+              socket.off('disconnect', disconnectWatcher);
               socket.off('disconnect', onComplete);
               socket.off(event, subscriptionFunction);
             };
@@ -199,6 +208,30 @@ export class SocketService {
           socket.on(event, subscriptionFunction);
         });
       })
+    );
+  }
+
+  subscribeToReconnect(): Observable<void> {
+    return this.socket$.pipe(
+      switchMap(socket => {
+        if (!socket) {
+          throw new Error(`No socket to connect to.`);
+        }
+
+        return new Observable<void>((subscriber) => {
+          const emitFn = () => {
+            subscriber.next();
+          };
+
+          socket.io.on('reconnect', emitFn);
+
+
+          return () => {
+            socket.io.off('reconnect', emitFn);
+            subscriber.complete();
+          };
+        });
+      }),
     );
   }
 
