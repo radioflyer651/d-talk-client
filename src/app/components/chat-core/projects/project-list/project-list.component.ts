@@ -55,7 +55,9 @@ export class ProjectListComponent extends ComponentBase {
         switchMap((searchText) => {
           return this.projectsService.projectListing$.pipe(
             map(projectList => {
-              return projectList.filter(l => l.name.toLowerCase().includes(searchText.toLocaleLowerCase()));
+              return projectList.filter(l => l.name.toLowerCase().includes(searchText.toLocaleLowerCase())).sort((p1, p2) => {
+                return p1.name.localeCompare(p2.name);
+              });
             })
           );
         })
