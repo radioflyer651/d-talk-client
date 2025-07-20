@@ -48,7 +48,7 @@ export class LoginComponent extends ComponentBase {
       await this.userService.login(this.loginForm.value);
       this.router.navigate(['/projects']);
     } catch (err) {
-      console.log(`Error: ${err?.toString()}`);
+      console.log(`Error: ${JSON.stringify(err)}`);
       this.messagingService.sendUserMessage({
         level: 'error',
         content: `There was an error logging in: ${err?.toString()}`
