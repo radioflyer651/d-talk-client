@@ -8,6 +8,7 @@ import { DrunkPluginParamsComponent } from "../plugin-params/drunk-plugin-params
 import { ButtonModule } from 'primeng/button';
 import { IgnoreSpecificAgentPluginParamsComponent } from "../plugin-params/ignore-specific-agent-plugin-params/ignore-specific-agent-plugin-params.component";
 import { LabeledMemoryPluginParamsComponent } from "../plugin-params/label-memory-plugin-params/label-memory-plugin-params.component";
+import { CreateTextFilePluginParamsComponent } from "../plugin-params/create-text-file-plugin-params/create-text-file-plugin-params.component";
 
 @Component({
   selector: 'app-plugin-options-dialog',
@@ -18,7 +19,8 @@ import { LabeledMemoryPluginParamsComponent } from "../plugin-params/label-memor
     DrunkPluginParamsComponent,
     ButtonModule,
     IgnoreSpecificAgentPluginParamsComponent,
-    LabeledMemoryPluginParamsComponent
+    LabeledMemoryPluginParamsComponent,
+    CreateTextFilePluginParamsComponent
 ],
   templateUrl: './plugin-options-dialog.component.html',
   styleUrl: './plugin-options-dialog.component.scss'

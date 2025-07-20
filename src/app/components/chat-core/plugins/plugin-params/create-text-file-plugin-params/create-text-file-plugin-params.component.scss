@@ -1,0 +1,16 @@
+.create-text-file-params {
+    min-width: 50vw;
+
+    ::ng-deep.p-floatlabel {
+        width: 100%;
+
+        input {
+            width: 100%;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 10em;
+        }
+    }
+}

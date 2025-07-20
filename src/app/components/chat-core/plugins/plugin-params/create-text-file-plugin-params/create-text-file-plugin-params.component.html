@@ -1,0 +1,16 @@
+<div class="create-text-file-params">
+    <div class="checkbox-container">
+        <p-checkbox [binary]="true" [(ngModel)]="params.canCreateSubfolders"></p-checkbox>
+        <label for="can-create-folders">Allow New Folders</label>
+    </div>
+
+    <p-floatlabel>
+        <input id="root-folder" autocomplete="off" pInputText [(ngModel)]="params.rootFolder" />
+        <label for="root-folder">Root Folder</label>
+    </p-floatlabel>
+
+    <p-floatlabel>
+        <textarea pTextarea id="instructions" [(ngModel)]="params.instructions"></textarea>
+        <label for="instructions">Instructions</label>
+    </p-floatlabel>
+</div>

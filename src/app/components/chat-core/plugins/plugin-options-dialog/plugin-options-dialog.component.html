@@ -9,6 +9,8 @@
                 [params]="pluginParams"></app-ignore-specific-agent-plugin-params>
             <app-label-memory-plugin-params *ngIf="pluginType==='labeled-memory-plugin'"
                 [params]="pluginParams"></app-label-memory-plugin-params>
+            <app-create-text-file-plugin-params [params]="pluginParams"
+                *ngIf="pluginType==='create-text-documents-plugin'"></app-create-text-file-plugin-params>
         </div>
 
         <ng-template #footer>
