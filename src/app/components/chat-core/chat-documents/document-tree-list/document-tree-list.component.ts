@@ -1,45 +1,33 @@
 import { Component } from '@angular/core';
 import { ComponentBase } from '../../../component-base/component-base.component';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ChatDocumentsService } from '../../../../services/chat-core/chat-documents/chat-documents.service';
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { CurrentRouteParamsService } from '../../../../services/current-route-params.service';
-import { map, Observable, startWith, takeUntil } from 'rxjs';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DataViewModule } from 'primeng/dataview';
-import { DialogModule } from 'primeng/dialog';
-import { FloatLabel } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
-import { PanelModule } from 'primeng/panel';
 import { UserService } from '../../../../services/user.service';
-import { TextareaModule } from 'primeng/textarea';
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { TreeModule } from 'primeng/tree';
+import { TreeNode } from 'primeng/api';
+import { map, takeUntil } from 'rxjs';
+import { createDocumentTree } from '../../../../../utils/create-document-tree.utils';
+import { ButtonModule } from 'primeng/button';
 import { IChatDocumentData } from '../../../../../model/shared-models/chat-core/documents/chat-document.model';
 import { NewDocumentComponent } from "../document-creation/new-document/new-document.component";
 
 @Component({
-  selector: 'app-chat-document-list',
+  selector: 'app-document-tree-list',
   imports: [
     FormsModule,
     CommonModule,
-    CardModule,
-    PanelModule,
-    InputTextModule,
-    TextareaModule,
-    FloatLabel,
+    TreeModule,
     ButtonModule,
-    DataViewModule,
-    ConfirmDialogModule,
-    DialogModule,
-    NewDocumentComponent,
+    NewDocumentComponent
 ],
-  templateUrl: './chat-document-list.component.html',
-  styleUrl: './chat-document-list.component.scss'
+  templateUrl: './document-tree-list.component.html',
+  styleUrl: './document-tree-list.component.scss'
 })
-export class ChatDocumentListComponent extends ComponentBase {
+export class DocumentTreeListComponent extends ComponentBase {
   searchText: string = '';
 
   constructor(
@@ -60,23 +48,34 @@ export class ChatDocumentListComponent extends ComponentBase {
       this.chatDocumentsService.currentProjectId = params['projectId'];
     });
 
-    this.chatDocuments$ = this.chatDocumentsService.documentList$.pipe(
+    this.chatDocumentsService.documentList$.pipe(
       takeUntil(this.ngDestroy$),
-      map(docs => {
-        if (!docs) {
-          return [];
-        }
-        // Filter by searchText
-        return docs.filter(doc =>
-          doc.name?.toLowerCase().includes(this.searchText.toLowerCase()) ||
-          doc.folderLocation?.toLowerCase().includes(this.searchText.toLowerCase()) ||
-          doc.description?.toLowerCase().includes(this.searchText.toLowerCase())
-        );
-      })
-    );
+    ).subscribe(docs => {
+      if (!docs) {
+        docs = [];
+      }
+
+      const treeResult = createDocumentTree(docs, false);
+      this.rootNodes = treeResult.root.children!;
+      this.rootNodes.forEach(n => n.expanded = true);
+      this.allNodes = treeResult.allNodes;
+    });
   }
 
-  chatDocuments$!: Observable<IChatDocumentData[]>;
+  rootNodes: TreeNode[] = [];
+  allNodes: TreeNode[] = [];
+
+  private _selectedNode: TreeNode | undefined = undefined;
+  get selectedNode(): TreeNode | undefined {
+    return this._selectedNode;
+  }
+  set selectedNode(value: TreeNode | undefined) {
+    this._selectedNode = value;
+    if (value) {
+      this.router.navigate([value.key], { relativeTo: this.route });
+    }
+  }
+
 
   newDocumentName: string = '';
   newDocumentDescription: string = '';

@@ -1,0 +1,21 @@
+<p-button class="new-chat-document-btn" icon="fa fa-plus" label="New Document"
+    (click)="showNewDocumentDialog()"></p-button>
+
+<p-tree [value]="rootNodes" [(selection)]="selectedNode" selectionMode="single">
+    <ng-template let-node pTemplate="default">
+        <div class="node-item">
+            <div class="button-container" *ngIf="typeof node.data !== 'string'">
+                <p-button icon="fa fa-trash" severity="danger" size="small" [rounded]="true"
+                    (click)="deleteDocument(node.data)"></p-button>
+
+                <a [href]="`/document/${node.data._id}`" target="_blank">
+                    <p-button icon="fa fa-external-link-alt" severity="primary" size="small"
+                        [rounded]="true"></p-button>
+                </a>
+            </div>
+            <div class="node-label"> {{node.label}} </div>
+        </div>
+    </ng-template>
+</p-tree>
+
+<app-new-document [(visible)]="isNewDocumentDialogVisible"></app-new-document>

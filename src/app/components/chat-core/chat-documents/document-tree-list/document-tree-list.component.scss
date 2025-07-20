@@ -1,0 +1,18 @@
+.node-item {
+    display: flex;
+    align-items: baseline;
+
+    .node-label {
+        font-size: 0.95rem;
+    }
+
+    .button-container {
+        display: flex;
+        flex-wrap: nowrap;
+
+        transform: scale(0.75);
+        > * {
+            margin-right: 0.5em;
+        }
+    }
+}

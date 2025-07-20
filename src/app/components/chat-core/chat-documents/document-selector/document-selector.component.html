@@ -1,5 +1,7 @@
-<p-floatlabel class="document-selection-label">
-    <p-select appendTo="body" [options]="chatDocuments" [(ngModel)]="selectedItem"
-        dataKey="_id" optionLabel="name"></p-select>
+<!-- <p-floatlabel class="document-selection-label">
+    <p-select appendTo="body" [options]="chatDocuments" [(ngModel)]="selectedItem" dataKey="_id"
+        optionLabel="name"></p-select>
     <label for="selected-document">Document</label>
-</p-floatlabel>
+</p-floatlabel> -->
+
+<p-tree [value]="documentNodes" [(selection)]="selectedTreeDocument" selectionMode="single"></p-tree>

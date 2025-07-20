@@ -25,7 +25,9 @@ export class ChatDocumentsService {
   documentList$: Observable<IChatDocumentData[]> = this._reloadDocuments.pipe(
     startWith(undefined),
     switchMap(() => {
-      if (!this.currentProjectId) return of([]);
+      if (!this.currentProjectId) {
+        return of([]);
+      }
       return this.apiClient.getChatDocumentListItemsForProject(this.currentProjectId);
     }),
     shareReplay(1)
@@ -35,7 +37,9 @@ export class ChatDocumentsService {
   documents$: Observable<IChatDocumentData[]> = this._reloadDocuments.pipe(
     startWith(undefined),
     switchMap(() => {
-      if (!this.currentProjectId) return of([]);
+      if (!this.currentProjectId) {
+        return of([]);
+      }
       return this.apiClient.getChatDocumentsForProject(this.currentProjectId);
     })
   );
@@ -46,6 +50,9 @@ export class ChatDocumentsService {
     return this._currentProjectId;
   }
   set currentProjectId(id: ObjectId | undefined) {
+    if (this._currentProjectId === id) {
+      return;
+    }
     this._currentProjectId = id;
     this.reloadDocuments();
   }

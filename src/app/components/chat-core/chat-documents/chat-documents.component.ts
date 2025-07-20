@@ -8,6 +8,7 @@ import { of, switchMap, takeUntil } from 'rxjs';
 import { ChatDocumentsService } from '../../../services/chat-core/chat-documents/chat-documents.service';
 import { CommonModule } from '@angular/common';
 import { IChatDocumentData } from '../../../../model/shared-models/chat-core/documents/chat-document.model';
+import { DocumentTreeListComponent } from "./document-tree-list/document-tree-list.component";
 
 @Component({
   selector: 'app-chat-documents',
@@ -15,8 +16,9 @@ import { IChatDocumentData } from '../../../../model/shared-models/chat-core/doc
     CommonModule,
     RouterModule,
     ChatDocumentListComponent,
-    ChatDocumentDetailComponent
-  ],
+    ChatDocumentDetailComponent,
+    DocumentTreeListComponent
+],
   templateUrl: './chat-documents.component.html',
   styleUrl: './chat-documents.component.scss'
 })

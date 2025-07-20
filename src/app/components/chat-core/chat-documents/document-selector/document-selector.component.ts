@@ -12,6 +12,9 @@ import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ObjectId } from 'mongodb';
+import { TreeModule } from 'primeng/tree';
+import { TreeNode } from 'primeng/api';
+import { createDocumentTree } from '../../../../../utils/create-document-tree.utils';
 
 @Component({
   selector: 'app-document-selector',
@@ -20,6 +23,8 @@ import { ObjectId } from 'mongodb';
     FormsModule,
     SelectModule,
     FloatLabelModule,
+    TreeModule,
+
   ],
   templateUrl: './document-selector.component.html',
   styleUrl: './document-selector.component.scss'
@@ -48,10 +53,26 @@ export class DocumentSelectorComponent extends ComponentBase {
       takeUntil(this.ngDestroy$),
     ).subscribe(docs => {
       this.chatDocuments = docs ?? [];
+
+      const treeNodeResult = createDocumentTree(this.chatDocuments);
+      this.documentNodes = treeNodeResult.root.children!;
+      this.allNodes = treeNodeResult.allNodes;
     });
   }
 
   chatDocuments: IChatDocumentData[] = [];
+
+  get selectedTreeDocument(): TreeNode | undefined {
+    return this.allNodes.find(n => n.key === this.selectedDocumentId);
+  }
+  set selectedTreeDocument(value: TreeNode | undefined) {
+    if (this.selectedDocumentId !== value?.key) {
+      this.selectedDocumentId = value?.key;
+    }
+  }
+
+  allNodes: TreeNode[] = [];
+  documentNodes: TreeNode[] = [];
 
   private _selectedDocumentId: ObjectId | undefined = undefined;
   @Input()
@@ -73,5 +94,7 @@ export class DocumentSelectorComponent extends ComponentBase {
 
   @Output()
   selectedDocumentIdChange = new EventEmitter<ObjectId | undefined>();
+
+
 
 }
