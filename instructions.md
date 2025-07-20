@@ -1,6 +1,9 @@
 
 
 # Instructions
+These are common instructions for the AI if using Copilot, and needing to add some file context.  Most of the time, it seems better to just drag/drop files into its context directly, of things you think it should know for your requests.  Having it search for needed items really seems like a waste of time, and leads to buggy results.
+
+Yes, some of this application was "vibe-coded", but mostly the boiler plate stuff (CRUD methods, API methods, etc.).  The design was and continues to be conceived by real humans.
 
 ## Common Services
 Use the following services to find and store application data.
