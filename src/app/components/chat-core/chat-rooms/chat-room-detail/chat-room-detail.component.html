@@ -81,12 +81,12 @@
                         draggable="true" (dragstart)="onJobInstanceDragStart($event, instance, i)"
                         (dragend)="onJobInstanceDragEnd($event, instance, i)">
 
-                        <div class="object-panel-header job-instance d-flex-header">
+                        <div class="object-panel-header job-instance">
+                            <app-chat-job-order-control [targetChatJob]="instance"></app-chat-job-order-control>
                             <ng-container *ngIf="!!instance?.configuration">
-                                <span>{{ instance.configuration.name }}</span>
+                                <div class="job-instance-name">{{ instance.configuration.name }}</div>
                             </ng-container>
 
-                            <app-chat-job-order-control [targetChatJob]="instance"></app-chat-job-order-control>
                             <button pButton [rounded]="true" type="button" size="small" severity="danger"
                                 icon="fa fa-trash header-btn delete-btn"
                                 (click)="confirmDeleteJobInstance(instance)"></button>

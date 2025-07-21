@@ -98,6 +98,20 @@
         border-radius: 8px 8px 0 0;
     }
 
+    .object-panel-header {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        app-chat-job-order-control {
+            // flex: 0 0 0;
+        }
+
+        .job-instance-name {
+            flex: 1 1 auto;
+        }
+    }
+
     .object-panel-header.d-flex-header {
         display: flex;
         align-items: center;
