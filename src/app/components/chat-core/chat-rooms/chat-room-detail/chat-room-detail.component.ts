@@ -27,6 +27,7 @@ import { ChatRoomData } from '../../../../../model/shared-models/chat-core/chat-
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DocumentPermissionsComponent } from "../../chat-documents/document-permissions/document-permissions.component";
 import { SelectModule } from 'primeng/select';
+import { ChatJobOrderControlComponent } from "../../chat-job-order-control/chat-job-order-control.component";
 
 @Component({
   selector: 'app-chat-room-detail',
@@ -44,7 +45,8 @@ import { SelectModule } from 'primeng/select';
     PositionableMessageListComponent,
     DocumentPermissionsComponent,
     SelectModule,
-  ],
+    ChatJobOrderControlComponent
+],
   templateUrl: './chat-room-detail.component.html',
   styleUrl: './chat-room-detail.component.scss',
   providers: [ConfirmationService]
@@ -328,7 +330,7 @@ export class ChatRoomDetailComponent extends ComponentBase {
         this.chatRoomService.reloadSelectedChatRoom();
       });
     }
-    
+
     this.isPartnerSelectionDialogVisible = false;
   }
 

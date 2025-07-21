@@ -4,14 +4,14 @@ import { ChattingService } from '../../../../../services/chat-core/chatting.serv
 import { ChatRoomsService } from '../../../../../services/chat-core/chat-rooms.service';
 import { ChatJobsService } from '../../../../../services/chat-core/chat-jobs.service';
 import { ActivatedRoute } from '@angular/router';
-import { map, Observable, takeUntil } from 'rxjs';
+import { takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { ChatJobInstance } from '../../../../../../model/shared-models/chat-core/chat-job-instance.model';
-import { LinkedJobInstance } from '../../../../../../model/linked-job-instance.model';
 import { AgentInstanceService } from '../../../../../services/chat-core/agent-instance.service';
 import { ProjectsService } from '../../../../../services/chat-core/projects.service';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
+import { ChatJobOrderControlComponent } from "../../../chat-job-order-control/chat-job-order-control.component";
 
 @Component({
   selector: 'app-chatting-job-list',
@@ -19,7 +19,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     FormsModule,
     CheckboxModule,
-  ],
+    ChatJobOrderControlComponent
+],
   templateUrl: './chatting-job-list.component.html',
   styleUrl: './chatting-job-list.component.scss'
 })
