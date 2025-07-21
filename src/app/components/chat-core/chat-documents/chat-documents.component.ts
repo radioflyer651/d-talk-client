@@ -15,7 +15,6 @@ import { DocumentTreeListComponent } from "./document-tree-list/document-tree-li
   imports: [
     CommonModule,
     RouterModule,
-    ChatDocumentListComponent,
     ChatDocumentDetailComponent,
     DocumentTreeListComponent
 ],

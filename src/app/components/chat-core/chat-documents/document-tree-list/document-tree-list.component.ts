@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TreeModule } from 'primeng/tree';
 import { TreeNode } from 'primeng/api';
-import { map, takeUntil } from 'rxjs';
+import { lastValueFrom, map, takeUntil } from 'rxjs';
 import { createDocumentTree } from '../../../../../utils/create-document-tree.utils';
 import { ButtonModule } from 'primeng/button';
 import { IChatDocumentData } from '../../../../../model/shared-models/chat-core/documents/chat-document.model';
@@ -23,7 +23,7 @@ import { NewDocumentComponent } from "../document-creation/new-document/new-docu
     TreeModule,
     ButtonModule,
     NewDocumentComponent
-],
+  ],
   templateUrl: './document-tree-list.component.html',
   styleUrl: './document-tree-list.component.scss'
 })
@@ -46,6 +46,7 @@ export class DocumentTreeListComponent extends ComponentBase {
       takeUntil(this.ngDestroy$)
     ).subscribe(params => {
       this.chatDocumentsService.currentProjectId = params['projectId'];
+      this.selectedDocumentId = params['documentId'];
     });
 
     this.chatDocumentsService.documentList$.pipe(
@@ -57,21 +58,31 @@ export class DocumentTreeListComponent extends ComponentBase {
 
       const treeResult = createDocumentTree(docs, false);
       this.rootNodes = treeResult.root.children!;
-      this.rootNodes.forEach(n => n.expanded = true);
       this.allNodes = treeResult.allNodes;
+      this.allNodes.forEach(n => n.expanded = true);
     });
   }
 
   rootNodes: TreeNode[] = [];
   allNodes: TreeNode[] = [];
 
-  private _selectedNode: TreeNode | undefined = undefined;
+  selectedDocumentId: string | undefined;
+
   get selectedNode(): TreeNode | undefined {
-    return this._selectedNode;
+    if (!this.selectedDocumentId) {
+      return undefined;
+    }
+
+    return this.allNodes.find(n => n.key === this.selectedDocumentId);
   }
   set selectedNode(value: TreeNode | undefined) {
-    this._selectedNode = value;
+    if (!value) {
+      this.selectedDocumentId = undefined;
+      // Remove the documentId route param from the URL
+      this.router.navigate(['chat-documents'], { relativeTo: this.route.parent });
+    }
     if (value) {
+      this.selectedDocumentId = value.key;
       this.router.navigate([value.key], { relativeTo: this.route });
     }
   }
@@ -92,9 +103,15 @@ export class DocumentTreeListComponent extends ComponentBase {
     this.router.navigate([doc._id], { relativeTo: this.route });
   }
 
-  deleteDocument(doc: IChatDocumentData) {
+  async deleteDocument(doc: IChatDocumentData) {
     if (doc._id) {
-      this.chatDocumentsService.deleteDocument(doc._id).subscribe();
+      console.log(this.route.snapshot);
+      await lastValueFrom(this.chatDocumentsService.deleteDocument(doc._id));
+      // Deselect the current node, if we just deleted it.
+      const selectedDocumentId = this.selectedNode?.data._id as string | undefined;
+      if (selectedDocumentId === doc._id) {
+        this.selectedNode = undefined;
+      }
     }
   }
 }
