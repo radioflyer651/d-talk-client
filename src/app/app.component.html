@@ -1,18 +1,9 @@
-
-
-<div class="floater-container" *ngIf="(pageSizeService.isSkinnyPage$ | async) && (userService.isUserLoggedIn$ | async)">
-  <div class="floater">
-    <p-button label="Chat" icon="pi pi-sparkles" [rounded]="true" (click)="toggleChatSlideout()"
-      [raised]="true"></p-button>
-  </div>
-</div>
-
-<div class="floater-container"
+<!-- <div class="floater-container"
   *ngIf="(pageSizeService.isSkinnyPage$ | async) && !(userService.isUserLoggedIn$ | async)">
   <div class="floater">
     <p-button label="Login" icon="pi pi-user" [rounded]="true" [raised]="true" (click)="login()"></p-button>
   </div>
-</div>
+</div> -->
 
 <div class="site-content-container">
   <div class="left-side">

@@ -1,143 +1,145 @@
-<p-tabs [(value)]="selectedTabId">
-    <p-tablist>
-        <p-tab [value]="0">
-            Room Configuration
-        </p-tab>
-        <p-tab [value]="1">
-            Room Messages
-        </p-tab>
-        <p-tab [value]="2">
-            Documents
-        </p-tab>
-    </p-tablist>
-</p-tabs>
+<div class="chat-room-detail-component">
+    <p-tabs [(value)]="selectedTabId">
+        <p-tablist>
+            <p-tab [value]="0">
+                Room Configuration
+            </p-tab>
+            <p-tab [value]="1">
+                Room Messages
+            </p-tab>
+            <p-tab [value]="2">
+                Documents
+            </p-tab>
+        </p-tablist>
+    </p-tabs>
 
-<div class="tab-content" *ngIf="selectedTabId===0">
-    <div class="chat-room-detail-columns">
-        <div class="column column-1">
-            <h3>Partner Templates</h3>
-            <div *ngIf="agentConfigurations$ | async as agentConfigurations; else noAgents">
-                <div *ngFor="let agent of agentConfigurations" class="object-panel">
-                    <div class="object-panel-header agent-template d-flex-header">
-                        <span>{{ agent.name }} <span *ngIf="agent.chatName">({{ agent.chatName }})</span></span>
-                        <button pButton [rounded]="true" type="button" size="small" icon="fa fa-plus"
-                            (click)="createAgentInstance(agent)"></button>
+    <div class="tab-content" *ngIf="selectedTabId===0">
+        <div class="chat-room-detail-columns">
+            <div class="column column-1">
+                <h3>Partner Templates</h3>
+                <div *ngIf="agentConfigurations$ | async as agentConfigurations; else noAgents">
+                    <div *ngFor="let agent of agentConfigurations" class="object-panel">
+                        <div class="object-panel-header agent-template d-flex-header">
+                            <span>{{ agent.name }} <span *ngIf="agent.chatName">({{ agent.chatName }})</span></span>
+                            <button pButton [rounded]="true" type="button" size="small" icon="fa fa-plus"
+                                (click)="createAgentInstance(agent)"></button>
+                        </div>
                     </div>
                 </div>
+                <ng-template #noAgents>
+                    <div>No agent templates found for this project.</div>
+                </ng-template>
             </div>
-            <ng-template #noAgents>
-                <div>No agent templates found for this project.</div>
-            </ng-template>
-        </div>
 
-        <div class="column column-2">
-            <h3>Task Templates</h3>
-            <div *ngIf="chatJobConfigurations$ | async as chatJobs; else noJobs">
-                <div *ngFor="let job of chatJobs" class="object-panel">
-                    <div class="object-panel-header job-template d-flex-header">
-                        <span>{{ job.name }}</span>
-                        <button pButton [rounded]="true" type="button" size="small" icon="fa fa-plus"
-                            (click)="createJobInstance(job)"></button>
+            <div class="column column-2">
+                <h3>Task Templates</h3>
+                <div *ngIf="chatJobConfigurations$ | async as chatJobs; else noJobs">
+                    <div *ngFor="let job of chatJobs" class="object-panel">
+                        <div class="object-panel-header job-template d-flex-header">
+                            <span>{{ job.name }}</span>
+                            <button pButton [rounded]="true" type="button" size="small" icon="fa fa-plus"
+                                (click)="createJobInstance(job)"></button>
+                        </div>
                     </div>
                 </div>
+                <ng-template #noJobs>
+                    <div>No chat task templates found for this project.</div>
+                </ng-template>
             </div>
-            <ng-template #noJobs>
-                <div>No chat task templates found for this project.</div>
-            </ng-template>
-        </div>
 
-        <div class="column column-3">
-            <h3>Chat Room Partners</h3>
-            <div *ngIf="agentInstances$ | async as agentInstances; else noAgentInstances">
-                <div *ngIf="agentInstances.length < 1">No chat partners found for this chat room.</div>
+            <div class="column column-3">
+                <h3>Chat Room Partners</h3>
+                <div *ngIf="agentInstances$ | async as agentInstances; else noAgentInstances">
+                    <div *ngIf="agentInstances.length < 1">No chat partners found for this chat room.</div>
 
-                <div *ngFor="let instance of agentInstances" class="object-panel" draggable="true"
-                    (dragstart)="onAgentInstanceDragStart($event, instance)"
-                    (dragend)="onAgentInstanceDragEnd($event, instance)">
+                    <div *ngFor="let instance of agentInstances" class="object-panel" draggable="true"
+                        (dragstart)="onAgentInstanceDragStart($event, instance)"
+                        (dragend)="onAgentInstanceDragEnd($event, instance)">
 
-                    <div class="object-panel-header agent-instance d-flex-header">
-                        <span>{{ instance.name || instance._id }}</span>
-                        <button pButton [rounded]="true" type="button" size="small" severity="danger"
-                            icon="fa fa-trash header-btn delete-btn"
-                            (click)="confirmDeleteAgentInstance(instance)"></button>
+                        <div class="object-panel-header agent-instance d-flex-header">
+                            <span>{{ instance.name || instance._id }}</span>
+                            <button pButton [rounded]="true" type="button" size="small" severity="danger"
+                                icon="fa fa-trash header-btn delete-btn"
+                                (click)="confirmDeleteAgentInstance(instance)"></button>
+                        </div>
                     </div>
                 </div>
+                <ng-template #noAgentInstances>
+                    <div>No chat partners found for this chat room.</div>
+                </ng-template>
             </div>
-            <ng-template #noAgentInstances>
-                <div>No chat partners found for this chat room.</div>
-            </ng-template>
-        </div>
 
-        <div class="column column-4">
-            <h3>Chat Room Tasks</h3>
-            <div *ngIf="chatJobInstances$ | async as jobInstances; else noJobInstances">
-                <div *ngIf="jobInstances.length < 1">No tasks found for this project.</div>
+            <div class="column column-4">
+                <h3>Chat Room Tasks</h3>
+                <div *ngIf="chatJobInstances$ | async as jobInstances; else noJobInstances">
+                    <div *ngIf="jobInstances.length < 1">No tasks found for this project.</div>
 
-                <div *ngFor="let instance of jobInstances; let i = index" class="job-instance-panel"
-                    (dragover)="onJobInstanceDragOver($event, instance, i)"
-                    (drop)="onJobInstanceDrop($event, instance, i)" (dragenter)="onJobInstanceDragEnter($event, i)"
-                    (dragleave)="onJobInstanceDragLeave($event, i)" [class.drag-over]="dragOverIndex === i"
-                    draggable="true" (dragstart)="onJobInstanceDragStart($event, instance, i)"
-                    (dragend)="onJobInstanceDragEnd($event, instance, i)">
+                    <div *ngFor="let instance of jobInstances; let i = index" class="job-instance-panel"
+                        (dragover)="onJobInstanceDragOver($event, instance, i)"
+                        (drop)="onJobInstanceDrop($event, instance, i)" (dragenter)="onJobInstanceDragEnter($event, i)"
+                        (dragleave)="onJobInstanceDragLeave($event, i)" [class.drag-over]="dragOverIndex === i"
+                        draggable="true" (dragstart)="onJobInstanceDragStart($event, instance, i)"
+                        (dragend)="onJobInstanceDragEnd($event, instance, i)">
 
-                    <div class="object-panel-header job-instance d-flex-header">
-                        <ng-container *ngIf="!!instance?.configuration">
-                            <span>{{ instance.configuration.name }}</span>
-                        </ng-container>
-                        <button pButton [rounded]="true" type="button" size="small" severity="danger"
-                            icon="fa fa-trash header-btn delete-btn"
-                            (click)="confirmDeleteJobInstance(instance)"></button>
-                    </div>
-
-                    <div class="object-panel-content object-panel-content-empty">
-                        <div class="checkbox-container">
-                            <p-checkbox [binary]="true" [(ngModel)]="instance.disabled"
-                                (onChange)="setAgentDisabled(instance)"></p-checkbox>
-                            <label>Disabled</label>
+                        <div class="object-panel-header job-instance d-flex-header">
+                            <ng-container *ngIf="!!instance?.configuration">
+                                <span>{{ instance.configuration.name }}</span>
+                            </ng-container>
+                            <button pButton [rounded]="true" type="button" size="small" severity="danger"
+                                icon="fa fa-trash header-btn delete-btn"
+                                (click)="confirmDeleteJobInstance(instance)"></button>
                         </div>
 
-                        <ng-container *ngIf="instance.agent; else agentPlaceholder">
-                            <div class="job-agent-present">
-                                <button pButton [rounded]="true" type="button" size="small" severity="danger"
-                                    icon="fa fa-times remove-agent-btn" (click)="onRemoveAgent(instance)"></button>
-                                <i class="fa fa-user agent-icon agent-present"></i>
-                                <span class="agent-name">{{ instance.agent.name }}</span>
+                        <div class="object-panel-content object-panel-content-empty">
+                            <div class="checkbox-container">
+                                <p-checkbox [binary]="true" [(ngModel)]="instance.disabled"
+                                    (onChange)="setAgentDisabled(instance)"></p-checkbox>
+                                <label>Disabled</label>
                             </div>
-                        </ng-container>
 
-                        <ng-template #agentPlaceholder>
-                            <div class="job-agent-placeholder">
-                                <button pButton [rounded]="true" type="button" size="small"
-                                    icon="fa fa-plus add-agent-btn"></button>
-                                <i class="fa fa-user agent-icon agent-missing"></i>
-                                <span class="agent-placeholder-text">No partner assigned</span>
-                            </div>
-                        </ng-template>
+                            <ng-container *ngIf="instance.agent; else agentPlaceholder">
+                                <div class="job-agent-present">
+                                    <button pButton [rounded]="true" type="button" size="small" severity="danger"
+                                        icon="fa fa-times remove-agent-btn" (click)="onRemoveAgent(instance)"></button>
+                                    <i class="fa fa-user agent-icon agent-present"></i>
+                                    <span class="agent-name">{{ instance.agent.name }}</span>
+                                </div>
+                            </ng-container>
+
+                            <ng-template #agentPlaceholder>
+                                <div class="job-agent-placeholder">
+                                    <button pButton [rounded]="true" type="button" size="small"
+                                        icon="fa fa-plus add-agent-btn"></button>
+                                    <i class="fa fa-user agent-icon agent-missing"></i>
+                                    <span class="agent-placeholder-text">No partner assigned</span>
+                                </div>
+                            </ng-template>
+                        </div>
+
                     </div>
-
                 </div>
+                <ng-template #noJobInstances>
+                    <div>No job instances found for this project.</div>
+                </ng-template>
             </div>
-            <ng-template #noJobInstances>
-                <div>No job instances found for this project.</div>
-            </ng-template>
         </div>
     </div>
-</div>
 
-<div class="tab-content" *ngIf="selectedTabId===1">
-    <app-positionable-message-list *ngIf="chatRoom"
-        [messages]="chatRoom.roomInstructions"></app-positionable-message-list>
+    <div class="tab-content fit-container-scroll" *ngIf="selectedTabId===1">
+        <app-positionable-message-list *ngIf="chatRoom"
+            [messages]="chatRoom.roomInstructions"></app-positionable-message-list>
 
-    <div class="footer-button-controls">
-        <p-button label="Save" (click)="saveRoom()"></p-button>
+        <div class="footer-button-controls">
+            <p-button label="Save" (click)="saveRoom()"></p-button>
+        </div>
     </div>
-</div>
 
-<div class="tab-content" *ngIf="selectedTabId===2">
-    <app-document-permissions [permissions]="chatRoom?.chatDocumentReferences"></app-document-permissions>
+    <div class="tab-content fit-container-scroll" *ngIf="selectedTabId===2">
+        <app-document-permissions [permissions]="chatRoom?.chatDocumentReferences"></app-document-permissions>
 
-    <div class="footer-button-controls">
-        <p-button label="Save" (click)="saveRoom()"></p-button>
+        <div class="footer-button-controls">
+            <p-button label="Save" (click)="saveRoom()"></p-button>
+        </div>
     </div>
 </div>
 

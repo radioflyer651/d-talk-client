@@ -34,49 +34,32 @@
             </div>
         </p-panel>
 
-        <p-panel class="project-tab-content" *ngIf="selectedTab==='overview'" [showHeader]="false">
-            <h3>Overview</h3>
+        <div class="project-tab-content" *ngIf="selectedTab==='overview'">
+            <div class="overview-container">
+                <h3>Overview</h3>
 
-            <p-floatlabel>
-                <input id="project-name" autocomplete="off" pInputText [(ngModel)]="project.name" />
-                <label for="project-name">Project Name</label>
-            </p-floatlabel>
+                <p-floatlabel>
+                    <input id="project-name" autocomplete="off" pInputText [(ngModel)]="project.name" />
+                    <label for="project-name">Project Name</label>
+                </p-floatlabel>
 
-            <p-floatlabel>
-                <label for="project-description">Project Description</label>
-                <textarea id="project-description" pTextarea [rows]="6" [(ngModel)]="project.description"></textarea>
-            </p-floatlabel>
+                <p-floatlabel>
+                    <label for="project-description">Project Description</label>
+                    <textarea id="project-description" pTextarea [rows]="6"
+                        [(ngModel)]="project.description"></textarea>
+                </p-floatlabel>
 
-            <ng-template #footer>
                 <p-panel [showHeader]="false">
                     <div class="footer-button-controls">
                         <p-button icon="fa fa-floppy-disk" (click)="saveProject()"></p-button>
                     </div>
                 </p-panel>
-            </ng-template>
-        </p-panel>
+            </div>
+        </div>
 
-        <p-panel class="project-tab-content" *ngIf="selectedTab==='agents'" [showHeader]="false">
-            <!-- <app-agent-configurations></app-agent-configurations> -->
+        <div class="project-tab-content" *ngIf="selectedTab && selectedTab!=='overview' && selectedTab!==''">
             <router-outlet></router-outlet>
-            <!-- <app-dummy-screen></app-dummy-screen> -->
-        </p-panel>
-
-        <p-panel class="project-tab-content" *ngIf="selectedTab==='jobs'" [showHeader]="false">
-            <router-outlet></router-outlet>
-        </p-panel>
-
-        <p-panel class="project-tab-content" *ngIf="selectedTab==='chat-rooms'" [showHeader]="false">
-            <router-outlet></router-outlet>
-        </p-panel>
-
-        <p-panel class="project-tab-content" *ngIf="selectedTab==='project-knowledge'" [showHeader]="false">
-            <router-outlet></router-outlet>
-        </p-panel>
-        
-        <p-panel class="project-tab-content" *ngIf="selectedTab==='chat-documents'" [showHeader]="false">
-            <router-outlet></router-outlet>
-        </p-panel>
+        </div>
     </div>
 </div>
 

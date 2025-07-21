@@ -1,26 +1,33 @@
+@import "../../../../../layout.scss";
+
+:host {
+    @extend %_fit-container-hidden;
+}
+
 .project-detail-component {
-    height: 100%;
+        @extend %_fit-container-hidden;
 
     .project-detail-container {
+        @extend %_fit-container-hidden;
         display: flex;
         flex-direction: column;
-        height: 100%;
 
         > p-panel {
             margin-bottom: 2em;
         }
 
         .project-tab-content {
+            @extend %_fit-container-hidden;
             flex: 1 1 auto;
-            height: 100%;
+
+            .overview-container {
+                @extend %_fit-container-scroll;
+            }
 
             textarea {
                 width: 100%;
             }
 
-            ::ng-deep.p-panel {
-                height: 100% !important;
-            }
         }
     }
 

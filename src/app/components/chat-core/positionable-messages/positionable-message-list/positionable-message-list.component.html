@@ -1,14 +1,14 @@
 <div *ngIf="!!messages" class="control-container">
+    <div class="footer-button-controls">
+        <p-button icon="fa fa-message-plus" (click)="addMessage()"></p-button>
+    </div>
+
     <div class="message-container">
         <app-positionable-message-detail *ngFor="let message of messages; let i = index" [message]="message"
             [messageIndex]="i" (deleteClicked)="onDeleteClicked($event)"></app-positionable-message-detail>
     </div>
 
     <div *ngIf="messages.length < 1">
-        There are currently no messages in the list.  Click the add button to create your first!
-    </div>
-
-    <div class="footer-button-controls">
-        <p-button icon="fa fa-message-plus" (click)="addMessage()"></p-button>
+        There are currently no messages in the list. Click the add button to create your first!
     </div>
 </div>

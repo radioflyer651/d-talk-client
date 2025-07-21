@@ -1,12 +1,17 @@
+@import "../../../../../layout.scss";
+
 .chatting-container {
+  @extend %_fit-container-hidden;
+
   display: flex;
   flex-direction: row;
-  height: 100%;
 
   .chatting-pane {
-    height: 100%;
+    @extend %_fit-container-hidden;
 
     &.left {
+      @extend %_fit-container-scroll;
+
       flex: 0 0 260px;
       min-width: 180px;
       max-width: 320px;

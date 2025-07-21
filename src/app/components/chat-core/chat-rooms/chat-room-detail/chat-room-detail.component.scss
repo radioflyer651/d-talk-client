@@ -1,169 +1,182 @@
-.tab-content {
-    height: 100%;
-}
+@import "../../../../../layout.scss";
 
-.chat-room-detail-columns {
+.chat-room-detail-component {
+    @extend %_fit-container-hidden;
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    height: 100%;
-}
+    flex-direction: column;
 
-.column {
-    flex: 1;
-    padding: 16px;
-    box-sizing: border-box;
-    height: 100%;
-}
-
-.column-1 {
-    background: #f8f9fa;
-    margin-right: 8px;
-}
-
-.column-2 {
-    background: #e9ecef;
-    margin-right: 8px;
-}
-
-.column-3 {
-    background: #dee2e6;
-    margin-right: 8px;
-}
-
-.column-4 {
-    background: #ced4da;
-}
-
-/* Remove right margin from last column if needed */
-.column:last-child {
-    margin-right: 0;
-}
-
-.object-panel {
-    margin-bottom: 12px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    background: #fff;
-}
-
-.object-panel-header {
-    font-weight: 700;
-    font-size: 1.08em;
-    color: #2a3a4b;
-    border-radius: 8px;
-    padding: 10px 14px;
-    margin-bottom: 0;
-    letter-spacing: 0.01em;
-    box-shadow: 0 1px 3px rgba(44, 62, 80, 0.04);
-    text-shadow: none;
-    text-overflow: ellipsis;
-}
-
-.object-panel-header {
-    &.agent-template {
-        background-color: hsl(105, 20%, 80%);
+    .tab-content {
+        @extend %_fit-container-hidden;
+        flex: 1 1 auto;
     }
-    &.job-template {
-        background-color: hsl(291, 20%, 80%);
+
+    .chat-room-detail-columns {
+        @extend %_fit-container-hidden;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        height: 100%;
     }
-    &.agent-instance {
-        background-color: hsl(105, 80%, 80%);
+
+    .column {
+        @extend %_fit-container-scroll;
+
+        flex: 1;
+        padding: 16px;
+        box-sizing: border-box;
+        height: 100%;
     }
-    &.job-instance {
-        background-color: hsl(291, 80%, 80%);
+
+    .column-1 {
+        background: #f8f9fa;
+        margin-right: 8px;
     }
-}
 
-.job-instance-panel {
-    margin-bottom: 12px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-    background: #fff;
-}
+    .column-2 {
+        background: #e9ecef;
+        margin-right: 8px;
+    }
 
-.job-instance-panel .object-panel-header {
-    border-radius: 8px 8px 0 0;
-}
+    .column-3 {
+        background: #dee2e6;
+        margin-right: 8px;
+    }
 
-.object-panel-header.d-flex-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-}
+    .column-4 {
+        background: #ced4da;
+    }
 
-.header-btn .fa {
-    font-size: 1.1em;
-}
+    /* Remove right margin from last column if needed */
+    .column:last-child {
+        margin-right: 0;
+    }
 
-.delete-btn {
-    color: #c0392b;
-}
+    .object-panel {
+        margin-bottom: 12px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        background: #fff;
+    }
 
-.object-panel-content {
-    padding: 10px 12px 8px 12px;
-    font-size: 0.97em;
+    .object-panel-header {
+        font-weight: 700;
+        font-size: 1.08em;
+        color: #2a3a4b;
+        border-radius: 8px;
+        padding: 10px 14px;
+        margin-bottom: 0;
+        letter-spacing: 0.01em;
+        box-shadow: 0 1px 3px rgba(44, 62, 80, 0.04);
+        text-shadow: none;
+        text-overflow: ellipsis;
+    }
 
-    margin: 0 12px; /* Add horizontal margin only */
-    padding-left: 2px; /* Add a little left padding to avoid hugging edge */
-}
+    .object-panel-header {
+        &.agent-template {
+            background-color: hsl(105, 20%, 80%);
+        }
+        &.job-template {
+            background-color: hsl(291, 20%, 80%);
+        }
+        &.agent-instance {
+            background-color: hsl(105, 80%, 80%);
+        }
+        &.job-instance {
+            background-color: hsl(291, 80%, 80%);
+        }
+    }
 
-.object-panel-content-empty {
-    min-height: 32px;
-    padding: 12px 0;
-}
+    .job-instance-panel {
+        margin-bottom: 12px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        background: #fff;
+    }
 
-/* Optional: make panel header stand out */
-:host ::ng-deep .p-panel .p-panel-header {
-    font-weight: 600;
-    background: #f4f6fa;
-    border-radius: 8px 8px 0 0;
-}
+    .job-instance-panel .object-panel-header {
+        border-radius: 8px 8px 0 0;
+    }
 
-.job-agent-present,
-.job-agent-placeholder {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-height: 28px;
-}
+    .object-panel-header.d-flex-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
 
-.job-agent-present .remove-agent-btn,
-.job-agent-placeholder .add-agent-btn {
-    margin-left: auto;
-}
+    .header-btn .fa {
+        font-size: 1.1em;
+    }
 
-.agent-icon {
-    font-size: 1.2em;
-}
-.agent-present {
-    color: #6c63ff;
-}
-.agent-missing {
-    color: #bdbdbd;
-}
-.agent-name {
-    font-weight: 600;
-    color: #2a3a4b;
-}
-.agent-placeholder-text {
-    color: #888;
-    font-style: italic;
-}
-.add-agent-btn {
-    color: #388e3c;
-}
-.remove-agent-btn {
-    color: #c0392b;
-}
+    .delete-btn {
+        color: #c0392b;
+    }
 
-.job-instance-panel.drag-over {
-    box-shadow: 0 0 0 3px #6c63ff;
-    border: 2px dashed #6c63ff;
-    background: #f3f0ff;
-    transition:
-        box-shadow 0.2s,
-        border 0.2s,
-        background 0.2s;
+    .object-panel-content {
+        padding: 10px 12px 8px 12px;
+        font-size: 0.97em;
+
+        margin: 0 12px; /* Add horizontal margin only */
+        padding-left: 2px; /* Add a little left padding to avoid hugging edge */
+    }
+
+    .object-panel-content-empty {
+        min-height: 32px;
+        padding: 12px 0;
+    }
+
+    /* Optional: make panel header stand out */
+    :host ::ng-deep .p-panel .p-panel-header {
+        font-weight: 600;
+        background: #f4f6fa;
+        border-radius: 8px 8px 0 0;
+    }
+
+    .job-agent-present,
+    .job-agent-placeholder {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-height: 28px;
+    }
+
+    .job-agent-present .remove-agent-btn,
+    .job-agent-placeholder .add-agent-btn {
+        margin-left: auto;
+    }
+
+    .agent-icon {
+        font-size: 1.2em;
+    }
+    .agent-present {
+        color: #6c63ff;
+    }
+    .agent-missing {
+        color: #bdbdbd;
+    }
+    .agent-name {
+        font-weight: 600;
+        color: #2a3a4b;
+    }
+    .agent-placeholder-text {
+        color: #888;
+        font-style: italic;
+    }
+    .add-agent-btn {
+        color: #388e3c;
+    }
+    .remove-agent-btn {
+        color: #c0392b;
+    }
+
+    .job-instance-panel.drag-over {
+        box-shadow: 0 0 0 3px #6c63ff;
+        border: 2px dashed #6c63ff;
+        background: #f3f0ff;
+        transition:
+            box-shadow 0.2s,
+            border 0.2s,
+            background 0.2s;
+    }
 }

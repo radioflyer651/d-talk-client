@@ -1,10 +1,15 @@
+@import "../../../../layout.scss";
+
 .content-container {
+    @extend %_fit-container-hidden;
     display: flex;
 
     .job-list {
+        @extend %_fit-container-scroll;
     }
 
     .job-details {
+        @extend %_fit-container-scroll;
         flex: 1 1 auto;
     }
 }

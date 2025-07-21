@@ -1,0 +1,9 @@
+@import "../../../../../layout.scss";
+
+:host {
+    @extend %_fit-container-hidden;
+}
+
+.project-knowledge-component {
+    @extend %_fit-container-scroll;
+}

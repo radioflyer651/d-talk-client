@@ -1,0 +1,30 @@
+%fit-container {
+    height: 100%;
+}
+
+%_fit-container-hidden {
+    @extend %fit-container;
+    overflow-y: hidden;
+}
+
+%_fit-container-scroll {
+    @extend %fit-container;
+    overflow-y: auto;
+}
+
+%_open-height {
+    height: auto;
+    overflow-y: visible;
+}
+
+.fit-container-hidden {
+    @extend %_fit-container-hidden;
+}
+
+.fit-container-scroll {
+    @extend %_fit-container-scroll;
+}
+
+.open-height {
+    @extend %_open-height;
+}
