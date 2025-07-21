@@ -109,8 +109,11 @@
                             <ng-template #agentPlaceholder>
                                 <div class="job-agent-placeholder">
                                     <button pButton [rounded]="true" type="button" size="small"
-                                        icon="fa fa-plus add-agent-btn"></button>
+                                        icon="fa fa-plus add-agent-btn"
+                                        (click)="openPartnerSelectionForRoom(instance)"></button>
+
                                     <i class="fa fa-user agent-icon agent-missing"></i>
+
                                     <span class="agent-placeholder-text">No partner assigned</span>
                                 </div>
                             </ng-template>
@@ -143,7 +146,7 @@
     </div>
 </div>
 
-<p-dialog header="Instantiate Agent for Chat Room" [(visible)]="agentNameDialogVisible" [modal]="true"
+<p-dialog header="Instantiate Partner for Chat Room" [(visible)]="agentNameDialogVisible" [modal]="true"
     [closable]="false" [dismissableMask]="true" [style]="{width: '350px'}">
     <div class="p-fluid">
         <p-floatlabel>
@@ -154,10 +157,22 @@
 
     <ng-template #footer>
         <div class="footer-button-controls">
-            <button pButton type="button" label="OK" (click)="onAgentNameDialogOk()"
-                [disabled]="!agentNameDialogValue.trim()"></button>
             <p-button type="button" label="Cancel" class="ml-2" (click)="onAgentNameDialogCancel()"></p-button>
+            <p-button type="button" label="OK" (click)="onAgentNameDialogOk()"
+                [disabled]="!agentNameDialogValue.trim()"></p-button>
         </div>
+    </ng-template>
+</p-dialog>
+
+<p-dialog header="Select Partner" [(visible)]="isPartnerSelectionDialogVisible" header="Select Partner For Job">
+    <div>
+        <p-select [options]="(agentInstances$ | async)!" appendTo="body" [style]="{width: '100%'}"
+            [(ngModel)]="selectedPartnerForJob" optionLabel="name"></p-select>
+    </div>
+
+    <ng-template #footer>
+        <p-button label="Cancel" (click)="partnerSelectionClosed(true)"></p-button>
+        <p-button label="OK" (click)="partnerSelectionClosed(false)"></p-button>
     </ng-template>
 </p-dialog>
 

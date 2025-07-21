@@ -26,6 +26,7 @@ import { PositionableMessageListComponent } from "../../positionable-messages/po
 import { ChatRoomData } from '../../../../../model/shared-models/chat-core/chat-room-data.model';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { DocumentPermissionsComponent } from "../../chat-documents/document-permissions/document-permissions.component";
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'app-chat-room-detail',
@@ -41,7 +42,8 @@ import { DocumentPermissionsComponent } from "../../chat-documents/document-perm
     TabsModule,
     FloatLabelModule,
     PositionableMessageListComponent,
-    DocumentPermissionsComponent
+    DocumentPermissionsComponent,
+    SelectModule,
   ],
   templateUrl: './chat-room-detail.component.html',
   styleUrl: './chat-room-detail.component.scss',
@@ -87,14 +89,21 @@ export class ChatRoomDetailComponent extends ComponentBase {
       takeUntil(this.ngDestroy$),
       shareReplay(),
     );
+
     this.chatJobConfigurations$ = this.chatJobsService.jobs$.pipe(
       takeUntil(this.ngDestroy$),
       shareReplay(),
     );
+
+
     this.agentInstances$ = this.agentInstanceService.agentInstances$.pipe(
       takeUntil(this.ngDestroy$),
       shareReplay(),
     );
+
+    this.agentInstances$.subscribe(agents => {
+      this.agentInstances = agents;
+    });
 
     this.chatJobInstances$ = this.chatRoomService.selectedChatRoomJobInstances$;
     this.chatJobInstances$.pipe(
@@ -114,6 +123,8 @@ export class ChatRoomDetailComponent extends ComponentBase {
   }
 
   selectedTabId = 0;
+
+  agentInstances: AgentInstanceConfiguration[] = [];
 
   createAgentInstance(agent: ChatAgentIdentityConfiguration) {
     this.agentNameDialogAgent = agent;
@@ -298,4 +309,27 @@ export class ChatRoomDetailComponent extends ComponentBase {
     await lastValueFrom(this.chatRoomService.updateChatRoomInstructions(this.chatRoom._id, this.chatRoom.roomInstructions));
     await updatePermissionsP;
   }
+
+  /** Gets or sets the chat agent for a specific chat room. */
+  selectedPartnerForJob: AgentInstanceConfiguration | undefined;
+  /** Gets or sets the chat job that we're selecting the partner for in the partner selection dialog. */
+  chatJobSelectingPartnerFor: ChatJobInstance | undefined;
+  isPartnerSelectionDialogVisible = false;
+
+  openPartnerSelectionForRoom(job: ChatJobInstance) {
+    this.chatJobSelectingPartnerFor = job;
+    this.selectedPartnerForJob = this.agentInstances.find(a => a._id === job.agentId);
+    this.isPartnerSelectionDialogVisible = true;
+  }
+
+  partnerSelectionClosed(cancel: boolean) {
+    if (!cancel) {
+      this.chatRoomService.assignAgentToJobInstance(this.chatRoom!._id, this.chatJobSelectingPartnerFor!.id, this.selectedPartnerForJob!._id).subscribe(() => {
+        this.chatRoomService.reloadSelectedChatRoom();
+      });
+    }
+    
+    this.isPartnerSelectionDialogVisible = false;
+  }
+
 }
