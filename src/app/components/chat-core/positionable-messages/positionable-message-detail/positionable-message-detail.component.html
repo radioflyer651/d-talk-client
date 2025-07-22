@@ -20,11 +20,17 @@
                 </p-floatlabel>
 
                 <div class="footer-button-controls">
+                    <div class="checkbox-container">
+                        <p-checkbox [binary]="true" [(ngModel)]="messageController.disabled"></p-checkbox>
+                        <label>Disabled</label>
+                    </div>
+
                     <p-button icon="fa fa-x" severity="danger" size="small" [rounded]="true"
                         (click)="onDeleteClicked()"></p-button>
                     <!-- <p-button icon="fa fa-add" severity="primary" size="small" [rounded]="true"></p-button> -->
                 </div>
             </div>
+
             <div class="message-container">
                 <textarea pTextarea [(ngModel)]="messageController.content"></textarea>
             </div>

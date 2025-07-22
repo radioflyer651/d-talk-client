@@ -15,6 +15,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { storedMessageAgentTypeOptions } from '../../../../../model/shared-models/chat-core/stored-message-agent-types.data';
 import { positionableMessageLocationOptions } from '../../../../../model/positionable-message-options.data';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-positionable-message-detail',
@@ -29,6 +30,7 @@ import { positionableMessageLocationOptions } from '../../../../../model/positio
     PanelModule,
     FloatLabelModule,
     InputNumberModule,
+    CheckboxModule,
   ],
   templateUrl: './positionable-message-detail.component.html',
   styleUrl: './positionable-message-detail.component.scss'
