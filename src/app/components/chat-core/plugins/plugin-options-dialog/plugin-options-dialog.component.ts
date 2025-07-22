@@ -9,6 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { IgnoreSpecificAgentPluginParamsComponent } from "../plugin-params/ignore-specific-agent-plugin-params/ignore-specific-agent-plugin-params.component";
 import { LabeledMemoryPluginParamsComponent } from "../plugin-params/label-memory-plugin-params/label-memory-plugin-params.component";
 import { CreateTextFilePluginParamsComponent } from "../plugin-params/create-text-file-plugin-params/create-text-file-plugin-params.component";
+import { ManageDocFolderParamsComponent } from "../plugin-params/manage-doc-folder-params/manage-doc-folder-params.component";
 
 @Component({
   selector: 'app-plugin-options-dialog',
@@ -20,7 +21,8 @@ import { CreateTextFilePluginParamsComponent } from "../plugin-params/create-tex
     ButtonModule,
     IgnoreSpecificAgentPluginParamsComponent,
     LabeledMemoryPluginParamsComponent,
-    CreateTextFilePluginParamsComponent
+    CreateTextFilePluginParamsComponent,
+    ManageDocFolderParamsComponent
 ],
   templateUrl: './plugin-options-dialog.component.html',
   styleUrl: './plugin-options-dialog.component.scss'

@@ -1,0 +1,47 @@
+<div class="create-text-file-params" *ngIf="params">
+    <p-floatlabel>
+        <input id="root-folder" autocomplete="off" pInputText [(ngModel)]="params.rootFolder" />
+        <label for="root-folder">Root Folder</label>
+    </p-floatlabel>
+
+    <p-floatlabel>
+        <textarea pTextarea id="instructions" [(ngModel)]="params.instructions"></textarea>
+        <label for="instructions">Instructions</label>
+    </p-floatlabel>
+
+
+    <div>
+        <div class="checkbox-container">
+            <p-checkbox [binary]="true" [(ngModel)]="params.canRead"></p-checkbox>
+            <label>Read</label>
+        </div>
+        <div class="checkbox-container">
+            <p-checkbox [binary]="true" [(ngModel)]="params.canCreateFiles"></p-checkbox>
+            <label>Create Files</label>
+        </div>
+        <div class="checkbox-container">
+            <p-checkbox [binary]="true" [(ngModel)]="params.canCreateSubfolders"></p-checkbox>
+            <label for="can-create-folders">Can Create Subfolders</label>
+        </div>
+        <div class="checkbox-container">
+            <p-checkbox [binary]="true" [(ngModel)]="params.canEdit"></p-checkbox>
+            <label>Write</label>
+        </div>
+        <div class="checkbox-container">
+            <p-checkbox [binary]="true" [(ngModel)]="params.canChangeName"></p-checkbox>
+            <label>Change Name</label>
+        </div>
+        <div class="checkbox-container">
+            <p-checkbox [binary]="true" [(ngModel)]="params.canUpdateComments"></p-checkbox>
+            <label>Update Comments</label>
+        </div>
+        <div class="checkbox-container">
+            <p-checkbox [binary]="true" [(ngModel)]="params.canUpdateDescription"></p-checkbox>
+            <label>Update Description</label>
+        </div>
+        <div class="checkbox-container">
+            <p-checkbox [binary]="true" [(ngModel)]="params.debugMode"></p-checkbox>
+            <label>Debug Mode</label>
+        </div>
+    </div>
+</div>

@@ -81,11 +81,26 @@ export function createDocumentTree(documents: IChatDocumentData[], includeIcon: 
     // Sort all of the nodes.
     allNodes.filter(n => !!n.children).forEach(f => {
         f.children!.sort((v1, v2) => {
+            if (!!v1.children !== !!v2.children) {
+                if (v1.children) {
+                    return -1;
+                } else {
+                    return 1;
+                }
+            }
             return v1.label!.localeCompare(v2.label!);
         });
     });
 
     rootNode.children!.sort((v1, v2) => {
+        if (!!v1.children !== !!v2.children) {
+            if (v1.children) {
+                return -1;
+            } else {
+                return 1;
+            }
+        }
+
         return v1.label!.localeCompare(v2.label!);
     });
 
