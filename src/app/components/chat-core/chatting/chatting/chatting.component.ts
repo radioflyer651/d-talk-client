@@ -98,10 +98,12 @@ export class ChattingComponent extends ComponentBase {
     };
 
     this.chatMessage = '';
+    this.setMessageInputFocus();
   }
 
   clearMessages() {
     this.chattingService.clearMessages();
+    this.setMessageInputFocus();
   }
 
   scrollChatToBottom() {
@@ -112,5 +114,10 @@ export class ChattingComponent extends ComponentBase {
         behavior: 'smooth'
       });
     }
+  }
+
+  setMessageInputFocus() {
+    const target = document.querySelector('#user-message') as HTMLTextAreaElement;
+    target.focus();
   }
 }
