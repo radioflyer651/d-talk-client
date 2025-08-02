@@ -5,6 +5,12 @@
                 autocomplete="off" />
             <label for="job-name">Job Name</label>
         </p-floatlabel>
+
+        <p-floatlabel>
+            <input pInputText id="group-name" class="full-width" name="group" [(ngModel)]="jobConfig.group"
+                autocomplete="off" />
+            <label for="job-name">Group Name</label>
+        </p-floatlabel>
     </div>
 
     <p-tabs [value]="tabIndex">

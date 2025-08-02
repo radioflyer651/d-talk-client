@@ -11,13 +11,18 @@ import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { DialogModule } from 'primeng/dialog';
-import { BehaviorSubject, map, switchMap } from 'rxjs';
+import { BehaviorSubject, map, switchMap, takeUntil } from 'rxjs';
 import { lastValueFrom } from 'rxjs';
 import { ConfirmationService } from 'primeng/api';
 import { ChatJobConfiguration } from '../../../../../model/shared-models/chat-core/chat-job-data.model';
-import { ReadonlySubject } from '../../../../../utils/readonly-subject';
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AccordionModule } from 'primeng/accordion';
+
+interface ChatJobGroup {
+  group: string;
+  items: ChatJobConfiguration[];
+}
 
 @Component({
   selector: 'app-chat-job-list',
@@ -31,7 +36,8 @@ import { ActivatedRoute, Router } from '@angular/router';
     ButtonModule,
     DataViewModule,
     ConfirmDialogModule,
-    DialogModule
+    DialogModule,
+    AccordionModule,
   ],
   templateUrl: './chat-job-list.component.html',
   styleUrl: './chat-job-list.component.scss'
@@ -47,18 +53,76 @@ export class ChatJobListComponent extends ComponentBase {
     super();
   }
 
+  /** This is used for the list display. */
+  chatJobGroups: ChatJobGroup[] = [];
+  selectedGroupId: string = '';
+  jobsList: ChatJobConfiguration[] = [];
+
   ngOnInit() {
-    this._jobList = new ReadonlySubject(this.ngDestroy$,
-      this.searchText$.pipe(
-        switchMap((searchText) => {
-          return this.jobService.jobs$.pipe(
-            map(jobList => {
-              return jobList.filter(j => j.name.toLowerCase().includes(searchText.toLocaleLowerCase()));
-            })
-          );
-        })
-      )
-    );
+    this.searchText$.pipe(
+      switchMap((searchText) => {
+        return this.jobService.jobs$.pipe(
+          map(jobList => {
+            return jobList.filter(j =>
+              j.name.toLowerCase().includes(searchText.toLocaleLowerCase()) ||
+              j.group?.toLocaleLowerCase().includes(searchText.toLocaleLowerCase()
+              ));
+          })
+        );
+      }),
+      takeUntil(this.ngDestroy$),
+    ).subscribe(jobs => {
+      this.jobsList = jobs;
+      this.updateJobGroups();
+    });
+  }
+
+  updateJobGroups() {
+    const generalGroup: ChatJobGroup = {
+      group: 'Ungrouped',
+      items: []
+    };
+
+    const groups: ChatJobGroup[] = [];
+
+    /** Returns a group from the groups list, for a specified job.  If none exists, one is created. */
+    function findGroup(job: ChatJobConfiguration) {
+      if (!job.group) {
+        return generalGroup;
+      }
+
+      let result = groups.find(g => g.group.toLocaleLowerCase() === job.group?.toLocaleLowerCase());
+      if (!result) {
+        result = {
+          group: job.group!,
+          items: []
+        };
+
+        groups.push(result);
+      }
+
+      return result;
+    }
+
+    // Add all of the items to groups.
+    this.jobsList.forEach(j => {
+      const group = findGroup(j);
+      group.items.push(j);
+    });
+
+
+    // If the general group has something in it, then include it.
+    if (generalGroup.items.length > 0) {
+      groups.push(generalGroup);
+    }
+
+    // Sort the list.
+    groups.sort((g1, g2) => {
+      return g1.group.localeCompare(g2.group);
+    });
+
+    // Update the group list.
+    this.chatJobGroups = groups;
   }
 
   // #region searchText
@@ -71,18 +135,6 @@ export class ChatJobListComponent extends ComponentBase {
 
   set searchText(newVal: string) {
     this._searchText.next(newVal);
-  }
-  // #endregion
-
-  // #region jobList
-  private _jobList!: ReadonlySubject<ChatJobConfiguration[]>;
-
-  get jobList$() {
-    return this._jobList.observable$;
-  }
-
-  get jobList(): ChatJobConfiguration[] {
-    return this._jobList.value;
   }
   // #endregion
 

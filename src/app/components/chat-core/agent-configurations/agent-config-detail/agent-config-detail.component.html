@@ -17,6 +17,15 @@
                 </p-floatlabel>
             </div>
         </div>
+        <div class="row">
+            <div class="form-group col-6 full-width">
+                <p-floatlabel>
+                    <input pInputText id="agent-group" class="full-width" name="group"
+                        [(ngModel)]="agentConfig.group" autocomplete="off" />
+                    <label for="agent-group">Group Name</label>
+                </p-floatlabel>
+            </div>
+        </div>
     </div>
 
     <p-tabs [value]="tabIndex">

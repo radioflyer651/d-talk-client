@@ -1,4 +1,13 @@
+
 .chat-job-list-component {
+    .top-panel {
+        height: 100%;
+        display: block;
+        ::ng-deep .p-button {
+            width: 100%;
+        }
+    }
+
     p-floatlabel {
         width: 100%;
         display: block;
@@ -16,21 +25,45 @@
         margin-bottom: 1em;
     }
 
-    .chat-job-title {
-        cursor: pointer;
-    }
-
-    .chat-job-card-wrapper {
+    .chat-job-card-container {
         display: flex;
+        align-items: center;
+        margin-bottom: 0.5em;
+        padding: 0.5em 0;
+        border-bottom: 1px solid #eee;
 
-        .chat-job-card-content {
-            flex: 1 1 auto;
+        &:last-child {
+            border-bottom: none;
+        }
+
+        .chat-job-card-controls {
+            margin-right: 1em;
+            display: flex;
+            align-items: center;
+        }
+
+        h5 {
+            margin: 0;
+            margin-left: 0.75em;
+            font-size: 1.1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s;
+
+            &:hover {
+                color: #1976d2;
+            }
         }
     }
 
-    .top-panel {
-        ::ng-deep.p-button {
-            width: 100%;
-        }
+    /* Dialog styles */
+    ::ng-deep .p-dialog .footer-button-controls {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 1em;
+    }
+
+    ::ng-deep .p-dialog .p-field {
+        margin-bottom: 1em;
     }
 }

@@ -1,44 +1,50 @@
 <div class="agent-config-list-component">
     <p-card class="h-100 d-block">
         <p-panel showHeader="false">
-            <p-floatlabel>
-                <input id="agent-config-search" autocomplete="off" pInputText [(ngModel)]="searchText" />
-                <label for="agent-config-search">Search</label>
-            </p-floatlabel>
-
             <p-button class="new-agent-config-btn" icon="fa fa-plus" label="New Agent Config"
                 (click)="createNewAgentConfig()"></p-button>
         </p-panel>
 
-        <ng-container *ngIf="!!(agentConfigList$ | async)">
-            <p-dataview [value]="(agentConfigList$ | async)!">
-                <ng-template #header>
-                    Agents
-                </ng-template>
-
-                <ng-template #list let-items>
-                    <div *ngFor="let config of items" class="agent-config-card-container">
-                        <p-panel [showHeader]="false">
-                            <div class="agent-config-title" (click)="selectAgentConfig(config)">
-                                <h5>
-                                    {{config.name}} ({{config.chatName}})
-                                </h5>
-                            </div>
-
-                            <div class="agent-config-card-wrapper">
-                                <div class="agent-config-card-content"
-                                    [innerHtml]="getAgentDescription(config)">
-                                </div>
-                                <div class="agent-config-card-controls">
-                                    <p-button icon="fa fa-trash" severity="danger"
-                                        (click)="deleteAgentConfig(config)"></p-button>
-                                </div>
-                            </div>
-                        </p-panel>
+       
+        <ng-container *ngIf="agentGroups">
+            <ng-container *ngIf="agentGroups.length < 2; else groupList">
+                <div *ngFor="let job of agentList" class="chat-agent-card-container">
+                    <div chat-job-card-controls>
+                        <p-button icon="fa fa-trash" severity="danger" size="small" [rounded]="true"
+                            (click)="deleteAgentConfig(job)"></p-button>
                     </div>
-                </ng-template>
-            </p-dataview>
+                    <div (click)="selectAgentConfig(job)">
+                        <h5>
+                            {{job.name}}
+                        </h5>
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-template #groupList>
+                <p-accordion [value]="selectedAgentGroupId">
+                    <p-accordion-panel *ngFor="let group of agentGroups; let index = index" [value]="group.group">
+                        <p-accordion-header>
+                            {{ group.group }}
+                        </p-accordion-header>
+                        <p-accordion-content>
+                            <div *ngFor="let agent of group.items" class="chat-agent-card-container">
+                                <div class="chat-agent-card-controls">
+                                    <p-button icon="fa fa-trash" severity="danger" size="small" [rounded]="true"
+                                        (click)="deleteAgentConfig(agent)"></p-button>
+                                </div>
+                                <div (click)="selectAgentConfig(agent)">
+                                    <h5>
+                                        {{agent.name}}
+                                    </h5>
+                                </div>
+                            </div>
+                        </p-accordion-content>
+                    </p-accordion-panel>
+                </p-accordion>
+            </ng-template>
         </ng-container>
+
     </p-card>
 </div>
 

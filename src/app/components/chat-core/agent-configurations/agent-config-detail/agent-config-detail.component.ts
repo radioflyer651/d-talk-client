@@ -38,7 +38,7 @@ import { DocumentPermissionsComponent } from "../../chat-documents/document-perm
     TabsModule,
     PositionableMessageListComponent,
     PluginSelectorComponent,
-    DocumentPermissionsComponent
+    DocumentPermissionsComponent,
   ],
   templateUrl: './agent-config-detail.component.html',
   styleUrl: './agent-config-detail.component.scss'

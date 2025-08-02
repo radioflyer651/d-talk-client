@@ -22,6 +22,12 @@ import { ReadonlySubject } from '../../../../../utils/readonly-subject';
 import { CreateAgentConfigComponent } from "../create-agent-config/create-agent-config.component";
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AccordionModule } from 'primeng/accordion';
+
+interface ChatAgentGroup {
+  group: string,
+  items: ChatAgentIdentityConfiguration[],
+}
 
 @Component({
   selector: 'app-agent-config-list',
@@ -32,12 +38,12 @@ import { ActivatedRoute, Router } from '@angular/router';
     PanelModule,
     InputTextModule,
     IftaLabelModule,
-    FloatLabel,
     ButtonModule,
     DataViewModule,
     ConfirmDialogModule,
     DialogModule,
-    CreateAgentConfigComponent
+    CreateAgentConfigComponent,
+    AccordionModule,
   ],
   templateUrl: './agent-config-list.component.html',
   styleUrl: './agent-config-list.component.scss'
@@ -55,6 +61,10 @@ export class AgentConfigListComponent extends ComponentBase {
     super();
   }
 
+  agentList: ChatAgentIdentityConfiguration[] = [];
+  selectedAgentGroupId: string = '';
+  agentGroups: ChatAgentGroup[] = [];
+
   ngOnInit() {
     this.route.params.pipe(
       takeUntil(this.ngDestroy$)
@@ -62,43 +72,61 @@ export class AgentConfigListComponent extends ComponentBase {
       // this.agentConfigService.selectedAgentConfigId = params['agentConfigId'];
     });
 
-    this._agentConfigList = new ReadonlySubject(this.ngDestroy$,
-      this.searchText$.pipe(
-        switchMap((searchText) => {
-          return this.agentConfigService.agentConfigurations$.pipe(
-            map(configList => {
-              return configList.filter(l => l.name.toLowerCase().includes(searchText.toLocaleLowerCase()));
-            })
-          );
-        })
-      )
-    );
+    this.agentConfigService.agentConfigurations$.pipe(
+      takeUntil(this.ngDestroy$),
+    ).subscribe(agents => {
+      this.agentList = agents;
+      this.updateAgentGroups();
+    });
   }
 
-  // #region searchText
-  private readonly _searchText = new BehaviorSubject<string>('');
-  readonly searchText$ = this._searchText.asObservable();
+  updateAgentGroups() {
+    const generalGroup: ChatAgentGroup = {
+      group: 'Ungrouped',
+      items: []
+    };
 
-  get searchText(): string {
-    return this._searchText.getValue();
+    const groups: ChatAgentGroup[] = [];
+
+    /** Returns a group from the groups list, for a specified agent.  If none exists, one is created. */
+    function findGroup(job: ChatAgentIdentityConfiguration) {
+      if (!job.group) {
+        return generalGroup;
+      }
+
+      let result = groups.find(g => g.group.toLocaleLowerCase() === job.group?.toLocaleLowerCase());
+      if (!result) {
+        result = {
+          group: job.group!,
+          items: []
+        };
+
+        groups.push(result);
+      }
+
+      return result;
+    }
+
+    // Add all of the items to groups.
+    this.agentList.forEach(j => {
+      const group = findGroup(j);
+      group.items.push(j);
+    });
+
+
+    // If the general group has something in it, then include it.
+    if (generalGroup.items.length > 0) {
+      groups.push(generalGroup);
+    }
+
+    // Sort the list.
+    groups.sort((g1, g2) => {
+      return g1.group.localeCompare(g2.group);
+    });
+
+    // Update the group list.
+    this.agentGroups = groups;
   }
-
-  set searchText(newVal: string) {
-    this._searchText.next(newVal);
-  }
-  // #endregion
-
-  // #region agentConfigList
-  private _agentConfigList!: ReadonlySubject<ChatAgentIdentityConfiguration[]>;
-
-  get agentConfigList$() {
-    return this._agentConfigList.observable$;
-  }
-
-  get agentConfigList(): ChatAgentIdentityConfiguration[] {
-    return this._agentConfigList.value;
-  }
-  // #endregion
 
   async deleteAgentConfig(config: ChatAgentIdentityConfiguration): Promise<void> {
     this.confirmationService.confirm({

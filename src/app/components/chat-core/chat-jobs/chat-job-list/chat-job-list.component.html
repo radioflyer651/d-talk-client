@@ -10,39 +10,43 @@
                 (click)="showNewJobDialog()"></p-button>
         </p-panel>
 
-        <ng-container *ngIf="!!(jobList$ | async)">
-            <p-dataview [value]="(jobList$ | async)!">
-                <ng-template #header>
-                    Task Templates
-                </ng-template>
+        <ng-container *ngIf="chatJobGroups">
+            <ng-container *ngIf="chatJobGroups.length < 2; else groupList">
+                <div *ngFor="let job of jobsList" class="chat-job-card-container">
+                    <div chat-job-card-controls>
+                        <p-button icon="fa fa-trash" severity="danger" size="small" [rounded]="true"
+                            (click)="deleteJob(job)"></p-button>
+                    </div>
+                    <div (click)="selectJob(job)">
+                        <h5>
+                            {{job.name}}
+                        </h5>
+                    </div>
+                </div>
+            </ng-container>
 
-                <ng-template #list let-items>
-                    <div *ngFor="let job of items" class="chat-job-card-container">
-                        <p-panel [showHeader]="false">
-                            <div class="chat-job-title" (click)="selectJob(job)">
-                                <h5>
-                                    {{job.name}}
-                                </h5>
-                            </div>
-
-                            <div class="chat-job-card-wrapper">
-                                <div class="chat-job-card-content">
-                                    <div>
-                                        <b>Plugins:</b> {{job.plugins.length}}
-                                    </div>
-                                    <div>
-                                        <b>Instructions:</b> {{job.instructions.length}}
-                                    </div>
-                                </div>
+            <ng-template #groupList>
+                <p-accordion [value]="selectedGroupId">
+                    <p-accordion-panel *ngFor="let group of chatJobGroups; let index = index" [value]="group.group">
+                        <p-accordion-header>
+                            {{ group.group }}
+                        </p-accordion-header>
+                        <p-accordion-content>
+                            <div *ngFor="let job of group.items" class="chat-job-card-container">
                                 <div class="chat-job-card-controls">
                                     <p-button icon="fa fa-trash" severity="danger" size="small" [rounded]="true"
                                         (click)="deleteJob(job)"></p-button>
                                 </div>
+                                <div (click)="selectJob(job)">
+                                    <h5>
+                                        {{job.name}}
+                                    </h5>
+                                </div>
                             </div>
-                        </p-panel>
-                    </div>
-                </ng-template>
-            </p-dataview>
+                        </p-accordion-content>
+                    </p-accordion-panel>
+                </p-accordion>
+            </ng-template>
         </ng-container>
     </p-card>
 
@@ -63,5 +67,3 @@
         </ng-template>
     </p-dialog>
 </div>
-
-<!-- Dialog for creating a new job could go here if needed -->
