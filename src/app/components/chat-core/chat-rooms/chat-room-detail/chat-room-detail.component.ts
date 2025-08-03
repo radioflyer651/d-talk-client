@@ -6,7 +6,7 @@ import { AgentConfigurationService } from '../../../../services/chat-core/agent-
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
 import { ChatRoomsService } from '../../../../services/chat-core/chat-rooms.service';
 import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-models/chat-core/agent-configuration.model';
-import { lastValueFrom, Observable, shareReplay, takeUntil } from 'rxjs';
+import { lastValueFrom, map, Observable, shareReplay, takeUntil } from 'rxjs';
 import { ChatJobConfiguration } from '../../../../../model/shared-models/chat-core/chat-job-data.model';
 import { PanelModule } from 'primeng/panel';
 import { ChatJobInstance } from '../../../../../model/shared-models/chat-core/chat-job-instance.model';
@@ -46,7 +46,7 @@ import { ChatJobOrderControlComponent } from "../../chat-job-order-control/chat-
     DocumentPermissionsComponent,
     SelectModule,
     ChatJobOrderControlComponent
-],
+  ],
   templateUrl: './chat-room-detail.component.html',
   styleUrl: './chat-room-detail.component.scss',
   providers: [ConfirmationService]
@@ -89,11 +89,43 @@ export class ChatRoomDetailComponent extends ComponentBase {
 
     this.agentConfigurations$ = this.chatAgentService.agentConfigurations$.pipe(
       takeUntil(this.ngDestroy$),
+      map(agents => {
+        const result = agents.slice();
+
+        result.sort((a1, a2) => {
+          return a1.name.localeCompare(a2.name);
+        });
+
+        result.sort((a1, a2) => {
+          const g1 = a1.group ?? '';
+          const g2 = a2.group ?? '';
+
+          return g1.localeCompare(g2);
+        });
+
+        return agents;
+      }),
       shareReplay(),
     );
 
     this.chatJobConfigurations$ = this.chatJobsService.jobs$.pipe(
       takeUntil(this.ngDestroy$),
+      map(jobs => {
+        const result = jobs.slice();
+
+        result.sort((j1, j2) => {
+          return j1.name.localeCompare(j2.name);
+        });
+
+        result.sort((j1, j2) => {
+          const g1 = j1.group ?? '';
+          const g2 = j2.group ?? '';
+
+          return g1.localeCompare(g2);
+        });
+
+        return jobs;
+      }),
       shareReplay(),
     );
 
@@ -107,11 +139,11 @@ export class ChatRoomDetailComponent extends ComponentBase {
       this.agentInstances = agents;
     });
 
-    this.chatJobInstances$ = this.chatRoomService.selectedChatRoomJobInstances$;
-    this.chatJobInstances$.pipe(
+    this.chatJobInstances$ = this.chatRoomService.selectedChatRoomJobInstances$.pipe(
       takeUntil(this.ngDestroy$),
       shareReplay(),
-    ).subscribe();
+    );
+    this.chatJobInstances$.subscribe();
 
     this.chatRoomService.selectedChatRoom$.pipe(
       takeUntil(this.ngDestroy$),

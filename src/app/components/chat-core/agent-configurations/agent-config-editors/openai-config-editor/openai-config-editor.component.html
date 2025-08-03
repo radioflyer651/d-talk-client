@@ -1,63 +1,88 @@
-<p-floatlabel>
+<!-- <p-floatlabel>
     <input id="model-selection" autocomplete="off" pInputText [(ngModel)]="params.serviceParams.model" />
     <label for="model-selection">Model Selection</label>
-</p-floatlabel>
+</p-floatlabel> -->
 
-<p-table [value]="options" [(selection)]="selection" dataKey="value" selectionMode="single">
-    <ng-template #header>
-        <tr>
-            <td>
-                Name
-            </td>
-            <td>
-                Speed
-            </td>
-            <td>
-                Reasoning
-            </td>
-            <td>
-                Thinking Model
-            </td>
-            <td>
-                Context Window
-            </td>
-            <td>
-                Input Cost
-            </td>
-            <td>
-                Output Cost
-            </td>
-        </tr>
-    </ng-template>
+<div *ngIf="displayType==='selection'">
+    <p-select appendTo="body" [(ngModel)]="selection" [options]="options" dataKey="value"
+        optionLabel="modelLabel"></p-select>
+    <p-button label="Show More Details" (click)="setDisplayType('table')"></p-button>
+</div>
 
-    <ng-template #body let-item>
-        <tr [pSelectableRow]="item">
-            <td>
-                <div>
-                    {{item.modelLabel}}
-                </div>
-                <div>
-                    {{item.value}}
-                </div>
-            </td>
-            <td>
-                {{item.speed | number: '2.0'}}
-            </td>
-            <td>
-                {{item.reasoning | number: '2.0'}}
-            </td>
-            <td>
-                <i class="fa fa-check" *ngIf="item.reasoningTokens"></i>
-            </td>
-            <td>
-                {{item.contextWindow | number: '2.0'}}
-            </td>
-            <td>
-                {{item.inputCost | currency: 'USD'}}/m
-            </td>
-            <td>
-                {{item.outputCost | currency: 'USD'}}/m
-            </td>
-        </tr>
-    </ng-template>
-</p-table>
+<div *ngIf="displayType==='table'">
+    <p-button label="Show Less Details" (click)="setDisplayType('selection')"></p-button>
+    <p-table [value]="options" [(selection)]="selection" dataKey="value"
+        selectionMode="single">
+        <ng-template #header>
+            <tr>
+                <td>Name</td>
+                <td>Speed</td>
+                <td>Reasoning</td>
+                <td>Thinking Model</td>
+                <td>Context Window</td>
+                <td>Input Cost</td>
+                <td>Output Cost</td>
+            </tr>
+        </ng-template>
+
+        <ng-template #body let-item>
+            <tr [pSelectableRow]="item">
+                <td>
+                    <div>{{item.modelLabel}}</div>
+                    <div>{{item.value}}</div>
+                </td>
+                <td>{{item.speed | number: '2.0'}}</td>
+                <td>{{item.reasoning | number: '2.0'}}</td>
+                <td><i class="fa fa-check" *ngIf="item.reasoningTokens"></i></td>
+                <td>{{item.contextWindow | number: '2.0'}}</td>
+                <td>{{item.inputCost | currency: 'USD'}}/m</td>
+                <td>{{item.outputCost | currency: 'USD'}}/m</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+
+<!-- Nullable parameter controls -->
+<div class="nullable-value">
+    <p-checkbox [(ngModel)]="enableTemperature" [binary]="true"></p-checkbox>
+    <div class="value">
+        <p-floatlabel>
+            <p-inputnumber [disabled]="!enableTemperature" mode="decimal" [minFractionDigits]="2"
+                [maxFractionDigits]="2" id="temperature" [(ngModel)]="temperature" [min]="0" [max]="2" [step]="0.01" />
+            <label for="temperature">Temperature</label>
+        </p-floatlabel>
+    </div>
+</div>
+
+<div class="nullable-value">
+    <p-checkbox [(ngModel)]="enableMaxTokens" [binary]="true"></p-checkbox>
+    <div class="value">
+        <p-floatlabel>
+            <p-inputnumber [disabled]="!enableMaxTokens" id="max-tokens" autocomplete="false"
+                [(ngModel)]="maxTokens"></p-inputnumber>
+            <label for="max-tokens">Max Tokens</label>
+        </p-floatlabel>
+    </div>
+</div>
+
+<div class="nullable-value">
+    <p-checkbox [(ngModel)]="enableTopP" [binary]="true"></p-checkbox>
+    <div class="value">
+        <p-floatlabel>
+            <p-inputnumber [disabled]="!enableTopP" mode="decimal" [minFractionDigits]="2"
+                [maxFractionDigits]="2" id="top-p" [(ngModel)]="topP" [min]="0" [max]="1" [step]="0.01" />
+            <label for="top-p">Top P</label>
+        </p-floatlabel>
+    </div>
+</div>
+
+<div class="nullable-value">
+    <p-checkbox [(ngModel)]="logprobs" [binary]="true"></p-checkbox>
+    <div class="value">
+        <p-floatlabel>
+            <p-inputnumber [disabled]="!logprobs" mode="decimal" [minFractionDigits]="0"
+                [maxFractionDigits]="0" id="log-probs" [(ngModel)]="topLogprobs" [min]="0" [max]="5"/>
+            <label for="log-probs">Top Log Probs</label>
+        </p-floatlabel>
+    </div>
+</div>

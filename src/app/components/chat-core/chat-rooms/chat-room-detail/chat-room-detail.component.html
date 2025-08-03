@@ -130,16 +130,18 @@
         </div>
     </div>
 
-    <div class="tab-content fit-container-scroll" *ngIf="selectedTabId===1">
-        <app-positionable-message-list *ngIf="chatRoom"
-            [messages]="chatRoom.roomInstructions"></app-positionable-message-list>
+    <div class="fit-container-scroll" *ngIf="selectedTabId===1">
+        <div>
+            <app-positionable-message-list *ngIf="chatRoom"
+                [messages]="chatRoom.roomInstructions"></app-positionable-message-list>
 
-        <div class="footer-button-controls">
-            <p-button label="Save" (click)="saveRoom()"></p-button>
+            <div class="footer-button-controls">
+                <p-button label="Save" (click)="saveRoom()"></p-button>
+            </div>
         </div>
     </div>
 
-    <div class="tab-content fit-container-scroll" *ngIf="selectedTabId===2">
+    <div class="fit-container-scroll" *ngIf="selectedTabId===2">
         <app-document-permissions [permissions]="chatRoom?.chatDocumentReferences"></app-document-permissions>
 
         <div class="footer-button-controls">

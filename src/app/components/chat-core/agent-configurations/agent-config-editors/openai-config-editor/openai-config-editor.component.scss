@@ -1,0 +1,13 @@
+.nullable-value {
+    display: flex;
+    align-items: center;
+
+    p-checkbox {
+        margin-top: 2em;
+        margin-right: 1em;
+    }
+
+    .value {
+        flex: 1 1 auto;
+    }
+}
