@@ -14,6 +14,7 @@ import { ConfirmationService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
 import { TextareaModule } from 'primeng/textarea';
 import { FormsModule } from '@angular/forms';
+import { MonacoEditorComponent, MonacoEditorOptions } from "../../../../monaco-editor/monaco-editor.component";
 
 @Component({
   selector: 'app-chat-message',
@@ -26,6 +27,7 @@ import { FormsModule } from '@angular/forms';
     ButtonModule,
     DialogModule,
     TextareaModule,
+    MonacoEditorComponent
   ],
 })
 export class ChatMessageComponent extends ComponentBase {
@@ -106,6 +108,10 @@ export class ChatMessageComponent extends ComponentBase {
 
   wrapper: StoredMessageWrapper | undefined;
 
+  monacoEditorOptions: MonacoEditorOptions = {
+    currentLanguage: 'plaintext',
+    wordWrapOn: true
+  };
 
   get innerHtml() {
     return this.sanitizer.bypassSecurityTrustHtml(this.message.data.content.replaceAll(/\n/g, '<br/>').replaceAll('\t', '&nbsp;'.repeat(5)));

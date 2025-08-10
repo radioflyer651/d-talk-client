@@ -43,6 +43,11 @@
         gap: 0.25rem;
         width: 100%;
 
+        .message-editor {
+          height: 100%;
+          width: 100%;
+        }
+
         .chat-input {
           flex: 1 1 auto;
           resize: none;
@@ -54,7 +59,8 @@
           margin-right: 0.75rem;
         }
       }
-      .chat-input-area > * {
+
+      .chat-input-area>* {
         margin: 0.1rem;
       }
 

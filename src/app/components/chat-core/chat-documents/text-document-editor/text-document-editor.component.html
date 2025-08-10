@@ -1,6 +1,8 @@
 <div *ngIf="!!wrapper" class="editor-container" [ngClass]="{popout: inPopoutScreen}">
 
-    <p-selectbutton [options]="modeOptions" [(ngModel)]="mode"></p-selectbutton>
+    <div>
+        <p-selectbutton [options]="modeOptions" [(ngModel)]="mode"></p-selectbutton>
+    </div>
 
     <div class="content-container">
         <div *ngIf="mode==='text'" class="text-container">
@@ -14,5 +16,8 @@
 
         <div [innerHTML]="htmlContent" class="markup" *ngIf="mode==='rendered'"></div>
 
+        <div *ngIf="mode==='editor'" class="monaco-editor-container">
+            <app-monaco-editor [(content)]="wrapper.content" [editorOptions]="monacoEditorOptions"></app-monaco-editor>
+        </div>
     </div>
 </div>

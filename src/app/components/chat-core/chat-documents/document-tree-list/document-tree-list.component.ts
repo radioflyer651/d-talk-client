@@ -8,7 +8,7 @@ import { UserService } from '../../../../services/user.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { TreeModule } from 'primeng/tree';
-import { TreeNode } from 'primeng/api';
+import { ConfirmationService, TreeNode } from 'primeng/api';
 import { lastValueFrom, map, takeUntil } from 'rxjs';
 import { createDocumentTree } from '../../../../../utils/create-document-tree.utils';
 import { ButtonModule } from 'primeng/button';
@@ -37,6 +37,7 @@ export class DocumentTreeListComponent extends ComponentBase {
     readonly userService: UserService,
     readonly router: Router,
     readonly route: ActivatedRoute,
+    readonly confirmationService: ConfirmationService,
   ) {
     super();
   }
@@ -105,13 +106,18 @@ export class DocumentTreeListComponent extends ComponentBase {
 
   async deleteDocument(doc: IChatDocumentData) {
     if (doc._id) {
-      console.log(this.route.snapshot);
-      await lastValueFrom(this.chatDocumentsService.deleteDocument(doc._id));
-      // Deselect the current node, if we just deleted it.
-      const selectedDocumentId = this.selectedNode?.data._id as string | undefined;
-      if (selectedDocumentId === doc._id) {
-        this.selectedNode = undefined;
-      }
+      this.confirmationService.confirm({
+        header: 'Delete Confirmation',
+        message: `Are you sure you want to delete this document?`,
+        accept: async () => {
+          await lastValueFrom(this.chatDocumentsService.deleteDocument(doc._id));
+          // Deselect the current node, if we just deleted it.
+          const selectedDocumentId = this.selectedNode?.data._id as string | undefined;
+          if (selectedDocumentId === doc._id) {
+            this.selectedNode = undefined;
+          }
+        }
+      });
     }
   }
 }

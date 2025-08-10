@@ -10,17 +10,20 @@
     <div [innerHTML]="innerHtml"></div>
 
     <div class="button-container">
-      <p-button size="small" (click)="copyMessageContent()" [rounded]="true" icon="fa fa-copy" severity="info"></p-button>
+      <p-button size="small" (click)="copyMessageContent()" [rounded]="true" icon="fa fa-copy"
+        severity="info"></p-button>
       <p-button size="small" (click)="editMessage()" [rounded]="true" icon="fa fa-pencil" severity="primary"></p-button>
       <p-button size="small" (click)="deleteMessage()" [rounded]="true" icon="fa fa-minus" severity="danger"></p-button>
     </div>
   </div>
 </div>
 
-<p-dialog header="Edit Message" [(visible)]="isEditDialogVisible" [style]="{width: '40vw', height: '40vh'}"
-  appendTo="body">
+<p-dialog header="Edit Message" [(visible)]="isEditDialogVisible" [closeOnEscape]="false"
+  [style]="{width: '60vw', height: '70vh'}" appendTo="body">
   <div class="edit-message-content">
-    <textarea pTextarea [(ngModel)]="editMessageContent"></textarea>
+    <!-- <textarea pTextarea [(ngModel)]="editMessageContent"></textarea> -->
+    <app-monaco-editor *ngIf="isEditDialogVisible" [editorOptions]="monacoEditorOptions"
+      [(content)]="editMessageContent"></app-monaco-editor>
   </div>
 
   <ng-template #footer>

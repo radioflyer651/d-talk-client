@@ -1,4 +1,10 @@
+@import '../../../../../layout.scss';
+
 .document-detail-container {
+    @extend %_fit-container-hidden;
+    display: flex;
+    flex-direction: column;
+
     .document-info-block,
     .document-extended-block {
         width: 100%;
@@ -7,5 +13,9 @@
     textarea {
         width: 100%;
         min-height: 8em;
+    }
+
+    app-chat-document-editor{
+        flex: 1 1 auto;
     }
 }

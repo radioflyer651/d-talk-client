@@ -12,7 +12,11 @@ import { TextDocumentData } from '../../../../../model/shared-models/chat-core/d
 import { ChatDocumentsService } from '../../../../services/chat-core/chat-documents/chat-documents.service';
 import { TextDocumentWrapper } from '../../../../../model/chat-documents/text-document.wrapper';
 import { ComponentBase } from '../../../component-base/component-base.component';
-import { BehaviorSubject, from, of, switchMap, takeUntil } from 'rxjs';
+import { BehaviorSubject, distinctUntilChanged, from, of, Subscription, switchMap, takeUntil, takeWhile } from 'rxjs';
+import * as monaco from 'monaco-editor';
+import { DialogModule } from 'primeng/dialog';
+import { CheckboxModule } from 'primeng/checkbox';
+import { MonacoEditorComponent, MonacoEditorOptions } from "../../../monaco-editor/monaco-editor.component";
 
 @Component({
   selector: 'app-text-document-editor',
@@ -25,6 +29,9 @@ import { BehaviorSubject, from, of, switchMap, takeUntil } from 'rxjs';
     InputTextModule,
     TextareaModule,
     SelectButtonModule,
+    DialogModule,
+    CheckboxModule,
+    MonacoEditorComponent
   ],
   templateUrl: './text-document-editor.component.html',
   styleUrl: './text-document-editor.component.scss'
@@ -41,6 +48,7 @@ export class TextDocumentEditorComponent extends ComponentBase {
   // #region document
   private readonly _document = new BehaviorSubject<TextDocumentData | undefined>(undefined);
   readonly document$ = this._document.asObservable();
+  contentChangeSubscription: Subscription | undefined = undefined;
 
   @Input({ required: true })
   get document(): TextDocumentData | undefined {
@@ -51,6 +59,11 @@ export class TextDocumentEditorComponent extends ComponentBase {
     this._document.next(newVal);
   }
   // #endregion
+
+  override ngOnDestroy(): void {
+    super.ngOnDestroy();
+    this.cleanupEditor();
+  }
 
   ngOnInit() {
     this.document$.pipe(
@@ -69,32 +82,57 @@ export class TextDocumentEditorComponent extends ComponentBase {
 
       this.wrapper = val as TextDocumentWrapper;
     });
+
   }
 
+  editor?: monaco.editor.IStandaloneCodeEditor;
+
+  cleanupEditor(): void {
+    if (this.contentChangeSubscription) {
+      this.contentChangeSubscription.unsubscribe();
+      this.contentChangeSubscription = undefined;
+    }
+
+    if (this.editor) {
+      this.editor.dispose();
+      this.editor = undefined;
+    }
+  }
+
+
   wrapper: TextDocumentWrapper | undefined;
+
+  monacoEditorOptions: MonacoEditorOptions = {
+    currentLanguage: 'plaintext',
+    wordWrapOn: false
+  };
 
   @Input()
   inPopoutScreen: boolean = false;
 
-
   modeOptions = [
     {
+      label: 'Code Editor',
+      value: 'editor',
+    },
+    {
       label: 'Plain Text',
-      value: 'text'
+      value: 'text',
     },
     {
       label: 'Rich Editor',
-      value: 'formatted'
+      value: 'formatted',
     },
     {
       label: 'Rendered Markup',
-      value: 'rendered'
+      value: 'rendered',
     },
   ];
 
-  mode = 'text';
+  mode = 'editor';
 
   get htmlContent() {
     return this.sanitizer.bypassSecurityTrustHtml(this.document?.content ?? '');
   }
+
 }

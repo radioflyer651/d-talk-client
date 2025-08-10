@@ -1,0 +1,27 @@
+<div class="app-monaco-editor">
+    <div class="editor-controls" *ngIf="editorOptions.showToolbar!==false">
+        <p-toolbar>
+            <ng-template #start>
+                <p-button icon="fa-regular fa-code" (click)="showLanguageChangeDialog()"></p-button>
+                <p-togglebutton [onIcon]="'fa-solid fa-paragraph-left'" [offIcon]="'fa-solid fa-paragraph'"
+                    onLabel="Wrap" offLabel="No Wrap" [(ngModel)]="editorOptions.wordWrapOn"
+                    (onChange)="toggleWordwrap()"></p-togglebutton>
+            </ng-template>
+        </p-toolbar>
+    </div>
+
+    <div [id]="htmlEditorElementId" class="monaco-editor-host"></div>
+</div>
+
+<p-dialog [(visible)]="languageChangeModalVisible">
+    <div>
+        <p-select [(ngModel)]="newLanguage" [options]="languages" appendTo="body" placeholder="Language"
+            [editable]="true"></p-select>
+    </div>
+    <ng-template #footer>
+        <div class="footer-button-controls">
+            <p-button label="Cancel" (click)="closeLanguageChangeDialog(true)"></p-button>
+            <p-button label="OK" (click)="closeLanguageChangeDialog(false)"></p-button>
+        </div>
+    </ng-template>
+</p-dialog>

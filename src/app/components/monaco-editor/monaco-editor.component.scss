@@ -1,0 +1,19 @@
+@import '../../../layout.scss';
+
+.app-monaco-editor {
+    @extend %_fit-container-hidden;
+    display: flex;
+    flex-direction: column;
+
+    .editor-controls {
+        p-button {
+            margin: 0 0.75em;
+        }
+    }
+
+    .monaco-editor-host {
+        width: 100%;
+
+        flex: 1 1 auto;
+    }
+}

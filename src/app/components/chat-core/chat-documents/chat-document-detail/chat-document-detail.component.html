@@ -1,4 +1,5 @@
 <div *ngIf="document" class="document-detail-container">
+    
     <div class="document-info-block">
         <p-floatlabel>
             <input id="document-name" autocomplete="off" pInputText [(ngModel)]="document.name" />
@@ -18,9 +19,9 @@
 
             <label for="description">Description</label>
         </p-floatlabel>
-
-        <app-chat-document-editor [document]="document"></app-chat-document-editor>
     </div>
+
+    <app-chat-document-editor [document]="document"></app-chat-document-editor>
 
     <div class="footer-button-controls">
         <p-button label="Save" (click)="saveDocument()"></p-button>

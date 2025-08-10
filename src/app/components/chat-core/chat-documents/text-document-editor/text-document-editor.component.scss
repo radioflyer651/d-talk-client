@@ -1,6 +1,9 @@
+@import '../../../../../layout.scss';
+
 .editor-container {
-    width: 100%;
-    height: 100%;
+    @extend %_fit-container-hidden;
+    display: flex;
+    flex-direction: column;
 
     .text-container {
         width: 100%;
@@ -15,24 +18,35 @@
         }
     }
 
+    .monaco-editor-container {
+        @extend %_fit-container-hidden;
+
+        app-monaco-editor {
+            height: 100%;
+            display: block;
+        }
+    }
+
+
+    .content-container {
+        height: 100%;
+    }
+
     &.popout {
         height: 100%;
         display: flex;
         flex-direction: column;
 
-        .content-container {
+        .text-container {
             height: 100%;
+            display: flex;
+            flex-direction: column;
 
-            .text-container {
+            textarea {
+                flex: 1 1 auto;
                 height: 100%;
-                display: flex;
-                flex-direction: column;
-
-                textarea {
-                    flex: 1 1 auto;
-                    height: 100%;
-                }
             }
+
         }
     }
 }

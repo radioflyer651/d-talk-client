@@ -12,10 +12,15 @@
 
       <ng-template #panel>
         <div class="chat-input-area">
+
           <textarea class="chat-input" id="user-message" pTextarea placeholder="Your chat message...."
             [(ngModel)]="chatMessage"></textarea>
-          <div class="button-group">
 
+          <!-- <div class="message-editor" id="user-message">
+            <app-monaco-editor [editorOptions]="monacoEditorOptions" [(content)]="chatMessage"></app-monaco-editor>
+          </div> -->
+
+          <div class="button-group">
             <div class="button-row">
               <p-button *ngIf="!isLoading" label="Send" severity="success" (click)="sendMessage()"></p-button>
               <p-button *ngIf="isLoading" label="Cancel" severity="danger" (click)="cancelLlmMessage()"></p-button>
@@ -35,7 +40,5 @@
         </div>
       </ng-template>
     </p-splitter>
-
-
   </div>
 </div>

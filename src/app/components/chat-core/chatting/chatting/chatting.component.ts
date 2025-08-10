@@ -14,6 +14,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { SplitterModule } from 'primeng/splitter';
 import { ChattingJobListComponent } from "./chatting-job-list/chatting-job-list.component";
 import { StoredMessage } from '@langchain/core/messages';
+import { MonacoEditorComponent, MonacoEditorOptions } from "../../../monaco-editor/monaco-editor.component";
 
 @Component({
   selector: 'app-chatting',
@@ -25,7 +26,8 @@ import { StoredMessage } from '@langchain/core/messages';
     RouterModule,
     TextareaModule,
     SplitterModule,
-    ChattingJobListComponent
+    ChattingJobListComponent,
+    MonacoEditorComponent
   ],
   templateUrl: './chatting.component.html',
   styleUrl: './chatting.component.scss'
@@ -72,6 +74,12 @@ export class ChattingComponent extends ComponentBase {
 
   cancelLlmMessage!: () => void | Promise<void>;
   isLoading = false;
+
+  monacoEditorOptions: MonacoEditorOptions = {
+    currentLanguage: 'plaintext',
+    wordWrapOn: true,
+    showToolbar: false,
+  };
 
   sendMessage() {
     this.isLoading = true;
