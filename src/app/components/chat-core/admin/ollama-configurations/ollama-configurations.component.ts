@@ -9,9 +9,12 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { TextareaModule } from 'primeng/textarea';
 import { createOllamaConfiguration, OllamaModelConfiguration } from '../../../../../model/shared-models/chat-core/chat-model-params/ollama.model-params';
 import { NewDbItem } from '../../../../../model/shared-models/db-operation-types.model';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, map, Observable, takeUntil } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { PanelModule } from 'primeng/panel';
+import { CheckboxModule } from 'primeng/checkbox';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-ollama-configurations',
@@ -24,6 +27,8 @@ import { PanelModule } from 'primeng/panel';
     TextareaModule,
     ButtonModule,
     PanelModule,
+    CheckboxModule,
+    InputNumberModule,
   ],
   templateUrl: './ollama-configurations.component.html',
   styleUrl: './ollama-configurations.component.scss'
@@ -31,8 +36,21 @@ import { PanelModule } from 'primeng/panel';
 export class OllamaConfigurationsComponent extends ComponentBase {
   constructor(
     readonly ollamaConfigurationService: OllamaConfigurationService,
+    readonly confirmationService: ConfirmationService,
   ) {
     super();
+  }
+
+  configurationList$!: Observable<OllamaModelConfiguration[]>;
+
+  ngOnInit() {
+    this.configurationList$ = this.ollamaConfigurationService.allConfigurations$.pipe(
+      takeUntil(this.ngDestroy$),
+      map(list => {
+        list.sort((m1, m2) => m1.displayName.localeCompare(m2.displayName));
+        return list;
+      })
+    );
   }
 
   selectedConfiguration: OllamaModelConfiguration | NewDbItem<OllamaModelConfiguration> | undefined;
@@ -47,6 +65,33 @@ export class OllamaConfigurationsComponent extends ComponentBase {
   }
 
   isNewItem: boolean = false;
+
+  get isMaxContextEnabled(): boolean {
+    return this.selectedConfiguration?.maxContext != undefined;
+  }
+  set isMaxContextEnabled(value: boolean) {
+    if (!this.selectedConfiguration) {
+      return;
+    }
+
+    if (value) {
+      this.selectedConfiguration.maxContext = 16000;
+    } else {
+      this.selectedConfiguration.maxContext = undefined;
+    }
+  }
+
+  deleteConfiguration(config: OllamaModelConfiguration) {
+    this.confirmationService.confirm({
+      header: 'Confirm Delete',
+      message: `Are you sure you wish to delete the ${config.displayName} configuration?`,
+      accept: async () => {
+        await lastValueFrom(this.ollamaConfigurationService.deleteConfiguration(config._id));
+        this.ollamaConfigurationService.reloadConfigs();
+      }
+    });
+  }
+
 
   createNewConfiguration() {
     this.isNewItem = true;

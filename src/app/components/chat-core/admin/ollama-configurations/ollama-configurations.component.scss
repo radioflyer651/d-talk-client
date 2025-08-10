@@ -2,13 +2,20 @@
     display: flex;
 
     .configuration-list-container {
-        min-width: 25%;
+        width: 25%;
 
         .configuration-list-item {
-            cursor: pointer;
             padding: 1em;
 
-            .list-item-title {
+            .list-item-title-container {
+                display: flex;
+                align-items: baseline;
+                background-color: rgb(223, 223, 223);
+
+                .list-item-title {
+                    cursor: pointer;
+                    flex: 1 1 auto;
+                }
             }
         }
     }
@@ -27,5 +34,20 @@
                 display: flex;
             }
         }
+    }
+
+}
+
+.nullable-value {
+    display: flex;
+    align-items: center;
+
+    p-checkbox {
+        margin-top: 2em;
+        margin-right: 1em;
+    }
+
+    .value {
+        flex: 1 1 auto;
     }
 }

@@ -19,14 +19,17 @@
             <div>
                 <p-button label="New Config" (click)="createNewConfiguration()"></p-button>
             </div>
-            <div *ngIf="(ollamaConfigurationService.allConfigurations$ | async) as configurations">
+            <div *ngIf="(configurationList$ | async) as configurations">
                 <p-dataview [value]="configurations">
                     <ng-template #list let-configurations>
-                        <div class="configuration-list-item" *ngFor="let config of configurations"
-                            (click)="selectConfiguration(config)">
-                            <h5 class="list-item-title">
-                                {{config.displayName}}
-                            </h5>
+                        <div class="configuration-list-item" *ngFor="let config of configurations">
+                            <div class="list-item-title-container">
+                                <h5 class="list-item-title" (click)="selectConfiguration(config)">
+                                    {{config.displayName}}
+                                </h5>
+                                <p-button icon="fa-solid fa-trash" severity="danger"
+                                    (click)="deleteConfiguration(config)"></p-button>
+                            </div>
                             <div class="list-item-detail">
                                 <div>
                                     {{config.modelName}}
@@ -56,6 +59,18 @@
 
                     <label for="configuration-name">Name</label>
                 </p-floatlabel>
+
+                <div class="nullable-value">
+                    <p-checkbox [(ngModel)]="isMaxContextEnabled" [binary]="true"></p-checkbox>
+
+                    <div class="value">
+                        <p-floatlabel>
+                            <p-inputnumber [disabled]="!isMaxContextEnabled" id="max-context" autocomplete="false"
+                                [(ngModel)]="selectedConfiguration!.maxContext"></p-inputnumber>
+                            <label for="max-context">Max Out Tokens</label>
+                        </p-floatlabel>
+                    </div>
+                </div>
 
                 <p-floatlabel>
                     <textarea pTextarea id="description" autocomplete="off" pInputText
