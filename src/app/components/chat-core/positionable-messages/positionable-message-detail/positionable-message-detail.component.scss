@@ -1,32 +1,52 @@
 .control-container {
     margin-bottom: 1em;
+    width: 100%;
+    align-items: baseline;
+
+    padding-bottom: 1em;
+    border-bottom: 2px rgb(214, 214, 214) solid;
 
     .content-container {
         display: flex;
+        flex-direction: column;
         width: 100%;
+        align-items: baseline;
+
+        .button-container {
+            display: flex;
+            align-items: baseline;
+
+            p-button {
+                margin-right: 0.75em;
+            }
+        }
 
         .controls-container {
-            input,
-            p-select {
-                width: 100%;
+            display: flex;
+            align-items: baseline;
+
+            >* {
+                margin-right: 0.75em;
             }
-            min-width: 10em;
-            width: auto;
-            margin: 0 0.75em;
+
+            // input,
+            // p-select {
+            //     width: 100%;
+            // }
+
+        }
+
+        .display-name {
+            width: 100%;
         }
 
         .footer-button-controls {
             align-items: baseline;
             margin-top: 0.75em;
         }
+    }
 
-        .message-container {
-            flex: 1 1 auto;
-
-            textarea {
-                height: 100%;
-                width: 100%;
-            }
-        }
+    .column-width {
+        min-width: 12em;
     }
 }

@@ -16,6 +16,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { storedMessageAgentTypeOptions } from '../../../../../model/shared-models/chat-core/stored-message-agent-types.data';
 import { positionableMessageLocationOptions } from '../../../../../model/positionable-message-options.data';
 import { CheckboxModule } from 'primeng/checkbox';
+import { MonacoEditorComponent, MonacoEditorOptions } from "../../../monaco-editor/monaco-editor.component";
+import { Dialog } from "primeng/dialog";
 
 @Component({
   selector: 'app-positionable-message-detail',
@@ -31,6 +33,8 @@ import { CheckboxModule } from 'primeng/checkbox';
     FloatLabelModule,
     InputNumberModule,
     CheckboxModule,
+    MonacoEditorComponent,
+    Dialog
   ],
   templateUrl: './positionable-message-detail.component.html',
   styleUrl: './positionable-message-detail.component.scss'
@@ -76,5 +80,47 @@ export class PositionableMessageDetailComponent extends ComponentBase {
 
   onDeleteClicked() {
     this.deleteClicked.emit(this.messageIndex);
+  }
+
+  get displayName(): string {
+    if (!this.message.description) {
+      if (!this.messageController) {
+        return '';
+      }
+
+      return this.messageController!.content.substring(0, 60);
+    } else {
+      return this.message.description;
+    }
+  }
+
+  isEditDialogVisible: boolean = false;
+
+  monacoEditorOptions: MonacoEditorOptions = {
+    currentLanguage: 'plaintext',
+    wordWrapOn: true,
+  };
+
+  /** Gets or sets the dialog message that will be used to update this message if submitted. */
+  editDialogMessage: string = '';
+  editDialogTitle: string = '';
+
+  editMessage(): void {
+    if (!this.messageController) {
+      throw new Error(`No message controller exists.`);
+    }
+
+    this.editDialogMessage = this.messageController.content;
+    this.editDialogTitle = this.message.description ?? '';
+    this.isEditDialogVisible = true;
+  }
+
+  closeEditDialog(cancelled: boolean) {
+    if (!cancelled) {
+      this.message.description = this.editDialogTitle;
+      this.messageController!.content = this.editDialogMessage;
+    }
+
+    this.isEditDialogVisible = false;
   }
 }

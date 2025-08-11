@@ -1,5 +1,5 @@
 <div class="instruction-container">
-    <p-card [ngClass]="{'inactive': !isActive}">
+    <div [ngClass]="{'inactive': !isActive}">
         <div class="content-container" [ngClass]="{active: isActive}">
             <div *ngIf="isActive">
                 <textarea pTextarea [(ngModel)]="editValue"></textarea>
@@ -20,5 +20,5 @@
             <p-button *ngIf="isActive" icon="fa fa-message-check" size="small" [rounded]="true" severity="primary"
                 (click)="onComplete(false)"></p-button>
         </div>
-    </p-card>
+    </div>
 </div>

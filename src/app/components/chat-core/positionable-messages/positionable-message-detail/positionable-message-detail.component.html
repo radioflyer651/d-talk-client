@@ -1,17 +1,24 @@
 <div class="control-container">
-    <p-panel *ngIf="!!message && !!messageController" [showHeader]="false">
+    <div *ngIf="!!message && !!messageController">
         <div class="content-container">
-            <div class="controls-container">
-                <p-floatlabel>
-                    <p-select [options]="positioningTypeOptions" [(ngModel)]="message.location"
-                        id="position-type"></p-select>
-                    <label for="position-type">Position Type</label>
-                </p-floatlabel>
+            <div class="display-name">
+                <!-- <textarea pTextarea [(ngModel)]="messageController.content"></textarea> -->
+                <h4>{{displayName}}</h4>
+            </div>
 
-                <p-floatlabel *ngIf="showOffset">
-                    <p-inputnumber id="offset" autocomplete="off" [(ngModel)]="message.offset" />
-                    <label for="offset">Offset</label>
-                </p-floatlabel>
+            <div class="controls-container">
+                <div class="button-container">
+                    <p-button icon="fa fa-x" severity="danger" size="small" [rounded]="true"
+                        (click)="onDeleteClicked()"></p-button>
+
+                    <p-button icon="fa-solid fa-pencil" severity="info" size="small" [rounded]="true"
+                        (click)="editMessage()"></p-button>
+
+                    <div class="checkbox-container">
+                        <p-checkbox [binary]="true" [(ngModel)]="messageController.disabled"></p-checkbox>
+                        <label>Disabled</label>
+                    </div>
+                </div>
 
                 <p-floatlabel>
                     <p-select [options]="agentTypeOptions" [(ngModel)]="messageController.agent"
@@ -19,21 +26,39 @@
                     <label for="position-type">Agent Type</label>
                 </p-floatlabel>
 
-                <div class="footer-button-controls">
-                    <div class="checkbox-container">
-                        <p-checkbox [binary]="true" [(ngModel)]="messageController.disabled"></p-checkbox>
-                        <label>Disabled</label>
-                    </div>
+                <p-floatlabel class="column-width">
+                    <p-select class="column-width" [options]="positioningTypeOptions" [(ngModel)]="message.location"
+                        id="position-type"></p-select>
+                    <label for="position-type">Position Type</label>
+                </p-floatlabel>
 
-                    <p-button icon="fa fa-x" severity="danger" size="small" [rounded]="true"
-                        (click)="onDeleteClicked()"></p-button>
-                    <!-- <p-button icon="fa fa-add" severity="primary" size="small" [rounded]="true"></p-button> -->
+                <div class="column-width">
+                    <p-floatlabel *ngIf="showOffset">
+                        <p-inputnumber id="offset" autocomplete="off" [(ngModel)]="message.offset" />
+                        <label for="offset">Offset</label>
+                    </p-floatlabel>
                 </div>
             </div>
-
-            <div class="message-container">
-                <textarea pTextarea [(ngModel)]="messageController.content"></textarea>
-            </div>
         </div>
-    </p-panel>
+    </div>
 </div>
+
+<p-dialog [(visible)]="isEditDialogVisible" header="Edit Message" [style]="{width: '70vw', height: '80vh'}">
+    <p-floatlabel [style]="{width: '100%', marginBottom: '1em'}">
+        <input id="message-title" [style]="{width: '100%'}" autocomplete="off" pInputText
+            [(ngModel)]="editDialogTitle" />
+        <label for="message-title">Name</label>
+    </p-floatlabel>
+
+    <div class="fit-container-hidden" *ngIf="isEditDialogVisible">
+        <app-monaco-editor [(content)]="editDialogMessage" [editorOptions]="monacoEditorOptions"
+            [style]="{width: '100%', height: '100%'}"></app-monaco-editor>
+    </div>
+
+    <ng-template #footer>
+        <div class="footer-button-controls">
+            <p-button label="Cancel" severity="secondary" (click)="closeEditDialog(true)"></p-button>
+            <p-button label="OK" severity="primary" (click)="closeEditDialog(false)"></p-button>
+        </div>
+    </ng-template>
+</p-dialog>

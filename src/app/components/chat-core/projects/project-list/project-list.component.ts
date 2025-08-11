@@ -94,7 +94,7 @@ export class ProjectListComponent extends ComponentBase {
     this.confirmationService.confirm({
       message: `Are you sure you wish to delete the ${project.name} project?`,
       accept: async () => {
-        // return await lastValueFrom(this.projectsService.deleteProject(project._id));
+        return await lastValueFrom(this.projectsService.deleteProject(project._id));
       }
     });
   }
