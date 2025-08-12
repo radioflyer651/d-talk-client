@@ -17,5 +17,5 @@ declare module '@langchain/core/messages' {
         data: StoredMessageData;
     }
 
-    export type BaseMessage = unknown;
+    export type BaseMessage = never;
 }

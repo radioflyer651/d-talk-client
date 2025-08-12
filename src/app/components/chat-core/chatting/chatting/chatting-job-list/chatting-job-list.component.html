@@ -1,21 +1,51 @@
 <div *ngIf="chatRoomService.chatRoomJobInstances ">
-    <div *ngFor="let job of chatRoomService.chatRoomJobInstances; let i = index" class="chat-job-item"
+    <div *ngFor="let job of jobs; let i = index" class="chat-job-item"
         (dragover)="onJobInstanceDragOver($event, job, i)" (drop)="onJobInstanceDrop($event, job, i)"
         (dragenter)="onJobInstanceDragEnter($event, i)" (dragleave)="onJobInstanceDragLeave($event, i)"
         [class.drag-over]="dragOverIndex === i" draggable="true" (dragstart)="onJobInstanceDragStart($event, job, i)"
         (dragend)="onJobInstanceDragEnd($event, job, i)">
         <div class="job-header">
-            <div class="header-title">{{ job.configuration?.name }}</div>
-            <app-chat-job-order-control [targetChatJob]="job"></app-chat-job-order-control>
+            <div class="header-title">{{ job.configuration?.name }} <span>({{ job.agent?.name }})</span></div>
+            <app-chat-job-order-control [targetChatJob]="job.jobLink.jobInstance"></app-chat-job-order-control>
         </div>
         <div class="job-body">
-            <div class="agent-name mt-2">
-                Agent: {{ job.agent?.name }}
-            </div>
             <div class="checkbox-container mt-1">
-                <p-checkbox [binary]="true" [(ngModel)]="job.disabled" (onChange)="setJobDisabled(job)"></p-checkbox>
-                <label>Disabled</label>
+                <p-checkbox [binary]="true" [(ngModel)]="job.isEnabled" (onChange)="setJobDisabled(job)"></p-checkbox>
+                <label>Enabled</label>
             </div>
+
+            
+            <div *ngIf="job.identityInstructions.length > 0">
+                <div class="instruction-header">Job Instructions</div>
+                <div *ngFor="let msg of job.jobInstructions">
+                    <div class="checkbox-container">
+                        <p-checkbox [binary]="true" [(ngModel)]="msg.isEnabled"></p-checkbox>
+                        <label> {{msg.title}} </label>
+                    </div>
+                </div>
+            </div>
+
+
+            <div *ngIf="job.identityInstructions.length > 0">
+                <div class="instruction-header">Agent Identity</div>
+                <div *ngFor="let msg of job.identityInstructions">
+                    <div class="checkbox-container">
+                        <p-checkbox [binary]="true" [(ngModel)]="msg.isEnabled"></p-checkbox>
+                        <label> {{msg.title}} </label>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="job.baseInstructions.length > 0">
+                <div class="instruction-header">Instructions</div>
+                <div *ngFor="let msg of job.baseInstructions">
+                    <div class="checkbox-container">
+                        <p-checkbox [binary]="true" [(ngModel)]="msg.isEnabled"></p-checkbox>
+                        <label> {{msg.title}} </label>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

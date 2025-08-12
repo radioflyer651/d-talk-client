@@ -547,8 +547,8 @@ export class ClientApiService extends ClientApiServiceBase {
   /**
    * Updates an Ollama model configuration by its ID.
    */
-  updateOllamaModelConfiguration(update: Partial<OllamaModelConfiguration> & { _id: ObjectId }) {
-    return this.http.put<{ success: boolean }>(
+  updateOllamaModelConfiguration(update: Partial<OllamaModelConfiguration> & { _id: ObjectId; }) {
+    return this.http.put<{ success: boolean; }>(
       this.constructUrl('ollama-model-config'),
       update,
       this.optionsBuilder.withAuthorization()
@@ -559,9 +559,32 @@ export class ClientApiService extends ClientApiServiceBase {
    * Deletes an Ollama model configuration by its ID.
    */
   deleteOllamaModelConfiguration(id: ObjectId) {
-    return this.http.delete<{ success: boolean }>(
+    return this.http.delete<{ success: boolean; }>(
       this.constructUrl(`ollama-model-config/${id}`),
       this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Sets the disabled state of an instruction or identity message on an agent configuration.
+   */
+  setAgentConfigurationMessageDisabled(agentId: ObjectId, messageType: 'instruction' | 'identity', messageIndex: number, newDisabledValue: boolean,) {
+    return this.http.patch(
+      this.constructUrl(`agent-configuration/${agentId}/message-disabled`), { messageType, messageIndex, newDisabledValue },
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Sets the disabled state of an instruction or identity message on a job configuration.
+   */
+  setJobInstructionDisabled(
+    jobId: ObjectId,
+    messageIndex: number,
+    newDisabledValue: boolean,
+  ) {
+    return this.http.patch<{ success: boolean; }>(this.constructUrl(`job/${jobId}/message-disabled`),
+      { messageIndex, newDisabledValue }, this.optionsBuilder.withAuthorization()
     );
   }
 

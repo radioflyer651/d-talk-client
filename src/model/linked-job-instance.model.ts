@@ -1,3 +1,4 @@
+import { ChatAgentIdentityConfiguration } from "./shared-models/chat-core/agent-configuration.model";
 import { AgentInstanceConfiguration } from "./shared-models/chat-core/agent-instance-configuration.model";
 import { ChatJobConfiguration } from "./shared-models/chat-core/chat-job-data.model";
 import { ChatJobInstance } from "./shared-models/chat-core/chat-job-instance.model";
@@ -11,4 +12,7 @@ export interface LinkedJobInstance extends ChatJobInstance {
 
     /** The agent assigned to this job instance. */
     agent: AgentInstanceConfiguration | undefined;
+
+    /** The configuration of the agent. */
+    agentIdentity: ChatAgentIdentityConfiguration;
 }

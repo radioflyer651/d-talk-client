@@ -8,6 +8,10 @@ $item-border-radius: 0.5em;
     border-radius: $item-border-radius;
     box-shadow: 0px 2px 5px rgb(201, 201, 201);
 
+    .instruction-header {
+        font-weight: bold;
+    }
+
     .job-header {
         display: flex;
         align-items: center;
@@ -31,9 +35,6 @@ $item-border-radius: 0.5em;
         margin: 0.5em;
         margin-left: 1.25em;
 
-        .agent-name {
-            font-weight: bold;
-        }
     }
 
     &.drag-over {
