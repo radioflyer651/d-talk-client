@@ -5,6 +5,7 @@
 
     <div class="agent-name">
       {{name}}
+      <span *ngIf="messageDateTime !== ''">({{messageDateTime}})</span>
     </div>
 
     <div [innerHTML]="innerHtml"></div>

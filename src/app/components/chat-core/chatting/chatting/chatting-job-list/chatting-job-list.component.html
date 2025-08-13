@@ -13,7 +13,6 @@
                 <p-checkbox [binary]="true" [(ngModel)]="job.isEnabled" (onChange)="setJobDisabled(job)"></p-checkbox>
                 <label>Enabled</label>
             </div>
-
             
             <div *ngIf="job.jobInstructions.length > 0">
                 <div class="instruction-header">Job Instructions</div>

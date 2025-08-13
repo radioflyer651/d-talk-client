@@ -15,6 +15,7 @@ import { DialogModule } from 'primeng/dialog';
 import { TextareaModule } from 'primeng/textarea';
 import { FormsModule } from '@angular/forms';
 import { MonacoEditorComponent, MonacoEditorOptions } from "../../../../monaco-editor/monaco-editor.component";
+import { getMessageDateTime } from '../../../../../../model/shared-models/chat-core/utils/messages.utils';
 
 @Component({
   selector: 'app-chat-message',
@@ -119,6 +120,15 @@ export class ChatMessageComponent extends ComponentBase {
 
   isEditDialogVisible = false;
   editMessageContent = '';
+
+  get messageDateTime() {
+    const dateTime = getMessageDateTime(this.message);
+    if (dateTime) {
+      return dateTime.toLocaleDateString() + '  ' + dateTime.toLocaleTimeString();
+    }
+
+    return '';
+  }
 
   editMessage(): void {
     this.isEditDialogVisible = true;
