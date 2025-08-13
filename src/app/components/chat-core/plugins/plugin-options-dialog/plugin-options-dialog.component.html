@@ -13,6 +13,8 @@
                 *ngIf="pluginType==='create-text-documents-plugin'"></app-create-text-file-plugin-params>
             <app-manage-doc-folder-params *ngIf="pluginType==='manage-document-folder'"
                 [params]="pluginParams"></app-manage-doc-folder-params>
+            <app-label-memory2-plugin-params *ngIf="pluginType==='labeled-memory2-plugin'"
+                [params]="pluginParams"></app-label-memory2-plugin-params>
         </div>
 
         <ng-template #footer>

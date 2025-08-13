@@ -10,6 +10,7 @@ import { IgnoreSpecificAgentPluginParamsComponent } from "../plugin-params/ignor
 import { LabeledMemoryPluginParamsComponent } from "../plugin-params/label-memory-plugin-params/label-memory-plugin-params.component";
 import { CreateTextFilePluginParamsComponent } from "../plugin-params/create-text-file-plugin-params/create-text-file-plugin-params.component";
 import { ManageDocFolderParamsComponent } from "../plugin-params/manage-doc-folder-params/manage-doc-folder-params.component";
+import { LabelMemory2PluginParamsComponent } from "../plugin-params/label-memory2-plugin-params/label-memory2-plugin-params.component";
 
 @Component({
   selector: 'app-plugin-options-dialog',
@@ -22,7 +23,8 @@ import { ManageDocFolderParamsComponent } from "../plugin-params/manage-doc-fold
     IgnoreSpecificAgentPluginParamsComponent,
     LabeledMemoryPluginParamsComponent,
     CreateTextFilePluginParamsComponent,
-    ManageDocFolderParamsComponent
+    ManageDocFolderParamsComponent,
+    LabelMemory2PluginParamsComponent
 ],
   templateUrl: './plugin-options-dialog.component.html',
   styleUrl: './plugin-options-dialog.component.scss'

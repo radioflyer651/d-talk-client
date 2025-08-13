@@ -8,7 +8,7 @@
 
 
     <p-floatlabel>
-        <input pInputText id="memoryKeyPrefix" [(ngModel)]="memoryKeyPrefixString"
+        <input pInputText id="memoryKeyPrefix" autocomplete="off" [(ngModel)]="memoryKeyPrefixString"
             (ngModelChange)="onMemoryKeyPrefixChange($event)" />
         <label for="memoryKeyPrefix">Memory Key Prefix (slash (/) separated)</label>
     </p-floatlabel>
