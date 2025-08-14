@@ -1,7 +1,17 @@
 .permission-row {
     display: flex;
-    > * {
+
+    >* {
         margin-right: 1em;
+    }
+
+    .document-name-field {
+        flex: 0 0 none;
+        min-width: 10em;
+
+        .document-name {
+            font-weight: bold;
+        }
     }
 
     .checkbox-container {

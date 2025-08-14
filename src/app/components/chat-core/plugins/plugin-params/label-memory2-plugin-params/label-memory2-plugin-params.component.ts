@@ -75,6 +75,8 @@ export class LabelMemory2PluginParamsComponent extends ComponentBase {
     if (value && !value.memoryNamespace.startsWith(this.projectId)) {
       value.memoryNamespace = `${this.projectId}/${value.memoryNamespace}`;
     }
+
+    value.projectId = this.projectId;
   }
 
   private async ensureLlm() {

@@ -1,7 +1,12 @@
 <div *ngIf="permissions && documents && permissionOptions">
     <div *ngFor="let permission of permissionOptions" class="permission-row">
-        <div>
-            {{permission.documentName}}
+        <div class="document-name-field">
+            <div class="document-name">
+                {{permission.documentName}}
+            </div>
+            <div>
+                {{permission.folderPath}}
+            </div>
         </div>
         <div class="checkbox-container">
             <p-checkbox [binary]="true" [(ngModel)]="permission.permissions.canRead"></p-checkbox>

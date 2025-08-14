@@ -18,6 +18,7 @@ interface OptionType {
   documentName: string;
   permissions: ChatDocumentPermissions;
   documentId: ObjectId;
+  folderPath: string;
 }
 
 @Component({
@@ -62,6 +63,10 @@ export class DocumentPermissionsComponent extends ComponentBase {
     return this.documents?.find(d => d._id === docId)?.name ?? '';
   }
 
+  getDocumentFolder(docId: ObjectId): string {
+    return this.documents?.find(d => d._id === docId)?.folderLocation ?? '';
+  }
+
 
   private _permissions: ChatDocumentReference[] | undefined = undefined;
   @Input({ required: true })
@@ -77,9 +82,17 @@ export class DocumentPermissionsComponent extends ComponentBase {
     if (this.permissions) {
       this.permissionOptions = this.permissions.map(p => ({
         documentName: this.getDocumentName(p.documentId),
+        folderPath: this.getDocumentFolder(p.documentId),
         documentId: p.documentId,
         permissions: p.permission
       }));
+
+      this.permissionOptions.sort((o1, o2) => {
+        return o1.documentName.localeCompare(o2.documentName);
+      });
+      this.permissionOptions.sort((o1, o2) => {
+        return o1.folderPath.localeCompare(o2.folderPath);
+      });
 
     } else {
       this.permissionOptions = [];
