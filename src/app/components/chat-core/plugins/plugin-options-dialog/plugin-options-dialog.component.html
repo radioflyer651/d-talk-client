@@ -15,6 +15,8 @@
                 [params]="pluginParams"></app-manage-doc-folder-params>
             <app-label-memory2-plugin-params *ngIf="pluginType==='labeled-memory2-plugin'"
                 [params]="pluginParams"></app-label-memory2-plugin-params>
+            <app-inner-voice-plugin-params *ngIf="pluginType==='inner-voice-plugin'"
+                [params]="pluginParams"></app-inner-voice-plugin-params>
         </div>
 
         <ng-template #footer>

@@ -1,0 +1,41 @@
+<div class="inner-voice-params">
+    <label>
+        Inner-Voice Chat Messages To Execute Before Response
+    </label>
+
+    <div>
+        <p-floatlabel>
+            <p-select [options]="messageTypeOptions" appendTo="body" [(ngModel)]="params.callType"></p-select>
+            <label for="message-type">label</label>
+        </p-floatlabel>
+
+        <p-button label="New Message" (click)="addMessage()"></p-button>
+    </div>
+
+    <div>
+        <div *ngFor="let message of params.messageList; let index = index" class="message-item">
+            <div class="message-controls">
+                <p-button [rounded]="true" size="small" severity="danger" icon="fa-regular fa-x"
+                    (click)="deleteMessage(index)"></p-button>
+                <p-button [rounded]="true" (click)="editMessage(index)" size="small" severity="info"
+                    icon="fa-regular fa-edit"></p-button>
+            </div>
+
+            <div class="message-text">
+                {{message}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<p-dialog [(visible)]="isEditDialogVisible" appendTo="body" [style]="{width: '40vw', height: '50vh'}" header="Instructions">
+    <textarea pTextarea [(ngModel)]="editDialogMessageValue" [fluid]="true"
+        [style]="{width: '100%', height: '100%'}"></textarea>
+
+    <ng-template #footer>
+        <div class="footer-button-controls">
+            <p-button label="Cancel" [disabled]="isNewMessage" (click)="closeDialog(true)"></p-button>
+            <p-button label="OK" (click)="closeDialog(false)"></p-button>
+        </div>
+    </ng-template>
+</p-dialog>

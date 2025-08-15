@@ -11,6 +11,7 @@ import { LabeledMemoryPluginParamsComponent } from "../plugin-params/label-memor
 import { CreateTextFilePluginParamsComponent } from "../plugin-params/create-text-file-plugin-params/create-text-file-plugin-params.component";
 import { ManageDocFolderParamsComponent } from "../plugin-params/manage-doc-folder-params/manage-doc-folder-params.component";
 import { LabelMemory2PluginParamsComponent } from "../plugin-params/label-memory2-plugin-params/label-memory2-plugin-params.component";
+import { InnerVoicePluginParamsComponent } from "../plugin-params/inner-voice-plugin-params/inner-voice-plugin-params.component";
 
 @Component({
   selector: 'app-plugin-options-dialog',
@@ -24,7 +25,8 @@ import { LabelMemory2PluginParamsComponent } from "../plugin-params/label-memory
     LabeledMemoryPluginParamsComponent,
     CreateTextFilePluginParamsComponent,
     ManageDocFolderParamsComponent,
-    LabelMemory2PluginParamsComponent
+    LabelMemory2PluginParamsComponent,
+    InnerVoicePluginParamsComponent
 ],
   templateUrl: './plugin-options-dialog.component.html',
   styleUrl: './plugin-options-dialog.component.scss'
