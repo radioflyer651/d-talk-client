@@ -17,7 +17,7 @@ export interface LabeledMemory2PluginParams {
     /** Boolean value indicating whether or not the agent using this
      *   plugin can write new memories to the memory set, or if it's just read-only. */
     canWrite: boolean;
-    
+
     /** Boolean value indicating whether or not the full memory should be placed into chat context without analysis (MUCH faster.) */
     placeFullMemoryIntoContext: boolean;
 

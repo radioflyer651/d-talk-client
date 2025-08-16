@@ -1,95 +1,130 @@
 <div class="inner-voice-params">
     <label>
-        Inner-Voice Chat Messages To Execute Before Response
+        Inner Voice Chat Messages To Execute Before Response
     </label>
 
+    <p-tabs [value]="0">
+        <p-tablist>
+            <p-tab [value]="0">Options</p-tab>
+            <p-tab [value]="1">Excluded Messages</p-tab>
+            <p-tab [value]="2">Messages</p-tab>
+            <p-tab [value]="3" *ngIf="!params.useDefaultLlm">LLM Model</p-tab>
+        </p-tablist>
 
-    <div class="control-container">
-        <div class="upper-row">
-            <p-floatlabel>
-                <p-select [options]="messageTypeOptions" appendTo="body" [(ngModel)]="params.callType"></p-select>
-                <label for="message-type">label</label>
-            </p-floatlabel>
+        <p-tabpanels>
+            <p-tabpanel [value]="0">
+                <div class="checkbox-container">
+                    <p-checkbox [binary]="true" [(ngModel)]="params.considerLastMessageInResponse"></p-checkbox>
+                    <label>Consider Last Chat Message In Response</label>
+                </div>
 
-            <p-button label="New Message" (click)="addMessage()"></p-button>
-        </div>
+                <div class="checkbox-container">
+                    <p-checkbox [binary]="true" [(ngModel)]="params.responseToLastInnerVoiceMessage"></p-checkbox>
+                    <label>Respond To Last Inner Voice Message</label>
+                </div>
 
-        <div class="checkbox-container">
-            <p-checkbox [binary]="true" [(ngModel)]="params.considerLastMessageInResponse"></p-checkbox>
-            <label>Consider Last Chat Message In Response</label>
-        </div>
+                <div class="checkbox-container">
+                    <p-checkbox [binary]="true" [(ngModel)]="params.addDummyAiMessageBeforeInnerDialog"></p-checkbox>
+                    <label>Add Dummy AI Message Before Inner Voice</label>
+                </div>
 
-        <div class="checkbox-container">
-            <p-checkbox [binary]="true" [(ngModel)]="params.responseToLastInnerVoiceMessage"></p-checkbox>
-            <label>Respond To Last Inner Voice Message</label>
-        </div>
+                <div class="checkbox-container">
+                    <p-checkbox [binary]="true" [(ngModel)]="params.debug"></p-checkbox>
+                    <label>Add Console Logs For AI Responses (DEBUG MODE)</label>
+                </div>
 
-        <div class="checkbox-container">
-            <p-checkbox [binary]="true" [(ngModel)]="params.addDummyAiMessageBeforeInnerDialog"></p-checkbox>
-            <label>Add Dummy AI Message Before Inner Voice</label>
-        </div>
+                <div class="checkbox-container">
+                    <p-checkbox [binary]="true" [(ngModel)]="params.useDefaultLlm"></p-checkbox>
+                    <label>Use Default AI Model</label>
+                </div>
+            </p-tabpanel>
 
-        <div class="checkbox-container">
-            <p-checkbox [binary]="true" [(ngModel)]="params.debug"></p-checkbox>
-            <label>Add Console Logs For AI Responses</label>
-        </div>
+            <p-tabpanel [value]="1">
+                <div class="checkbox-container">
+                    <p-checkbox [binary]="true" [(ngModel)]="params.excludeProjectMessages"></p-checkbox>
+                    <label>Exclude Project Messages</label>
+                </div>
 
-        <div class="checkbox-container">
-            <p-checkbox [binary]="true" [(ngModel)]="params.excludeProjectMessages"></p-checkbox>
-            <label>Exclude Project Messages</label>
-        </div>
+                <div class="checkbox-container">
+                    <p-checkbox [binary]="true" [(ngModel)]="params.excludeChatRoomMessages"></p-checkbox>
+                    <label>Exclude Chat Room Messages</label>
+                </div>
 
-        <div class="checkbox-container">
-            <p-checkbox [binary]="true" [(ngModel)]="params.excludeChatRoomMessages"></p-checkbox>
-            <label>Exclude Chat Room Messages</label>
-        </div>
+                <div class="checkbox-container">
+                    <p-checkbox [binary]="true" [(ngModel)]="params.excludeJobMessages"></p-checkbox>
+                    <label>Exclude Job Messages</label>
+                </div>
 
-        <div class="checkbox-container">
-            <p-checkbox [binary]="true" [(ngModel)]="params.excludeJobMessages"></p-checkbox>
-            <label>Exclude Job Messages</label>
-        </div>
+                <div class="checkbox-container">
+                    <p-checkbox [binary]="true" [(ngModel)]="params.excludeAgentIdentityMessages"></p-checkbox>
+                    <label>Exclude Agent Identity Messages</label>
+                </div>
 
-        <div class="checkbox-container">
-            <p-checkbox [binary]="true" [(ngModel)]="params.excludeAgentIdentityMessages"></p-checkbox>
-            <label>Exclude Agent Identity Messages</label>
-        </div>
+                <div class="checkbox-container">
+                    <p-checkbox [binary]="true" [(ngModel)]="params.excludeAgentInstructionMessages"></p-checkbox>
+                    <label>Exclude Agent Instruction Messages</label>
+                </div>
 
-        <div class="checkbox-container">
-            <p-checkbox [binary]="true" [(ngModel)]="params.excludeAgentInstructionMessages"></p-checkbox>
-            <label>Exclude Agent Instruction Messages</label>
-        </div>
+                <div class="checkbox-container">
+                    <p-checkbox [binary]="true" [(ngModel)]="params.excludePluginMessages"></p-checkbox>
+                    <label>Exclude Plugin Messages</label>
+                </div>
 
-        <div class="checkbox-container">
-            <p-checkbox [binary]="true" [(ngModel)]="params.excludePluginMessages"></p-checkbox>
-            <label>Exclude Plugin Messages</label>
-        </div>
-    </div>
+            </p-tabpanel>
 
-    <div>
-        <div *ngFor="let message of params.messageList; let index = index" class="message-item">
-            <div class="message-controls">
-                <p-button [rounded]="true" size="small" severity="danger" icon="fa-regular fa-x"
-                    (click)="deleteMessage(index)"></p-button>
-                <p-button [rounded]="true" (click)="editMessage(index)" size="small" severity="info"
-                    icon="fa-regular fa-edit"></p-button>
+            <p-tabpanel [value]="2">
+                <div class="control-container">
+                    <div class="upper-row">
+                        <p-floatlabel>
+                            <p-select [options]="messageTypeOptions" appendTo="body"
+                                [(ngModel)]="params.callType"></p-select>
+                            <label for="message-type">label</label>
+                        </p-floatlabel>
 
-                <div class="control-spacer-half"></div>
+                        <p-button label="New Message" (click)="addMessage()"></p-button>
+                    </div>
 
-                <p-button *ngIf="index>0" [rounded]="true" icon="fa-regular fa-arrow-up" (click)="moveMessageUp(index)"
-                    size="small" severity="help"></p-button>
+                    <div>
+                        NOTE: Use the symbol `last-message` surrounded by curly braces to insert the message that's last in the message history,
+                        which is most likely the user's last chat message to respond to.
+                    </div>
 
-                <div *ngIf="index===params.messageList.length-1 || index===0" class="control-spacer"></div>
+                    <div>
+                        <div *ngFor="let message of params.messageList; let index = index" class="message-item">
+                            <div class="message-controls">
+                                <p-button [rounded]="true" size="small" severity="danger" icon="fa-regular fa-x"
+                                    (click)="deleteMessage(index)"></p-button>
+                                <p-button [rounded]="true" (click)="editMessage(index)" size="small" severity="info"
+                                    icon="fa-regular fa-edit"></p-button>
 
-                <p-button *ngIf="index<params.messageList.length-1" [rounded]="true" icon="fa-regular fa-arrow-down"
-                    (click)="moveMessageDown(index)" size="small" severity="help"></p-button>
+                                <div class="control-spacer-half"></div>
 
-            </div>
+                                <p-button *ngIf="index>0" [rounded]="true" icon="fa-regular fa-arrow-up"
+                                    (click)="moveMessageUp(index)" size="small" severity="help"></p-button>
 
-            <div class="message-text">
-                {{message}}
-            </div>
-        </div>
-    </div>
+                                <div *ngIf="index===params.messageList.length-1 || index===0" class="control-spacer">
+                                </div>
+
+                                <p-button *ngIf="index<params.messageList.length-1" [rounded]="true"
+                                    icon="fa-regular fa-arrow-down" (click)="moveMessageDown(index)" size="small"
+                                    severity="help"></p-button>
+                            </div>
+
+                            <div class="message-text">
+                                {{message}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-tabpanel>
+
+            <p-tabpanel [value]="3">
+                <app-agent-type-selector [(value)]="params.modelServiceParams"></app-agent-type-selector>
+            </p-tabpanel>
+        </p-tabpanels>
+    </p-tabs>
+
+
 </div>
 
 <p-dialog [(visible)]="isEditDialogVisible" appendTo="body" [style]="{minWidth: '30vw', minHeight: '30vh'}"

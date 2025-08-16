@@ -29,7 +29,10 @@ export class OllamaModelListComponent extends ComponentBase {
     this.ollamaConfigService.allConfigurations$.pipe(
       takeUntil(this.ngDestroy$)
     ).subscribe(configs => {
-      this.options = configs;
+      this.options = configs.slice();
+      this.options.sort((o1, o2) => {
+        return o1.modelName.localeCompare(o2.modelName);
+      });
     });
   }
 

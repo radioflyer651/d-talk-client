@@ -1,9 +1,16 @@
+import { ModelServiceParams } from "../model-service-params.model";
 
 /** Parameters for the InnerVoicePlugin. */
 export interface InnerVoicePluginParams {
     /** A list of chat messages to give to the AI and executed, one at a time.
      *   Each item in the list is meant to build up ai-generated context to use in a final answer. */
     messageList: string[];
+
+    /** Boolean value indicating whether or not to use the LLM from the agent.  Otherwise use the modelServiceParams. */
+    useDefaultLlm: boolean;
+
+    /** If useDefaultLlm is false, the specification for the AI Model to use when performing inner monolog.*/
+    modelServiceParams?: ModelServiceParams;
 
     /** Gets or sets the type of message that is expected for this set of AI calls. */
     callType: 'user' | 'system';
@@ -19,6 +26,11 @@ export interface InnerVoicePluginParams {
      */
     considerLastMessageInResponse: boolean;
 
+    /** Boolean value indicating whether or not a dummy AI message will be added to the chat history
+     *   to attempt to block the AI from trying to respond to the last message in the chat.
+     */
+    addDummyAiMessageBeforeInnerDialog: boolean;
+
     /** Boolean value indicating whether or not messages from the chat room can be in the inner voice context. */
     excludeChatRoomMessages: boolean;
     /** Boolean value indicating whether or not messages from the job can be in the inner voice context. */
@@ -31,12 +43,6 @@ export interface InnerVoicePluginParams {
     excludePluginMessages: boolean;
     /** Boolean value indicating whether or not messages from the project can be in the inner voice context. */
     excludeProjectMessages: boolean;
-
-
-    /** Boolean value indicating whether or not a dummy AI message will be added to the chat history
-     *   to attempt to block the AI from trying to respond to the last message in the chat.
-     */
-    addDummyAiMessageBeforeInnerDialog: boolean;
 
     debug?: boolean;
 }

@@ -14,10 +14,12 @@
             <div class="item-label">
                 {{getDisplayName(plugin)}}
             </div>
+
             <div class="edit-control">
                 <app-plugin-options-dialog [pluginParams]="plugin?.configuration"
                     [pluginType]="plugin?.pluginType"></app-plugin-options-dialog>
             </div>
+            
             <div>
                 <p-button icon="fa fa-x" severity="danger" size="small" [rounded]="true"
                     (click)="removePlugin(plugin)"></p-button>

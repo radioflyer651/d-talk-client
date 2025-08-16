@@ -10,6 +10,8 @@ import { InnerVoicePluginParams } from '../../../../../../model/shared-models/ch
 import { SelectModule } from 'primeng/select';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
+import { TabsModule } from 'primeng/tabs';
+import { AgentTypeSelectorComponent } from "../../../agent-configurations/agent-type-selector/agent-type-selector.component";
 
 type HelpMessageTypes = 'respond-to-last-inner-voice' | 'consider-last-message' | 'add-dummy-message';
 
@@ -25,7 +27,9 @@ type HelpMessageTypes = 'respond-to-last-inner-voice' | 'consider-last-message' 
     SelectModule,
     DialogModule,
     ButtonModule,
-  ],
+    TabsModule,
+    AgentTypeSelectorComponent
+],
   templateUrl: './inner-voice-plugin-params.component.html',
   styleUrl: './inner-voice-plugin-params.component.scss'
 })
