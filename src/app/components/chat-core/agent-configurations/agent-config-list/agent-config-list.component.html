@@ -5,17 +5,17 @@
                 (click)="createNewAgentConfig()"></p-button>
         </p-panel>
 
-       
+
         <ng-container *ngIf="agentGroups">
             <ng-container *ngIf="agentGroups.length < 2; else groupList">
-                <div *ngFor="let job of agentList" class="chat-agent-card-container">
+                <div *ngFor="let agent of agentList" class="chat-agent-card-container">
                     <div chat-job-card-controls>
                         <p-button icon="fa fa-trash" severity="danger" size="small" [rounded]="true"
-                            (click)="deleteAgentConfig(job)"></p-button>
+                            (click)="deleteAgentConfig(agent)"></p-button>
                     </div>
-                    <div (click)="selectAgentConfig(job)">
+                    <div (click)="selectAgentConfig(agent)">
                         <h5>
-                            {{job.name}}
+                            {{agent.name}} <span>({{agent.chatName}})</span>
                         </h5>
                     </div>
                 </div>
@@ -35,7 +35,7 @@
                                 </div>
                                 <div (click)="selectAgentConfig(agent)">
                                     <h5>
-                                        {{agent.name}}
+                                        {{agent.name}} <span>({{agent.chatName}})</span>
                                     </h5>
                                 </div>
                             </div>

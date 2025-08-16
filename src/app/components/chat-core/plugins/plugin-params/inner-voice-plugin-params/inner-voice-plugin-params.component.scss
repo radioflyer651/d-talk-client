@@ -1,13 +1,49 @@
 .inner-voice-params {
+    min-width: 40vw;
+    min-height: 40vh;
+
+    width: 100%;
+    height: 100%;
+
+    .control-container {
+        .upper-row {
+            display: flex;
+            align-items: baseline;
+        }
+
+        padding-bottom: 0.5em;
+        border-bottom: solid 2px rgb(160, 160, 160);
+
+        p-button {
+            margin-left: 0.5em;
+        }
+    }
+
     .message-item {
         display: flex;
+        align-items: baseline;
+        margin-top: 0.5em;
 
-        .message-controls {
-            display: flex;
-        }
 
         .message-text {
             flex: 1 1 auto;
+            margin-left: 1em;
         }
     }
+
+    .message-controls {
+        display: flex;
+
+        .control-spacer {
+            width: 2em;
+            height: 100%;
+        }
+
+        .control-spacer-half {
+            width: 0.75em;
+            height: 100%;
+        }
+    }
+
+    .help-text {}
 }

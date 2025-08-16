@@ -1,7 +1,8 @@
 <ng-container *ngIf="canShowParams">
     <p-button label="Edit Plugin" (click)="showDialog()"></p-button>
 
-    <p-dialog [(visible)]="visible" [header]="`Plugin Parameters: ${pluginName}`">
+    <p-dialog [(visible)]="visible" [header]="`Plugin Parameters: ${pluginName}`"
+        [style]="{width: '50vw', height: '60vh'}">
 
         <div class="param-container" *ngIf="visible">
             <app-drunk-plugin-params *ngIf="pluginType==='act-drunk'" [params]="pluginParams"></app-drunk-plugin-params>
