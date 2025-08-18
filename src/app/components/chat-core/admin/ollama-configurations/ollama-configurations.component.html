@@ -56,9 +56,13 @@
                 <p-floatlabel>
                     <input id="configuration-name" autocomplete="off" pInputText
                         [(ngModel)]="selectedConfiguration.modelName" />
-
                     <label for="configuration-name">Name</label>
                 </p-floatlabel>
+
+                <div class="checkbox-container">
+                    <p-checkbox [binary]="true" [(ngModel)]="selectedConfiguration.cpuOnly" ></p-checkbox>
+                    <label>Checkbox Only</label>
+                </div>
 
                 <div class="nullable-value">
                     <p-checkbox [(ngModel)]="isMaxContextEnabled" [binary]="true"></p-checkbox>
