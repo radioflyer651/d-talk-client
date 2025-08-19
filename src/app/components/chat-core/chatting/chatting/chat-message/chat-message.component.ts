@@ -115,7 +115,10 @@ export class ChatMessageComponent extends ComponentBase {
   };
 
   get innerHtml() {
-    return this.sanitizer.bypassSecurityTrustHtml(this.message.data.content.replaceAll(/\n/g, '<br/>').replaceAll('\t', '&nbsp;'.repeat(5)));
+    return this.sanitizer.bypassSecurityTrustHtml(this.message.data.content
+      .replaceAll(/\n/g, '<br/>')
+      .replaceAll(' {2}', '&nbsp;&nbsp;')
+      .replaceAll('\t', '&nbsp;'.repeat(5)));
   }
 
   isEditDialogVisible = false;

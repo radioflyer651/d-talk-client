@@ -12,8 +12,7 @@ import { TextDocumentData } from '../../../../../model/shared-models/chat-core/d
 import { ChatDocumentsService } from '../../../../services/chat-core/chat-documents/chat-documents.service';
 import { TextDocumentWrapper } from '../../../../../model/chat-documents/text-document.wrapper';
 import { ComponentBase } from '../../../component-base/component-base.component';
-import { BehaviorSubject, distinctUntilChanged, from, of, Subscription, switchMap, takeUntil, takeWhile } from 'rxjs';
-import * as monaco from 'monaco-editor';
+import { BehaviorSubject, from, of, Subscription, switchMap, takeUntil } from 'rxjs';
 import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MonacoEditorComponent, MonacoEditorOptions } from "../../../monaco-editor/monaco-editor.component";
@@ -85,20 +84,12 @@ export class TextDocumentEditorComponent extends ComponentBase {
 
   }
 
-  editor?: monaco.editor.IStandaloneCodeEditor;
-
   cleanupEditor(): void {
     if (this.contentChangeSubscription) {
       this.contentChangeSubscription.unsubscribe();
       this.contentChangeSubscription = undefined;
     }
-
-    if (this.editor) {
-      this.editor.dispose();
-      this.editor = undefined;
-    }
   }
-
 
   wrapper: TextDocumentWrapper | undefined;
 

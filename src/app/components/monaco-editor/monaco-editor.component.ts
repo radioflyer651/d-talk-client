@@ -2,13 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ComponentBase } from '../component-base/component-base.component';
-import * as monaco from 'monaco-editor';
 import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { SelectModule } from 'primeng/select';
+import { IStandaloneCodeEditor, MonacoEditorRootService, monacoLoader } from '../../../types/monaco.typedevs';
 
 /** Since the properties of the MonacoEditor may need to be stored outside of the
  *   the component, we need to define the properties it might require. */
@@ -47,14 +47,27 @@ export class MonacoEditorComponent extends ComponentBase {
    *   when multiple editors are created. */
   readonly uniqueId: string;
 
+  /** Controls whether or not the full or short language list should be shown in the language list dropdown. */
+  useShortLanguageList: boolean = true;
+
   get htmlEditorElementId() {
     return `monoco-editor-${this.uniqueId}`;
   }
 
-  /** Gets or sets the editor being worked on in the component. */
-  editor!: monaco.editor.IStandaloneCodeEditor;
+  get languageList() {
+    if (this.useShortLanguageList) {
+      return this.shortLanguageList;
+    } else {
+      return this.fullLanguageList;
+    }
+  }
 
-  languages = [
+  /** Gets or sets the editor being worked on in the component. */
+  editor!: IStandaloneCodeEditor;
+
+  fullLanguageList = [] as ({ label: string, value: string; })[];
+
+  shortLanguageList = [
     {
       label: 'Plain Text',
       value: 'plaintext'
@@ -90,10 +103,22 @@ export class MonacoEditorComponent extends ComponentBase {
     {
       label: 'HTML',
       value: 'html'
-    }
-  ];
+    },
+    {
+      label: 'Markdown',
+      value: 'markdown'
+    },
+    {
+      label: 'XML',
+      value: 'xml'
+    },
+    {
+      label: 'YAML',
+      value: 'yaml'
+    },
+  ].sort((v1, v2) => v1.label.localeCompare(v2.label));
 
-  ngOnInit() {
+  ngAfterViewInit() {
     setTimeout(() => {
       this.createEditor();
     });
@@ -112,7 +137,7 @@ export class MonacoEditorComponent extends ComponentBase {
     this.editor.dispose();
   }
 
-  private createEditor() {
+  private async createEditor() {
     // Clean up any previous editor, if there was one.  (This is highly unlikely, but still a precaution.)
     this.cleanupEditor();
 
@@ -123,6 +148,13 @@ export class MonacoEditorComponent extends ComponentBase {
       throw new Error(`Container does not exist.`);
     }
 
+
+    // Get the monaco service from the loader.
+    const monaco = await monacoLoader();
+
+    // Store it locally, so we can use it again later.
+    this.monacoService = monaco;
+
     // Create the editor.
     this.editor = monaco.editor.create(editorContainer!, {
       value: this.content,
@@ -132,6 +164,7 @@ export class MonacoEditorComponent extends ComponentBase {
       fontSize: this.fontSize,
     });
 
+    // Wire up the event handlers.
     this.editor.onDidChangeModelContent(e => {
       this.content = this.editor.getValue();
     });
@@ -139,7 +172,23 @@ export class MonacoEditorComponent extends ComponentBase {
     this.editor.onDidChangeModelLanguage(e => {
       this.editorOptions.currentLanguage = e.newLanguage;
     });
+
+    // Set the full language list.
+    this.fullLanguageList = monaco.languages.getLanguages().map(l => {
+      let name = l.id;
+      if (l.aliases && l.aliases[0]) {
+        name = l.aliases[0];
+      }
+
+      return {
+        label: name,
+        value: l.id
+      };
+    });
   }
+
+  /** Provides system-level services for working with the Monaco Editor. */
+  monacoService!: MonacoEditorRootService;
 
   private _content: string = '';
   @Input({ required: true })
@@ -204,7 +253,7 @@ export class MonacoEditorComponent extends ComponentBase {
     this.editorOptions.currentLanguage = this.newLanguage;
     const model = this.editor!.getModel();
     if (model) {
-      monaco.editor.setModelLanguage(model, this.editorOptions.currentLanguage);
+      this.monacoService.editor.setModelLanguage(model, this.editorOptions.currentLanguage);
     }
   }
 

@@ -15,9 +15,15 @@
 
 <p-dialog [(visible)]="languageChangeModalVisible">
     <div>
-        <p-select [(ngModel)]="newLanguage" [options]="languages" appendTo="body" placeholder="Language"
+        <p-select [(ngModel)]="newLanguage" [options]="languageList" appendTo="body" placeholder="Language"
             [editable]="true"></p-select>
+
+        <div class="checkbox-container">
+            <p-checkbox [binary]="true" [(ngModel)]="useShortLanguageList"></p-checkbox>
+            <label>Use Short List</label>
+        </div>
     </div>
+
     <ng-template #footer>
         <div class="footer-button-controls">
             <p-button label="Cancel" (click)="closeLanguageChangeDialog(true)"></p-button>

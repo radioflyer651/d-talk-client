@@ -44,7 +44,7 @@ export class ChatLinkingService {
       this.chatRooms = rooms;
       this.agentInstances = agentInstances;
       this.agentConfigurations = agentConfigurations;
-      this.jobInstances = rooms.map(r => r.jobs).reduce((p, c) => [...p, ...c], []);
+      this.jobInstances = rooms.map(r => r.jobs).reduce((p, c) => !!c ? [...p, ...c] : p, []);
       this.jobConfigurations = jobConfigurations;
       this.currentProject = currentProject;
 
