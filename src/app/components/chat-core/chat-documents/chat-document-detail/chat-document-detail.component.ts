@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { lastValueFrom } from 'rxjs';
 import { IChatDocumentData } from '../../../../../model/shared-models/chat-core/documents/chat-document.model';
 import { ChatDocumentEditorComponent } from "../chat-document-editor/chat-document-editor.component";
+import { TabsModule } from 'primeng/tabs';
 
 @Component({
   selector: 'app-chat-document-detail',
@@ -21,7 +22,8 @@ import { ChatDocumentEditorComponent } from "../chat-document-editor/chat-docume
     TextareaModule,
     ButtonModule,
     ChatDocumentEditorComponent,
-],
+    TabsModule,
+  ],
   templateUrl: './chat-document-detail.component.html',
   styleUrl: './chat-document-detail.component.scss'
 })
@@ -34,6 +36,36 @@ export class ChatDocumentDetailComponent extends ComponentBase {
 
   @Input({ required: true })
   document: IChatDocumentData | undefined;
+
+  // private _tabIndex = 0;
+  // get tabIndex(): number {
+  //   return this._tabIndex;
+  // }
+  // set tabIndex(value: number) {
+  //   this._tabIndex = value;
+
+  //   this.setShowEditor(value === 1);
+  // }
+
+  // setShowEditor(newVal: boolean) {
+  //   if (this.showEditorTimer) {
+  //     clearTimeout(this.showEditorTimer);
+  //     this.showEditorTimer = undefined;
+  //   }
+
+  //   if (newVal) {
+  //     this.showEditorTimer = setTimeout(() => {
+  //       this.showEditor = true;
+  //     }, 100);
+  //   } else {
+  //     this.showEditor = false;
+  //   }
+  // }
+
+  tabIndex = 0;
+
+  showEditor: boolean = false;
+  showEditorTimer: any = undefined;
 
   async saveDocument() {
     if (!this.document) {

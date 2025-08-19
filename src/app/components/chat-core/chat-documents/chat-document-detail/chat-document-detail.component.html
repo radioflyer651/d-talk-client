@@ -1,29 +1,39 @@
 <div *ngIf="document" class="document-detail-container">
-    
-    <div class="document-info-block">
-        <p-floatlabel>
-            <input id="document-name" autocomplete="off" pInputText [(ngModel)]="document.name" />
-            <label for="document-name">Name</label>
-        </p-floatlabel>
 
-        <p-floatlabel>
-            <input id="document-path" autocomplete="off" pInputText [(ngModel)]="document.folderLocation" />
-            <label for="document-path">Folder Location</label>
-        </p-floatlabel>
+    <p-tabs [(value)]="tabIndex">
+        <p-tablist>
+            <p-tab [value]="0">Document Info</p-tab>
+            <p-tab [value]="1">Content</p-tab>
+        </p-tablist>
+    </p-tabs>
+
+
+    <div *ngIf="tabIndex===0">
+        <div class="document-info-block">
+            <p-floatlabel>
+                <input id="document-name" autocomplete="off" pInputText [(ngModel)]="document.name" />
+                <label for="document-name">Name</label>
+            </p-floatlabel>
+
+            <p-floatlabel>
+                <input id="document-path" autocomplete="off" pInputText [(ngModel)]="document.folderLocation" />
+                <label for="document-path">Folder Location</label>
+            </p-floatlabel>
+        </div>
+
+        <div class="document-extended-block">
+            <p-floatlabel>
+                <textarea pTextarea id="description" autocomplete="off" pInputText
+                    [(ngModel)]="document.description"></textarea>
+
+                <label for="description">Description</label>
+            </p-floatlabel>
+        </div>
+
+        <div class="footer-button-controls">
+            <p-button label="Save" (click)="saveDocument()"></p-button>
+        </div>
     </div>
 
-    <div class="document-extended-block">
-        <p-floatlabel>
-            <textarea pTextarea id="description" autocomplete="off" pInputText
-                [(ngModel)]="document.description"></textarea>
-
-            <label for="description">Description</label>
-        </p-floatlabel>
-    </div>
-
-    <app-chat-document-editor [document]="document"></app-chat-document-editor>
-
-    <div class="footer-button-controls">
-        <p-button label="Save" (click)="saveDocument()"></p-button>
-    </div>
+    <app-chat-document-editor *ngIf="tabIndex===1" [document]="document"></app-chat-document-editor>
 </div>
