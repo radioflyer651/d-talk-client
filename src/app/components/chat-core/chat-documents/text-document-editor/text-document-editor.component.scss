@@ -5,17 +5,21 @@
     display: flex;
     flex-direction: column;
 
+    .native-editor-container {
+        @extend %_fit-container-hidden;
+    }
+
     .text-container {
         width: 100%;
+        height: 100%;
 
         textarea {
             width: 100%;
+            height: 100%;
             min-height: 14em;
+            resize: none;
         }
 
-        .markup {
-            width: 100%;
-        }
     }
 
     .monaco-editor-container {
@@ -29,7 +33,14 @@
 
 
     .content-container {
-        height: 100%;
+        // @extend %_fit-container-hidden;
+        flex: 1 1 auto;
+        overflow-y: hidden;
+    }
+
+    .markup {
+        @extend %_fit-container-scroll;
+        width: 100%;
     }
 
     &.popout {

@@ -15,6 +15,8 @@ import { ObjectId } from 'mongodb';
 import { TreeModule } from 'primeng/tree';
 import { TreeNode } from 'primeng/api';
 import { createDocumentTree } from '../../../../../utils/create-document-tree.utils';
+import { ToolbarModule } from 'primeng/toolbar';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-document-selector',
@@ -24,7 +26,8 @@ import { createDocumentTree } from '../../../../../utils/create-document-tree.ut
     SelectModule,
     FloatLabelModule,
     TreeModule,
-
+    ToolbarModule,
+    ButtonModule,
   ],
   templateUrl: './document-selector.component.html',
   styleUrl: './document-selector.component.scss'
@@ -95,6 +98,11 @@ export class DocumentSelectorComponent extends ComponentBase {
   @Output()
   selectedDocumentIdChange = new EventEmitter<ObjectId | undefined>();
 
+  collapseAll() {
+    this.allNodes.forEach(n => n.expanded = false);
+  }
 
-
+  expandAll() {
+    this.allNodes.forEach(n => n.expanded = true);
+  }
 }

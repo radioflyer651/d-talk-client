@@ -14,6 +14,7 @@ import { createDocumentTree } from '../../../../../utils/create-document-tree.ut
 import { ButtonModule } from 'primeng/button';
 import { IChatDocumentData } from '../../../../../model/shared-models/chat-core/documents/chat-document.model';
 import { NewDocumentComponent } from "../document-creation/new-document/new-document.component";
+import { ToolbarModule } from 'primeng/toolbar';
 
 @Component({
   selector: 'app-document-tree-list',
@@ -22,7 +23,8 @@ import { NewDocumentComponent } from "../document-creation/new-document/new-docu
     CommonModule,
     TreeModule,
     ButtonModule,
-    NewDocumentComponent
+    ToolbarModule,
+    NewDocumentComponent,
   ],
   templateUrl: './document-tree-list.component.html',
   styleUrl: './document-tree-list.component.scss'
@@ -119,5 +121,62 @@ export class DocumentTreeListComponent extends ComponentBase {
         }
       });
     }
+  }
+
+  collapseAll() {
+    this.allNodes.forEach(n => n.expanded = false);
+  }
+
+  expandAll() {
+    this.allNodes.forEach(n => n.expanded = true);
+  }
+
+  findOpenFile() {
+    // If there's no selected node, then there's nothing for us to do.
+    if (!this.selectedNode) {
+      return;
+    }
+
+    const traverseFile = (targetFile: TreeNode<any>, currentResult?: TreeNode<any>[]): TreeNode<any>[] | undefined => {
+      currentResult ??= [];
+      const currentParent = currentResult[currentResult.length - 1];
+      const nodeList = currentParent ? currentParent.children ?? [] : this.rootNodes;
+
+      for (let n of nodeList) {
+        // Add the current node to the current (potential) result list.
+        let thisResult: TreeNode<any>[] | undefined = [...currentResult, n];
+
+        // If this node is the target file, then we're done.  Return the list.
+        if (n === targetFile) {
+          return thisResult;
+        }
+
+        // Check the children of this node, recursively.
+        if (n.children) {
+          thisResult = traverseFile(targetFile, thisResult);
+
+          // If we got a result, then we're finished.
+          if (thisResult) {
+            return thisResult;
+          }
+        }
+      }
+
+      // Getting to this point means we don't have a match (at least at this branch of the tree).
+      return undefined;
+    };
+
+    // Try to find the ownership structure of the current file.
+    const family = traverseFile(this.selectedNode);
+
+    // We should have found one, but if not, let's not cry.
+    if (!family) {
+      return;
+    }
+
+    // Expand the whole family.
+    family.forEach(f => {
+      f.expanded = true;
+    });
   }
 }

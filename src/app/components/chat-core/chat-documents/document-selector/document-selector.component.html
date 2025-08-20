@@ -1,7 +1,15 @@
-<!-- <p-floatlabel class="document-selection-label">
-    <p-select appendTo="body" [options]="chatDocuments" [(ngModel)]="selectedItem" dataKey="_id"
-        optionLabel="name"></p-select>
-    <label for="selected-document">Document</label>
-</p-floatlabel> -->
+<div class="document-selector-component">
+    <p-toolbar>
+        <ng-template #start>
+            <p-button size="small" [rounded]="true" severity="info" icon="fa fa-square-plus"
+                (click)="collapseAll()"></p-button>
 
-<p-tree [value]="documentNodes" [(selection)]="selectedTreeDocument" selectionMode="single"></p-tree>
+            <p-button size="small" [rounded]="true" severity="info" icon="fa fa-square-minus"
+                (click)="expandAll()"></p-button>
+        </ng-template>
+    </p-toolbar>
+
+    <div class="tree-container">
+        <p-tree [value]="documentNodes" [(selection)]="selectedTreeDocument" selectionMode="single"></p-tree>
+    </div>
+</div>

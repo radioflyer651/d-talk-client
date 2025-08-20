@@ -1,5 +1,23 @@
-<p-button class="new-chat-document-btn" icon="fa fa-plus" label="New Document"
-    (click)="showNewDocumentDialog()"></p-button>
+<p-toolbar>
+    <ng-template #start>
+        <p-button size="small" [rounded]="true" class="new-chat-document-btn" icon="fa fa-plus" label="New Document"
+            (click)="showNewDocumentDialog()"></p-button>
+    </ng-template>
+    
+    <ng-template #center>
+        <p-button size="small" [rounded]="true" severity="contrast" class="new-chat-document-btn" icon="fa fa-left-right"
+            (click)="findOpenFile()"></p-button>
+    </ng-template>
+
+    <ng-template #end>
+        <p-button size="small" [rounded]="true" severity="info" class="new-chat-document-btn" icon="fa fa-square-plus"
+            (click)="collapseAll()"></p-button>
+
+        <p-button size="small" [rounded]="true" severity="info" class="new-chat-document-btn" icon="fa fa-square-minus"
+            (click)="expandAll()"></p-button>
+    </ng-template>
+
+</p-toolbar>
 
 <p-tree [value]="rootNodes" [(selection)]="selectedNode" selectionMode="single">
     <ng-template let-node pTemplate="default">

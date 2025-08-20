@@ -38,8 +38,13 @@
     </div>
 </div>
 
-<p-dialog [(visible)]="isNewPermissionVisible">
-    <app-document-selector [(selectedDocumentId)]="selectedDocumentId"></app-document-selector>
+<p-dialog [(visible)]="isNewPermissionVisible" [blockScroll]="true" header="Select File"
+    [style]="{width: '30vw', height: '50vh'}">
+
+    <div [style]="{overflowY: 'hidden', height: '100%'}">
+        <app-document-selector [(selectedDocumentId)]="selectedDocumentId"></app-document-selector>
+    </div>
+
     <ng-template #footer>
         <div class="footer-button-controls">
             <p-button label="Cancel" (click)="newPermissionClosed(true)"></p-button>

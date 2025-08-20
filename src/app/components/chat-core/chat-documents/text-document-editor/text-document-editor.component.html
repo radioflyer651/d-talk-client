@@ -5,19 +5,18 @@
     </div>
 
     <div class="content-container">
+        <div *ngIf="mode==='editor'" class="monaco-editor-container">
+            <app-monaco-editor [(content)]="wrapper.content" [editorOptions]="monacoEditorOptions"></app-monaco-editor>
+        </div>
+
         <div *ngIf="mode==='text'" class="text-container">
-            <label for="text-input">Content</label>
             <textarea pTextarea id="text-input" autocomplete="off" pInputText [(ngModel)]="wrapper.content"></textarea>
         </div>
 
-        <div *ngIf="mode==='formatted'">
+        <div *ngIf="mode==='formatted'" class="native-editor-container">
             <p-editor [(ngModel)]="wrapper.content" [style]="{ height: '100%' }" />
         </div>
 
         <div [innerHTML]="htmlContent" class="markup" *ngIf="mode==='rendered'"></div>
-
-        <div *ngIf="mode==='editor'" class="monaco-editor-container">
-            <app-monaco-editor [(content)]="wrapper.content" [editorOptions]="monacoEditorOptions"></app-monaco-editor>
-        </div>
     </div>
 </div>
