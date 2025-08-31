@@ -266,6 +266,12 @@ export class ChatRoomsService {
     return this.apiClient.updateChatRoomInstructions(roomId, newInstructions);
   }
 
+  /** Updates the name of a specified chat room. */
+  async updateChatRoomName(roomId: ObjectId, newName: string) {
+    await lastValueFrom(this.apiClient.updateChatRoomName(roomId, newName));
+    this.reloadChatRooms();
+  }
+
   updateChatRoomDocumentPermissions(roomId: ObjectId, chatDocumentReferences: any) {
     return this.apiClient.updateChatRoomDocumentPermissions(roomId, chatDocumentReferences);
   }

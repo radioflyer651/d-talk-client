@@ -2,18 +2,36 @@
     <p-tabs [(value)]="selectedTabId">
         <p-tablist>
             <p-tab [value]="0">
-                Room Configuration
+                Room Info
             </p-tab>
             <p-tab [value]="1">
-                Room Messages
+                Room Configuration
             </p-tab>
             <p-tab [value]="2">
+                Room Messages
+            </p-tab>
+            <p-tab [value]="3">
                 Documents
             </p-tab>
         </p-tablist>
     </p-tabs>
 
-    <div class="tab-content" *ngIf="selectedTabId===0">
+
+    <div class="fit-container-scroll" *ngIf="selectedTabId===0">
+        <div *ngIf="chatRoom">
+            <p-floatlabel>
+                <input id="room-name" autocomplete="off" pInputText [(ngModel)]="chatRoom!.name" />
+                <label for="room-name">Room Name</label>
+            </p-floatlabel>
+
+
+            <div class="footer-button-controls">
+                <p-button label="Save" (click)="saveName()"></p-button>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-content" *ngIf="selectedTabId===1">
         <div class="chat-room-detail-columns">
             <div class="column column-1">
                 <h3>Partner Templates</h3>
@@ -130,7 +148,7 @@
         </div>
     </div>
 
-    <div class="fit-container-scroll" *ngIf="selectedTabId===1">
+    <div class="fit-container-scroll" *ngIf="selectedTabId===2">
         <div>
             <app-positionable-message-list *ngIf="chatRoom"
                 [messages]="chatRoom.roomInstructions"></app-positionable-message-list>
@@ -141,7 +159,7 @@
         </div>
     </div>
 
-    <div class="fit-container-scroll" *ngIf="selectedTabId===2">
+    <div class="fit-container-scroll" *ngIf="selectedTabId===3">
         <app-document-permissions [permissions]="chatRoom?.chatDocumentReferences"></app-document-permissions>
 
         <div class="footer-button-controls">

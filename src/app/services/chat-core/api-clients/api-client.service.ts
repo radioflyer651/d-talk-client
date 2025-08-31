@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ObjectId } from 'mongodb';
-import { tap, Observable, EMPTY } from 'rxjs';
+import { tap, Observable, EMPTY, map } from 'rxjs';
 import { ChatAgentIdentityConfiguration } from '../../../../model/shared-models/chat-core/agent-configuration.model';
 import { AgentInstanceConfiguration } from '../../../../model/shared-models/chat-core/agent-instance-configuration.model';
 import { ChatJobConfiguration } from '../../../../model/shared-models/chat-core/chat-job-data.model';
@@ -237,6 +237,17 @@ export class ClientApiService extends ClientApiServiceBase {
       update,
       this.optionsBuilder.withAuthorization()
     );
+  }
+
+  /** Updates the name of a specified chat room. */
+  updateChatRoomName(roomId: ObjectId, roomName: string) {
+    return this.http.post<{ success: boolean; }>(
+      this.constructUrl(`chat-room/${roomId}/name`),
+      { roomName: roomName },
+      this.optionsBuilder.withAuthorization()
+    ).pipe(map(() => {
+      return undefined;
+    }));
   }
 
   /**

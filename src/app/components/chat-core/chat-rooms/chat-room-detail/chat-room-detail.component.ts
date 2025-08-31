@@ -156,7 +156,7 @@ export class ChatRoomDetailComponent extends ComponentBase {
     });
   }
 
-  selectedTabId = 0;
+  selectedTabId = 1;
 
   agentInstances: AgentInstanceConfiguration[] = [];
 
@@ -342,6 +342,14 @@ export class ChatRoomDetailComponent extends ComponentBase {
     const updatePermissionsP = lastValueFrom(this.chatRoomService.updateChatRoomDocumentPermissions(this.chatRoom._id, this.chatRoom.chatDocumentReferences));
     await lastValueFrom(this.chatRoomService.updateChatRoomInstructions(this.chatRoom._id, this.chatRoom.roomInstructions));
     await updatePermissionsP;
+  }
+
+  async saveName() {
+    if (!this.chatRoom) {
+      throw new Error(`chatRoom is not set.`);
+    }
+
+    await this.chatRoomService.updateChatRoomName(this.chatRoom._id, this.chatRoom.name);
   }
 
   /** Gets or sets the chat agent for a specific chat room. */

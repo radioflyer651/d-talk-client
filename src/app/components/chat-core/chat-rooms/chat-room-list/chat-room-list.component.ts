@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { ChatRoomsService } from '../../../../services/chat-core/chat-rooms.service';
-import { BehaviorSubject, map, switchMap } from 'rxjs';
+import { BehaviorSubject, map, Observable, switchMap, takeUntil } from 'rxjs';
 import { ReadonlySubject } from '../../../../../utils/readonly-subject';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
@@ -16,6 +16,7 @@ import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
+import { ChatRoomData } from '../../../../../model/shared-models/chat-core/chat-room-data.model';
 
 @Component({
   selector: 'app-chat-room-list',
@@ -46,16 +47,19 @@ export class ChatRoomListComponent extends ComponentBase {
   }
 
   ngOnInit() {
-    this._chatRoomList = new ReadonlySubject(this.ngDestroy$,
-      this.searchText$.pipe(
-        switchMap((searchText) => {
-          return this.chatRoomService.chatRooms$.pipe(
-            map(roomList => {
-              return roomList.filter(l => l.name?.toLowerCase().includes(searchText.toLocaleLowerCase()));
-            })
-          );
-        })
-      )
+    this._chatRoomList$ = this.searchText$.pipe(
+      switchMap((searchText) => {
+        return this.chatRoomService.chatRooms$.pipe(
+          map(roomList => {
+            const result = roomList.filter(l => l.name?.toLowerCase().includes(searchText.toLocaleLowerCase()));
+            result.sort((r1, r2) => {
+              return r1.name.localeCompare(r2.name);
+            });
+            return result;
+          })
+        );
+      }),
+      takeUntil(this.ngDestroy$),
     );
   }
 
@@ -72,17 +76,11 @@ export class ChatRoomListComponent extends ComponentBase {
   }
   // #endregion
 
-  // #region chatRoomList
-  private _chatRoomList!: ReadonlySubject<any[]>;
-
+  private _chatRoomList$!: Observable<ChatRoomData[]>;
   get chatRoomList$() {
-    return this._chatRoomList.observable$;
+    return this._chatRoomList$;
   }
 
-  get chatRoomList(): any[] {
-    return this._chatRoomList.value;
-  }
-  // #endregion
 
   async deleteChatRoom(room: any): Promise<void> {
     // Confirm before deleting a chat room

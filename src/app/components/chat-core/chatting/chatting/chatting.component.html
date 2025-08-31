@@ -1,5 +1,9 @@
 <div class="chatting-container">
   <div class="chatting-pane left">
+    <div class="checkbox-container">
+      <p-checkbox [binary]="true" [(ngModel)]="autoScroll"></p-checkbox>
+      <label>Auto-scroll To Bottom</label>
+    </div>
     <app-chatting-job-list></app-chatting-job-list>
   </div>
   <div class="chatting-pane right">

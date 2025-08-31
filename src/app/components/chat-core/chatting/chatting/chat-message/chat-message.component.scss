@@ -35,6 +35,13 @@
   }
 }
 
+.message-content-container {
+  /* Break long words if needed */
+  word-wrap: break-word;
+  /* Preserve line breaks and wrap text */
+  white-space: pre-wrap;
+}
+
 .chat-message-container.human .chat-message-bubble {
   background: #1976d2;
   color: #fff;

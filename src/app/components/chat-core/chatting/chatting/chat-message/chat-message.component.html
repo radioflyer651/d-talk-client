@@ -8,7 +8,7 @@
       <span *ngIf="messageDateTime !== ''">({{messageDateTime}})</span>
     </div>
 
-    <div [innerHTML]="innerHtml"></div>
+    <div class="message-content-container" [innerText]="message.data.content"></div>
 
     <div class="button-container">
       <p-button size="small" (click)="copyMessageContent()" [rounded]="true" icon="fa fa-copy"

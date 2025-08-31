@@ -15,6 +15,7 @@ import { SplitterModule } from 'primeng/splitter';
 import { ChattingJobListComponent } from "./chatting-job-list/chatting-job-list.component";
 import { StoredMessage } from '@langchain/core/messages';
 import { MonacoEditorComponent, MonacoEditorOptions } from "../../../monaco-editor/monaco-editor.component";
+import { CheckboxModule } from "primeng/checkbox";
 
 @Component({
   selector: 'app-chatting',
@@ -27,7 +28,8 @@ import { MonacoEditorComponent, MonacoEditorOptions } from "../../../monaco-edit
     TextareaModule,
     SplitterModule,
     ChattingJobListComponent,
-    MonacoEditorComponent
+    MonacoEditorComponent,
+    CheckboxModule
   ],
   templateUrl: './chatting.component.html',
   styleUrl: './chatting.component.scss'
@@ -61,7 +63,9 @@ export class ChattingComponent extends ComponentBase {
     );
 
     setTimeout(() => {
-      this.scrollChatToBottom();
+      if (this.autoScroll) {
+        this.scrollChatToBottom();
+      }
     }, 500);
   }
 
@@ -88,7 +92,9 @@ export class ChattingComponent extends ComponentBase {
       this.isLoading = false;
       this.cancelLlmMessage = () => undefined;
 
-      this.scrollChatToBottom();
+      if (this.autoScroll) {
+        this.scrollChatToBottom();
+      }
     };
 
     let subscription = this.chattingService.sendChatMessage(this.chatMessage).subscribe({
@@ -113,6 +119,8 @@ export class ChattingComponent extends ComponentBase {
     this.chattingService.clearMessages();
     this.setMessageInputFocus();
   }
+
+  autoScroll = true;
 
   scrollChatToBottom() {
     const historyArea = document.querySelector('.chat-history-area');
