@@ -1,0 +1,10 @@
+.shortened-chat-history-plugin-params {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .info-text {
+        color: #888;
+        font-size: 0.9em;
+    }
+}

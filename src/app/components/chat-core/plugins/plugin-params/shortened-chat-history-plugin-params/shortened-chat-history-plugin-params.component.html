@@ -1,0 +1,9 @@
+<div class="shortened-chat-history-plugin-params">
+    <p-floatLabel>
+        <p-input-number type="number" min="1" [(ngModel)]="params.maxCharacters" id="max-characters" />
+        <label for="max-characters">Max Characters in Chat History</label>
+    </p-floatLabel>
+    <small class="info-text">
+        Only the most recent <b>{{ params.maxCharacters }}</b> characters will be sent to the LLM.  1 token is about 4 characters of text.
+    </small>
+</div>

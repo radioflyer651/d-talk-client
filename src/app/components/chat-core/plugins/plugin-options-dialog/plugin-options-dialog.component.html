@@ -18,6 +18,8 @@
                 [params]="pluginParams"></app-label-memory2-plugin-params>
             <app-inner-voice-plugin-params *ngIf="pluginType==='inner-voice-plugin'"
                 [params]="pluginParams"></app-inner-voice-plugin-params>
+            <app-shortened-chat-history-plugin-params *ngIf="pluginType==='shortened-chat-history-plugin'"
+                [params]="pluginParams"></app-shortened-chat-history-plugin-params>
         </div>
 
         <ng-template #footer>

@@ -12,6 +12,7 @@ import { CreateTextFilePluginParamsComponent } from "../plugin-params/create-tex
 import { ManageDocFolderParamsComponent } from "../plugin-params/manage-doc-folder-params/manage-doc-folder-params.component";
 import { LabelMemory2PluginParamsComponent } from "../plugin-params/label-memory2-plugin-params/label-memory2-plugin-params.component";
 import { InnerVoicePluginParamsComponent } from "../plugin-params/inner-voice-plugin-params/inner-voice-plugin-params.component";
+import { ShortenedChatHistoryPluginParamsComponent } from "../plugin-params/shortened-chat-history-plugin-params/shortened-chat-history-plugin-params.component";
 
 @Component({
   selector: 'app-plugin-options-dialog',
@@ -26,8 +27,9 @@ import { InnerVoicePluginParamsComponent } from "../plugin-params/inner-voice-pl
     CreateTextFilePluginParamsComponent,
     ManageDocFolderParamsComponent,
     LabelMemory2PluginParamsComponent,
-    InnerVoicePluginParamsComponent
-],
+    InnerVoicePluginParamsComponent,
+    ShortenedChatHistoryPluginParamsComponent,
+  ],
   templateUrl: './plugin-options-dialog.component.html',
   styleUrl: './plugin-options-dialog.component.scss'
 })
