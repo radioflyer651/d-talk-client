@@ -85,10 +85,14 @@ export class AgentConfigDetailComponent extends ComponentBase {
     });
   }
 
-  agentConfig: NewDbItem<ChatAgentIdentityConfiguration> | undefined;
+  agentConfig: NewDbItem<ChatAgentIdentityConfiguration> | ChatAgentIdentityConfiguration | undefined;
 
   async onOk() {
-    const value = this.agentConfigService.selectedAgentConfig;
+    const value = this.agentConfig;
+    if (!value || !('_id' in value)) {
+      throw new Error(`Agent Configuration is not set or does not have an _id.`);
+    }
+
     await lastValueFrom(this.agentConfigService.updateAgentConfiguration(value!));
   }
 

@@ -17,9 +17,17 @@
 
       <ng-container *ngIf="isNavigationVisible">
         <a routerLink="/projects">Projects</a>
+
+        <ng-container *ngIf="currentProjectId && currentChatRoomId">
+          <a [routerLink]="['/projects', currentProjectId, 'chat-rooms', currentChatRoomId]">
+            Room Configuration
+          </a>
+        </ng-container>
+
         <ng-container *ngIf="isAdminUser">
           <a routerLink="/admin/ollama-configurations">Ollama Models</a>
         </ng-container>
+
         <a (click)="logout()">Log Out</a>
       </ng-container>
 

@@ -14,8 +14,9 @@ import { TextareaModule } from 'primeng/textarea';
 import { SplitterModule } from 'primeng/splitter';
 import { ChattingJobListComponent } from "./chatting-job-list/chatting-job-list.component";
 import { StoredMessage } from '@langchain/core/messages';
-import { MonacoEditorComponent, MonacoEditorOptions } from "../../../monaco-editor/monaco-editor.component";
+import { MonacoEditorOptions } from "../../../monaco-editor/monaco-editor.component";
 import { CheckboxModule } from "primeng/checkbox";
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-chatting',
@@ -28,7 +29,6 @@ import { CheckboxModule } from "primeng/checkbox";
     TextareaModule,
     SplitterModule,
     ChattingJobListComponent,
-    MonacoEditorComponent,
     CheckboxModule
   ],
   templateUrl: './chatting.component.html',
@@ -40,6 +40,7 @@ export class ChattingComponent extends ComponentBase {
     readonly chattingService: ChattingService,
     readonly route: ActivatedRoute,
     readonly chatSocketService: ChatSocketService,
+    readonly confirmationService: ConfirmationService,
   ) {
     super();
   }
@@ -116,8 +117,14 @@ export class ChattingComponent extends ComponentBase {
   }
 
   clearMessages() {
-    this.chattingService.clearMessages();
-    this.setMessageInputFocus();
+    this.confirmationService.confirm({
+      header: `Confirm Clear Messages`,
+      message: `Are you sure you wish to clear all chat messages from this chat room?`,
+      accept: () => {
+        this.chattingService.clearMessages();
+        this.setMessageInputFocus();
+      }
+    });
   }
 
   autoScroll = true;

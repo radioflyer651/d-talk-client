@@ -8,6 +8,11 @@ import { RouterModule } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { TokenService } from '../../services/token.service';
 import { LoginService } from '../../services/login.service';
+import { ProjectsService } from '../../services/chat-core/projects.service';
+import { ObjectId } from 'mongodb';
+import { ChatRoomsService } from '../../services/chat-core/chat-rooms.service';
+import { ComponentBase } from '../component-base/component-base.component';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-site-header',
@@ -20,18 +25,31 @@ import { LoginService } from '../../services/login.service';
   templateUrl: './site-header.component.html',
   styleUrls: ['./site-header.component.scss']
 })
-export class SiteHeaderComponent {
+export class SiteHeaderComponent extends ComponentBase {
   constructor(
     readonly userService: UserService,
     readonly pageSizeService: PageSizeService,
     readonly menuService: MenuService,
     readonly tokenService: TokenService,
     readonly loginService: LoginService,
+    readonly projectsService: ProjectsService,
+    readonly chatRoomsService: ChatRoomsService,
   ) {
-
+    super();
   }
 
   ngOnInit(): void {
+    this.projectsService.currentProjectId$
+      .pipe(takeUntil(this.ngDestroy$))
+      .subscribe(id => {
+        this.currentProjectId = id;
+      });
+
+    this.chatRoomsService.selectedChatRoom$
+      .pipe(takeUntil(this.ngDestroy$))
+      .subscribe(room => {
+        this.currentChatRoomId = room?._id;
+      });
   }
 
   logout(): void {
@@ -42,6 +60,10 @@ export class SiteHeaderComponent {
   login(): void {
     this.loginService.login();
   }
+
+  currentProjectId?: ObjectId;
+
+  currentChatRoomId?: ObjectId;
 
   /** Returns a boolean value indicating whether or not hte current user is an admin user. */
   get isAdminUser(): boolean {

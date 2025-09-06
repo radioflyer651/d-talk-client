@@ -1,10 +1,10 @@
-import { Subject, BehaviorSubject, of, startWith, switchMap, distinctUntilChanged } from 'rxjs';
+import { Subject, BehaviorSubject, of, startWith, switchMap, distinctUntilChanged, takeUntil } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { ChatAgentIdentityConfiguration } from '../../../model/shared-models/chat-core/agent-configuration.model';
 import { ProjectsService } from './projects.service';
 import { ClientApiService } from './api-clients/api-client.service';
 import { ObjectId } from 'mongodb';
-import { ReadonlySubject } from '../../../utils/readonly-subject';
+// import { ReadonlySubject } from '../../../utils/readonly-subject';
 import { NewDbItem } from '../../../model/shared-models/db-operation-types.model';
 
 @Injectable({
@@ -31,54 +31,76 @@ export class AgentConfigurationService {
     this._reloadAgentConfigs.next();
   }
 
-  private _agentConfigurations!: ReadonlySubject<ChatAgentIdentityConfiguration[]>;
-  private _selectedAgentConfig!: ReadonlySubject<ChatAgentIdentityConfiguration | undefined>;
+  private _agentConfigurations$!: ReturnType<typeof this.createAgentConfigurations$>;
+  private _agentConfigurationsValue: ChatAgentIdentityConfiguration[] = [];
+  private _selectedAgentConfig$!: ReturnType<typeof this.createSelectedAgentConfig$>;
+  private _selectedAgentConfigValue: ChatAgentIdentityConfiguration | undefined;
   private _selectedAgentConfigId = new BehaviorSubject<ObjectId | undefined>(undefined);
 
-  initialize() {
-    this._agentConfigurations = new ReadonlySubject<ChatAgentIdentityConfiguration[]>(
-      this._destroy$,
-      this.projectService.currentProjectId$.pipe(
-        switchMap(projectId => {
-          if (!projectId) {
-            return of([]);
-          }
-          return this._reloadAgentConfigs.pipe(
-            startWith(undefined),
-            switchMap(() => this.apiClient.getAgentConfigurations(projectId))
-          );
-        }),
-        startWith([])
-      )
+  private createAgentConfigurations$() {
+    return this.projectService.currentProjectId$.pipe(
+      switchMap(projectId => {
+        if (!projectId) {
+          return of([]);
+        }
+        return this._reloadAgentConfigs.pipe(
+          startWith(undefined),
+          switchMap(() => this.apiClient.getAgentConfigurations(projectId))
+        );
+      }),
+      startWith([]),
+      distinctUntilChanged()
     );
+  }
 
-    this._selectedAgentConfig = new ReadonlySubject<ChatAgentIdentityConfiguration | undefined>(
-      this._destroy$,
-      this._selectedAgentConfigId.asObservable().pipe(
-        switchMap((id) => {
-          if (!id) {
-            return of(undefined);
-          }
-          return this.apiClient.getAgentConfigurationById(id);
-        })
-      )
+  private createSelectedAgentConfig$() {
+    return this._selectedAgentConfigId.asObservable().pipe(
+      switchMap((id) => {
+        if (!id) {
+          return of(undefined);
+        }
+        return this.apiClient.getAgentConfigurationById(id);
+      }),
+      distinctUntilChanged()
     );
+  }
+
+  initialize() {
+    // Agent Configurations observable and value
+    this._agentConfigurations$ = this.createAgentConfigurations$();
+    this._agentConfigurations$
+      .pipe(
+        takeUntil(this._destroy$)
+      )
+      .subscribe(configs => {
+        this._agentConfigurationsValue = configs;
+      });
+
+    // Selected Agent Config observable and value
+    this._selectedAgentConfig$ = this.createSelectedAgentConfig$();
+    this._selectedAgentConfig$
+      .pipe(
+        takeUntil(this._destroy$)
+      )
+      .subscribe(config => {
+        this._selectedAgentConfigValue = config;
+      });
   }
 
   // List all agent configurations for the current project
   get agentConfigurations$() {
-    return this._agentConfigurations.observable$;
+    return this._agentConfigurations$;
   }
   get agentConfigurations(): ChatAgentIdentityConfiguration[] {
-    return this._agentConfigurations.value;
+    return this._agentConfigurationsValue;
   }
 
   // Selected agent configuration
   get selectedAgentConfig$() {
-    return this._selectedAgentConfig.observable$;
+    return this._selectedAgentConfig$;
   }
   get selectedAgentConfig(): ChatAgentIdentityConfiguration | undefined {
-    return this._selectedAgentConfig.value;
+    return this._selectedAgentConfigValue;
   }
   get selectedAgentConfigId(): ObjectId | undefined {
     return this._selectedAgentConfigId.value;
