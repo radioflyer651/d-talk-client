@@ -137,6 +137,20 @@ When building or updating chat room details, ensure the user can:
 - `src/environments/`: Environment-specific config.
 - `angular.json`: Build and port config.
 
+## Shared Models/Code
+  - Some code and models are shared with the server-side project.
+  - Shared code is strictly kept in the `src\model\shared-models` folder (or sub-folders).
+    - Shared files are ALWAYS copied from the server-side code to the client code (this application).
+    - These files/folders should NOT BE MODIFIED in this client app without explicit instructions to do so.
+      - **IMPORTANT** If you need to make changes in this folder, ask permission first, because the changes will have to be copied to the other project manually by the user.
+  - Shard and non-shared content will sometimes refer to the `ObjectId` type, which is defined in the `mongodb` package.
+    - The `mongodb` package is not actually installed in this project, because it cannot be used in the browser.
+    - The `mongodb` library is declared in this project, and the `ObjectId` type is defined as a `string`.  This is proper.
+    - When appropriate, use the `ObjectId` type instead of a `string` to ensure proper identification of the data's source, and potential required handling of the data.
+
+
 ---
 
-If you are unsure about a workflow or pattern, check the referenced files or ask for clarification. Keep changes modular and follow the observable/reactive patterns throughout the codebase.
+- If you are unsure about a workflow or pattern, check the referenced files or ask for clarification. Keep changes modular and follow the observable/reactive patterns throughout the codebase.
+- If a request or instruction is unclear, STOP and ask for clarification.  If the ambiguous information is not from user's instructions, then include a reference to the information you're unclear about.
+
