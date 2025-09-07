@@ -63,7 +63,7 @@ export class ChatDocumentsComponent extends ComponentBase {
 
   document?: IChatDocumentData;
 
-  private _showDrawer: boolean = false;
+  private _showDrawer: boolean = true;
   public get showDrawer(): boolean {
     if (!this.pageSizeService.isSkinnyPage) {
       return false;

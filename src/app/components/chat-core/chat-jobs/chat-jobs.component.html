@@ -12,6 +12,6 @@
 </div>
 
 <p-drawer *ngIf="pageSizeService.isSkinnyPage" [(visible)]="showDrawer" [style]="pageSizeService.standardDrawerStyle"
-    [fullScreen]="pageSizeService.isFullWidthDrawers">
+    [fullScreen]="pageSizeService.isFullWidthDrawers" header="Chat Tasks">
     <app-chat-job-list (itemClicked)="closeDrawer()"></app-chat-job-list>
 </p-drawer>

@@ -28,7 +28,7 @@ export class ChatJobsComponent extends ComponentBase {
     super();
   }
 
-  private _showDrawer: boolean = false;
+  private _showDrawer: boolean = true;
   public get showDrawer(): boolean {
     if (!this.pageSizeService.isSkinnyPage) {
       return false;

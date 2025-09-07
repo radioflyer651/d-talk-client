@@ -21,13 +21,13 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './chat-rooms.component.scss'
 })
 export class ChatRoomsComponent {
-  private _showDrawer: boolean = false;
 
   constructor(
     readonly chatRoomService: ChatRoomsService,
     public pageSizeService: PageSizeService,
   ) { }
 
+  private _showDrawer: boolean = true;
   public get showDrawer(): boolean {
     if (!this.pageSizeService.isSkinnyPage) {
       return false;
