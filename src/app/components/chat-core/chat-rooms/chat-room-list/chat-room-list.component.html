@@ -1,42 +1,36 @@
 <div class="chat-room-list-component">
     <p-card class="h-100 d-block">
-        <p-panel showHeader="false">
-            <p-floatlabel>
-                <input id="chat-room-search" autocomplete="off" pInputText [(ngModel)]="searchText" />
-                <label for="chat-room-search">Search</label>
-            </p-floatlabel>
-
-            <p-button class="new-chat-room-btn" icon="fa fa-plus" label="New Chat Room"
-                (click)="createNewChatRoom()"></p-button>
-        </p-panel>
+        <p-toolbar>
+            <ng-template #start>
+                <p-button class="new-chat-room-btn" size="small" [rounded]="true" icon="fa fa-plus"
+                    label="New Chat Room" (click)="createNewChatRoom()"></p-button>
+            </ng-template>
+        </p-toolbar>
 
         <ng-container *ngIf="!!(chatRoomList$ | async)">
             <p-dataview [value]="(chatRoomList$ | async)!">
 
                 <ng-template #list let-items>
                     <div *ngFor="let room of items" class="chat-room-card-container">
-                        <p-panel [showHeader]="false">
-                            <h4 class="chat-room-title" (click)="selectChatRoom(room)">
-                                <span class="fa-regular fa-users-between-lines icon"></span>
-                                <div class="room-name">{{room.name}}</div>
-                            </h4>
+                        <div class="chat-room-card-controls">
+                            <div class="button-container">
+                                <p-button size="small" [rounded]="true" icon="fa fa-trash" severity="danger"
+                                    (click)="deleteChatRoom(room)"></p-button>
 
-                            <div class="chat-room-card-wrapper">
-                                <div class="chat-room-card-content" [innerHtml]="getChatRoomDescription(room)">
-                                </div>
-                                <div class="chat-room-card-controls">
-                                    <p-button icon="fa fa-trash" severity="danger"
-                                        (click)="deleteChatRoom(room)"></p-button>
+                                <p-button size="small" [rounded]="true" icon="fa fa-pencil"
+                                    (click)="selectChatRoom(room)"></p-button>
 
-                                    <p-button icon="fa fa-pencil" (click)="selectChatRoom(room)"></p-button>
-
-                                    <a
-                                        [routerLink]="['/chatting', 'project', projectService.currentProjectId, 'chat-room', room._id]">
-                                        <p-button label="Chat" severity="contrast"></p-button>
-                                    </a>
-                                </div>
+                                <a
+                                    [routerLink]="['/chatting', 'project', projectService.currentProjectId, 'chat-room', room._id]">
+                                    <p-button size="small" [rounded]="true" icon="fa-solid fa-comments"
+                                        severity="contrast"></p-button>
+                                </a>
                             </div>
-                        </p-panel>
+
+                            <div class="chat-room-title" (click)="selectChatRoom(room)">
+                                {{room.name}}
+                            </div>
+                        </div>
                     </div>
                 </ng-template>
             </p-dataview>
@@ -44,8 +38,8 @@
     </p-card>
 </div>
 
-<p-dialog header="Create New Chat Room" [(visible)]="isNewChatRoomDialogVisible" [modal]="true" [closable]="true"
-    [dismissableMask]="true" [style]="{width: '350px'}">
+<p-dialog header="Create New Chat Room" [(visible)]="isNewChatRoomDialogVisible" appendTo="body" [modal]="true"
+    [closable]="true" [dismissableMask]="true" [style]="{width: '350px'}">
     <div class="p-fluid">
         <div class="p-field">
             <label for="new-chat-room-name">Room Name</label>
@@ -53,10 +47,10 @@
                 (keyup.enter)="confirmCreateNewChatRoom()" autofocus />
         </div>
         <div class="footer-button-controls">
+            <p-button label="Cancel" icon="fa fa-times" severity="secondary" (click)="isNewChatRoomDialogVisible=false"
+                class="ml-2" tabindex="-1"></p-button>
             <p-button label="Create" icon="fa fa-check" (click)="confirmCreateNewChatRoom()"
                 [disabled]="!newChatRoomName.trim()"></p-button>
-            <p-button label="Cancel" icon="fa fa-times" severity="secondary" (click)="isNewChatRoomDialogVisible=false"
-                class="ml-2"></p-button>
         </div>
     </div>
 </p-dialog>

@@ -38,8 +38,8 @@
     </div>
 </div>
 
-<p-dialog [(visible)]="isNewPermissionVisible" [blockScroll]="true" header="Select File"
-    [style]="{width: '30vw', height: '50vh'}">
+<p-dialog [(visible)]="isNewPermissionVisible" [blockScroll]="true" header="Select File" [maximizable]="true"
+    [style]="pageSizeService.standardDialogStyle">
 
     <div [style]="{overflowY: 'hidden', height: '100%'}">
         <app-document-selector [(selectedDocumentId)]="selectedDocumentId"></app-document-selector>

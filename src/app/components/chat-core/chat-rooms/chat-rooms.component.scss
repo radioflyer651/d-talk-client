@@ -8,6 +8,10 @@
   height: 100%;
 }
 
+.drawer {
+  width: 80vw;
+}
+
 .chat-room-list-column {
   @extend %_fit-container-scroll;
   flex: 0 0 320px;

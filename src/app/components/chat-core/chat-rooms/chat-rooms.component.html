@@ -10,6 +10,7 @@
   <p-button icon="fa-solid fa-list-tree" [rounded]="true" size="small" (click)="openDrawer()"></p-button>
 </div>
 
-<p-drawer *ngIf="pageSizeService.isSkinnyPage" [(visible)]="showDrawer">
+<p-drawer header="Chat Room List" *ngIf="pageSizeService.isSkinnyPage" [(visible)]="showDrawer"
+  [fullScreen]="pageSizeService.isFullWidthDrawers" [style]="pageSizeService.standardDrawerStyle">
   <app-chat-room-list (itemClicked)="closeDrawer()"></app-chat-room-list>
 </p-drawer>

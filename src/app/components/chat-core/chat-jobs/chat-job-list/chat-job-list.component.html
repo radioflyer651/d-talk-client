@@ -1,14 +1,11 @@
 <div class="chat-job-list-component">
     <p-card class="h-100 d-block top-panel">
-        <p-panel showHeader="false">
-            <p-floatlabel>
-                <input id="chat-job-search" autocomplete="off" pInputText [(ngModel)]="searchText" />
-                <label for="chat-job-search">Search</label>
-            </p-floatlabel>
-
-            <p-button class="new-chat-job-btn" icon="fa fa-plus" label="New Job"
-                (click)="showNewJobDialog()"></p-button>
-        </p-panel>
+        <p-toolbar>
+            <ng-template #start>
+                <p-button size="small" [rounded]="true" icon="fa fa-plus" label="New Job"
+                    (click)="showNewJobDialog()"></p-button>
+            </ng-template>
+        </p-toolbar>
 
         <ng-container *ngIf="chatJobGroups">
             <ng-container *ngIf="chatJobGroups.length < 2; else groupList">
@@ -51,8 +48,8 @@
     </p-card>
 
     <!-- New Job Dialog -->
-    <p-dialog header="Create New Job" [(visible)]="isNewJobDialogVisible" [modal]="true" [closable]="true"
-        [dismissableMask]="true">
+    <p-dialog header="Create New Job" appendTo="body" [(visible)]="isNewJobDialogVisible" [modal]="true"
+        [closable]="true" [dismissableMask]="true">
         <div class="p-fluid">
             <div class="p-field">
                 <label for="newJobName">Job Name</label>

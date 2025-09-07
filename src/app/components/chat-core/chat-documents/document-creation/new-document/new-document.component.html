@@ -1,4 +1,5 @@
-<p-dialog [(visible)]="visible" header="New Document">
+<p-dialog [(visible)]="visible" header="New Document" [style]="pageSizeService.standardDialogStyle"
+    [maximizable]="true">
     <div class="content-container">
         <p-floatlabel>
             <p-select [options]="documentTypes" [(ngModel)]="documentType" dataKey="type"

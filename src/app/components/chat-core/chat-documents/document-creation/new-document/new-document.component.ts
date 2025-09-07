@@ -14,6 +14,7 @@ import { CurrentRouteParamsService } from '../../../../../services/current-route
 import { takeUntil } from 'rxjs';
 import { UserService } from '../../../../../services/user.service';
 import { ButtonModule } from 'primeng/button';
+import { PageSizeService } from '../../../../../services/page-size.service';
 
 @Component({
   selector: 'app-new-document',
@@ -35,6 +36,7 @@ export class NewDocumentComponent extends ComponentBase {
     readonly chatDocumentsService: ChatDocumentsService,
     readonly paramService: CurrentRouteParamsService,
     readonly userService: UserService,
+    readonly pageSizeService: PageSizeService,
   ) {
     super();
   }

@@ -13,6 +13,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DocumentSelectorComponent } from "../document-selector/document-selector.component";
 import { CurrentRouteParamsService } from '../../../../services/current-route-params.service';
+import { PageSizeService } from '../../../../services/page-size.service';
 
 interface OptionType {
   documentName: string;
@@ -38,6 +39,7 @@ export class DocumentPermissionsComponent extends ComponentBase {
   constructor(
     readonly documentService: ChatDocumentsService,
     readonly paramsService: CurrentRouteParamsService,
+    readonly pageSizeService: PageSizeService,
   ) {
     super();
   }

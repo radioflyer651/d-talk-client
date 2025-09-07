@@ -18,6 +18,7 @@ import { ChatJobConfiguration } from '../../../../../model/shared-models/chat-co
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccordionModule } from 'primeng/accordion';
+import { ToolbarModule } from 'primeng/toolbar';
 
 interface ChatJobGroup {
   group: string;
@@ -38,6 +39,7 @@ interface ChatJobGroup {
     ConfirmDialogModule,
     DialogModule,
     AccordionModule,
+    ToolbarModule,
   ],
   templateUrl: './chat-job-list.component.html',
   styleUrl: './chat-job-list.component.scss'

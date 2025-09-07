@@ -1,10 +1,11 @@
 <div class="agent-config-list-component">
     <p-card class="h-100 d-block">
-        <p-panel showHeader="false">
-            <p-button class="new-agent-config-btn" icon="fa fa-plus" label="New Agent Config"
-                (click)="createNewAgentConfig()"></p-button>
-        </p-panel>
-
+        <p-toolbar>
+            <ng-template #start>
+                <p-button icon="fa fa-plus" label="New Agent" [rounded]="true" size="small"
+                    (click)="createNewAgentConfig()"></p-button>
+            </ng-template>
+        </p-toolbar>
 
         <ng-container *ngIf="agentGroups">
             <ng-container *ngIf="agentGroups.length < 2; else groupList">

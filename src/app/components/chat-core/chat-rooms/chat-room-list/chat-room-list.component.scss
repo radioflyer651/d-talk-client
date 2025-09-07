@@ -1,24 +1,27 @@
-.chat-room-card-controls {
+
+.chat-room-card-container {
     display: flex;
-    justify-content: space-between;
+    align-items: baseline;
+    margin: 0.5em;
 }
 
-.chat-room-title {
-    cursor: pointer;
-    text-align: center;
-    align-self: center;
-    margin: 0;
-    margin-bottom: 1em;
-    font-size: 1.5em;
-    font-weight: bold;
-    letter-spacing: 1px;
-    color: #333;
-
+.chat-room-card-controls {
     display: flex;
-    .room-name {
-        flex: 1 1 auto;
+    align-items: flex-start;
+
+    .button-container {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.5em;
     }
-    .icon {
-        align-self: center;
+
+    .chat-room-title {
+        cursor: pointer;
+        font-size: 1.2em;
+        font-weight: bold;
+        flex: 1 1 0;
+        margin-left: 1em;
+        word-break: break-word;
+        min-width: 0;
     }
 }

@@ -16,6 +16,7 @@ import { ChatAgentIdentityConfiguration } from '../../../../../model/shared-mode
 import { AgentTypeSelectorComponent } from "../agent-type-selector/agent-type-selector.component";
 import { AgentConfigEditorComponent } from "../agent-config-editors/agent-config-editor/agent-config-editor.component";
 import { NewDbItem } from '../../../../../model/shared-models/db-operation-types.model';
+import { PageSizeService } from '../../../../services/page-size.service';
 
 @Component({
   selector: 'app-create-agent-config',
@@ -38,7 +39,8 @@ import { NewDbItem } from '../../../../../model/shared-models/db-operation-types
 export class CreateAgentConfigComponent extends ComponentBase {
   constructor(
     readonly projectsService: ProjectsService,
-    readonly agentConfigService: AgentConfigurationService
+    readonly agentConfigService: AgentConfigurationService,
+    readonly pageSizeService: PageSizeService,
   ) {
     super();
   }
@@ -98,4 +100,12 @@ export class CreateAgentConfigComponent extends ComponentBase {
     this.isVisible = false;
   }
 
+  get dialogStyle() {
+    if (this.pageSizeService.pageSize.width <= 600 || this.pageSizeService.isFullScreenDialogs) {
+      return this.pageSizeService.standardDialogStyle;
+    }
+    else {
+      return { minWidth: '600px', width: '70vw', height: '80vh' };
+    }
+  }
 }

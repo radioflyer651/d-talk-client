@@ -16,6 +16,7 @@ import { DataViewModule } from 'primeng/dataview';
 import { DialogModule } from 'primeng/dialog';
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
 import { ChatRoomData } from '../../../../../model/shared-models/chat-core/chat-room-data.model';
+import { ToolbarModule } from 'primeng/toolbar';
 
 @Component({
   selector: 'app-chat-room-list',
@@ -30,6 +31,7 @@ import { ChatRoomData } from '../../../../../model/shared-models/chat-core/chat-
     DataViewModule,
     DialogModule,
     RouterModule,
+    ToolbarModule,
   ],
   templateUrl: './chat-room-list.component.html',
   styleUrl: './chat-room-list.component.scss'

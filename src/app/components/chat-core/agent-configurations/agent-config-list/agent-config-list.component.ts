@@ -21,6 +21,7 @@ import { CreateAgentConfigComponent } from "../create-agent-config/create-agent-
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccordionModule } from 'primeng/accordion';
+import { ToolbarModule } from "primeng/toolbar";
 
 interface ChatAgentGroup {
   group: string,
@@ -42,6 +43,7 @@ interface ChatAgentGroup {
     DialogModule,
     CreateAgentConfigComponent,
     AccordionModule,
+    ToolbarModule,
   ],
   templateUrl: './agent-config-list.component.html',
   styleUrl: './agent-config-list.component.scss'

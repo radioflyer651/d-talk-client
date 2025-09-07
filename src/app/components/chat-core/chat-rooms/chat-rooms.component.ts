@@ -26,7 +26,7 @@ export class ChatRoomsComponent {
   constructor(
     readonly chatRoomService: ChatRoomsService,
     public pageSizeService: PageSizeService,
-  ) {}
+  ) { }
 
   public get showDrawer(): boolean {
     if (!this.pageSizeService.isSkinnyPage) {
