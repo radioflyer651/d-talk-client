@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ComponentBase } from '../../../../component-base/component-base.component';
 import { ChattingService } from '../../../../../services/chat-core/chatting.service';
 import { ChatRoomsService } from '../../../../../services/chat-core/chat-rooms.service';
@@ -35,6 +35,9 @@ import { ChatAgentIdentityConfiguration } from '../../../../../../model/shared-m
   styleUrl: './chatting-job-list.component.scss'
 })
 export class ChattingJobListComponent extends ComponentBase {
+  /** Emits when a job is clicked/selected (for drawer close, etc) */
+  @Output()
+  readonly itemClicked = new EventEmitter<void>();
   dragOverIndex: number | null = null;
   draggedJobIndex: number | null = null;
 
@@ -89,6 +92,7 @@ export class ChattingJobListComponent extends ComponentBase {
       event.dataTransfer.setData('jobInstanceId', job.jobLink.jobInstance.id);
       event.dataTransfer.setData('jobIndex', index.toString());
     }
+    this.itemClicked.emit();
   }
 
   onJobInstanceDragEnd(event: DragEvent, job: JobWrapper, index: number) {

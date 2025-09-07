@@ -1,14 +1,4 @@
 <header class="not-printable text-center header">
-  <div class="header-gutter">
-    <div class="button-panel">
-
-      <!-- <p-button (click)="toggleMenu()" icon="pi pi-bars" severity="contrast"></p-button> -->
-
-      <!-- <p-button *ngIf="(userService.isUserLoggedIn$ | async) && !(pageSizeService.isSkinnyPage$ | async)"
-        (click)="logout()">Log Out</p-button> -->
-    </div>
-  </div>
-
   <div class="header-center">
     <h1>D Chat</h1>
     <nav *ngIf="isMenuVisible">
@@ -20,7 +10,7 @@
 
         <ng-container *ngIf="currentProjectId && currentChatRoomId">
           <a [routerLink]="['/projects', currentProjectId, 'chat-rooms', currentChatRoomId]">
-            Room Configuration
+            Room Cfg
           </a>
         </ng-container>
 

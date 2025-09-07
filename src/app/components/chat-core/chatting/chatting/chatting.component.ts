@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { DrawerModule } from 'primeng/drawer';
+import { PageSizeService } from '../../../../services/page-size.service';
 import { ChatMessageComponent } from "./chat-message/chat-message.component";
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { ChattingService } from '../../../../services/chat-core/chatting.service';
@@ -29,7 +31,8 @@ import { ConfirmationService } from 'primeng/api';
     TextareaModule,
     SplitterModule,
     ChattingJobListComponent,
-    CheckboxModule
+    CheckboxModule,
+    DrawerModule
   ],
   templateUrl: './chatting.component.html',
   styleUrl: './chatting.component.scss'
@@ -41,8 +44,27 @@ export class ChattingComponent extends ComponentBase {
     readonly route: ActivatedRoute,
     readonly chatSocketService: ChatSocketService,
     readonly confirmationService: ConfirmationService,
+    public pageSizeService: PageSizeService,
   ) {
     super();
+  }
+  private _showDrawer: boolean = false;
+  public get showDrawer(): boolean {
+    if (!this.pageSizeService.isSkinnyPage) {
+      return false;
+    }
+    return this._showDrawer;
+  }
+  public set showDrawer(v: boolean) {
+    this._showDrawer = v;
+  }
+
+  openDrawer() {
+    this.showDrawer = true;
+  }
+
+  closeDrawer() {
+    this.showDrawer = false;
   }
 
   ngOnInit() {
@@ -68,7 +90,15 @@ export class ChattingComponent extends ComponentBase {
         this.scrollChatToBottom();
       }
     }, 500);
+
+    this.pageSizeService.pageResized$.pipe(
+      takeUntil(this.ngDestroy$)
+    ).subscribe(newSize => {
+      this.secondRowControlButtons = newSize.width <= 600;
+    });
   }
+
+  secondRowControlButtons = false;
 
   chatHistory$!: Observable<StoredMessage[]>;
 

@@ -1,13 +1,16 @@
 <div class="chatting-container">
-  <div class="chatting-pane left">
+
+  <div class="chatting-pane left" *ngIf="!pageSizeService.isSkinnyPage">
     <div class="checkbox-container">
       <p-checkbox [binary]="true" [(ngModel)]="autoScroll"></p-checkbox>
       <label>Auto-scroll To Bottom</label>
     </div>
     <app-chatting-job-list></app-chatting-job-list>
   </div>
-  <div class="chatting-pane right">
+
+  <div class="chatting-pane" [ngClass]="{'right': !pageSizeService.isSkinnyPage}">
     <p-splitter layout="vertical" [minSizes]="[20, 20]" [panelSizes]="[80, 20]" [style]="{height: '100%'}">
+
       <ng-template #panel>
         <div class="chat-history-area" *ngIf="(chatHistory$ | async ) as messages">
           <app-chat-message *ngFor="let message of messages" [message]="message"></app-chat-message>
@@ -15,33 +18,45 @@
       </ng-template>
 
       <ng-template #panel>
-        <div class="chat-input-area">
+        <div class="chat-input-area row">
 
           <textarea class="chat-input" id="user-message" pTextarea placeholder="Your chat message...."
             [(ngModel)]="chatMessage"></textarea>
 
-          <!-- <div class="message-editor" id="user-message">
-            <app-monaco-editor [editorOptions]="monacoEditorOptions" [(content)]="chatMessage"></app-monaco-editor>
-          </div> -->
+          <div class="button-row">
+            <p-button size="small" [rounded]="true" *ngIf="!isLoading" icon="fa-solid fa-paper-plane-top"
+              severity="success" (click)="sendMessage()"></p-button>
 
-          <div class="button-group">
-            <div class="button-row">
-              <p-button *ngIf="!isLoading" label="Send" severity="success" (click)="sendMessage()"></p-button>
-              <p-button *ngIf="isLoading" label="Cancel" severity="danger" (click)="cancelLlmMessage()"></p-button>
-              <p-button label="Scroll to Bottom" severity="primary" (click)="scrollChatToBottom()"></p-button>
-            </div>
+            <p-button size="small" [rounded]="true" *ngIf="isLoading" label="Cancel" severity="danger"
+              (click)="cancelLlmMessage()"></p-button>
 
-            <div class="button-row">
-              <a [routerLink]="['/projects', projectId, 'chat-rooms', chatRoomId]">
-                <p-button severity="help" label="Configuration"></p-button>
-              </a>
+            <p-button size="small" [rounded]="true" icon="fa-solid fa-arrow-down" severity="primary"
+              (click)="scrollChatToBottom()"></p-button>
 
-              <p-button [disabled]="isLoading" label="Clear Messages" severity="contrast"
-                (click)="clearMessages()"></p-button>
-            </div>
+            <p-button icon="fa-solid fa-list-tree" [rounded]="true" size="small" *ngIf="pageSizeService.isSkinnyPage"
+              (click)="openDrawer()"></p-button>
+
+            <a [routerLink]="['/projects', projectId, 'chat-rooms', chatRoomId]">
+              <p-button size="small" [rounded]="true" severity="help" icon="fa-solid fa-gears"></p-button>
+            </a>
+
+            <p-button size="small" [rounded]="true" [disabled]="isLoading" icon="fa-solid fa-trash-xmark"
+              severity="danger" (click)="clearMessages()"></p-button>
           </div>
         </div>
       </ng-template>
     </p-splitter>
   </div>
 </div>
+
+
+<div class="controls" *ngIf="pageSizeService.isSkinnyPage">
+</div>
+
+<p-drawer *ngIf="pageSizeService.isSkinnyPage" [(visible)]="showDrawer" header="Chat Tasks">
+  <div class="checkbox-container">
+    <p-checkbox [binary]="true" [(ngModel)]="autoScroll"></p-checkbox>
+    <label>Auto-scroll To Bottom</label>
+  </div>
+  <app-chatting-job-list (itemClicked)="closeDrawer()"></app-chatting-job-list>
+</p-drawer>
