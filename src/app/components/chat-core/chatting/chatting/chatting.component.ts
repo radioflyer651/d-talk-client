@@ -44,7 +44,7 @@ export class ChattingComponent extends ComponentBase {
     readonly route: ActivatedRoute,
     readonly chatSocketService: ChatSocketService,
     readonly confirmationService: ConfirmationService,
-    public pageSizeService: PageSizeService,
+    readonly pageSizeService: PageSizeService,
   ) {
     super();
   }

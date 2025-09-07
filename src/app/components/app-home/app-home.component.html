@@ -2,13 +2,12 @@
 
 
 <div class="page-container">
-    <div class="left-side">
-
+    <div *ngIf="!pageSizeService.isSkinnyPage" class="left-side">
     </div>
     <div class="content">
         <router-outlet></router-outlet>
     </div>
-    <div class="right-side">
+    <div *ngIf="!pageSizeService.isSkinnyPage" class="right-side">
     </div>
 </div>
 
