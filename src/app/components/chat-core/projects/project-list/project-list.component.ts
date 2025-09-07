@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { PanelModule } from 'primeng/panel';
-import { InputTextModule } from 'primeng/inputtext';
-import { IftaLabelModule } from 'primeng/iftalabel';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FloatLabel } from 'primeng/floatlabel';
 import { BehaviorSubject, lastValueFrom, map, switchMap } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
@@ -19,6 +16,8 @@ import { ProjectsService } from '../../../../services/chat-core/projects.service
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-project-list',
@@ -29,12 +28,11 @@ import { RouterModule } from '@angular/router';
     CardModule,
     PanelModule,
     InputTextModule,
-    IftaLabelModule,
-    FloatLabel,
     ButtonModule,
     DataViewModule,
     ConfirmDialogModule,
     DialogModule,
+    FloatLabelModule,
   ],
   templateUrl: './project-list.component.html',
   styleUrl: './project-list.component.scss'
@@ -50,33 +48,8 @@ export class ProjectListComponent extends ComponentBase {
   }
 
   ngOnInit() {
-    this._projectList = new ReadonlySubject(this.ngDestroy$,
-      this.searchText$.pipe(
-        switchMap((searchText) => {
-          return this.projectsService.projectListing$.pipe(
-            map(projectList => {
-              return projectList.filter(l => l.name.toLowerCase().includes(searchText.toLocaleLowerCase())).sort((p1, p2) => {
-                return p1.name.localeCompare(p2.name);
-              });
-            })
-          );
-        })
-      )
-    );
+    this._projectList = new ReadonlySubject(this.ngDestroy$, this.projectsService.projectListing$);
   }
-
-  // #region searchText
-  private readonly _searchText = new BehaviorSubject<string>('');
-  readonly searchText$ = this._searchText.asObservable();
-
-  get searchText(): string {
-    return this._searchText.getValue();
-  }
-
-  set searchText(newVal: string) {
-    this._searchText.next(newVal);
-  }
-  // #endregion
 
   // #region projectList
   private _projectList!: ReadonlySubject<ProjectListing[]>;
