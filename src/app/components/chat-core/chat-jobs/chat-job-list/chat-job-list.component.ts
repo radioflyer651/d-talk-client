@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { ChatJobsService } from '../../../../services/chat-core/chat-jobs.service';
 import { CommonModule } from '@angular/common';
@@ -149,6 +149,7 @@ export class ChatJobListComponent extends ComponentBase {
   }
 
   selectJob(job: ChatJobConfiguration) {
+    this.itemClicked.next();
     this.router.navigate([job._id], { relativeTo: this.route });
   }
 
@@ -204,4 +205,7 @@ export class ChatJobListComponent extends ComponentBase {
   createNewJob() {
     this.isNewJobDialogVisible = true;
   }
+
+  @Output()
+  readonly itemClicked = new EventEmitter<void>();
 }

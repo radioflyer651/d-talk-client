@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { AgentConfigurationService } from '../../../../services/chat-core/agent-configuration.service';
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
@@ -136,8 +136,8 @@ export class AgentConfigListComponent extends ComponentBase {
   }
 
   selectAgentConfig(config: ChatAgentIdentityConfiguration) {
+    this.itemClicked.next();
     this.router.navigate([config._id], { relativeTo: this.route });
-    //this.agentConfigService.selectedAgentConfigId = config._id;
   }
 
   isNewAgentConfigDialogVisible: boolean = false;
@@ -153,4 +153,6 @@ export class AgentConfigListComponent extends ComponentBase {
     return result;
   }
 
+  @Output()
+  readonly itemClicked = new EventEmitter<void>();
 }

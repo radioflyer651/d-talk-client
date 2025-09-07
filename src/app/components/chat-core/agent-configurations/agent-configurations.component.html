@@ -1,8 +1,16 @@
 <div class="agent-configurations-container">
-    <div class="agent-config-list-panel">
+    <div class="agent-config-list-panel" *ngIf="!pageSizeService.isSkinnyPage">
         <app-agent-config-list></app-agent-config-list>
     </div>
     <div class="agent-config-detail-panel">
         <router-outlet></router-outlet>
     </div>
 </div>
+
+<div class="controls" *ngIf="pageSizeService.isSkinnyPage">
+    <p-button icon="fa-solid fa-list-tree" [rounded]="true" size="small" (click)="openDrawer()"></p-button>
+</div>
+
+<p-drawer *ngIf="pageSizeService.isSkinnyPage" [(visible)]="showDrawer">
+    <app-agent-config-list (itemClicked)="closeDrawer()"></app-agent-config-list>
+</p-drawer>

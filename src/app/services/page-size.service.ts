@@ -30,10 +30,10 @@ export class PageSizeService extends ComponentBase {
     this._isSkinnyPage = new ReadonlySubject(
       this.ngDestroy$,
       this.pageResized$.pipe(
-      map(newSize => {
-        return newSize.width <=768;
-      })
-    ));
+        map(newSize => {
+          return newSize.width < 1024;
+        })
+      ));
 
   }
 

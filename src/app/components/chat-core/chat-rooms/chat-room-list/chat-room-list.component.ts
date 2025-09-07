@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { ChatRoomsService } from '../../../../services/chat-core/chat-rooms.service';
 import { BehaviorSubject, map, Observable, switchMap, takeUntil } from 'rxjs';
@@ -92,10 +92,15 @@ export class ChatRoomListComponent extends ComponentBase {
     });
   }
 
+  /** Emits when a chat room is selected (for drawer close, etc) */
+  @Output()
+  readonly itemClicked = new EventEmitter<void>();
+
   selectChatRoom(room: any) {
     // Set the selected chat room and navigate to its route
     this.router.navigate([room._id], { relativeTo: this.route });
     this.chatRoomService.selectedChatRoomId = room._id;
+    this.itemClicked.emit();
   }
 
   isNewChatRoomDialogVisible: boolean = false;
