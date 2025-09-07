@@ -17,6 +17,20 @@ applyTo: '**/*.component.ts'
   - Reuse observables whenever possible.
     - Only subscribe to `Observable` instances.  Use the `asObservable()` method when needed to avoid subscribing directly to more capable source implementations.
   - Inject services into the constructor preemptively, based on context.  It's easier to delete than to add them later.
+  - Any subscription to an observable that has the `takeUntil(this.ngDestroy$)` does not need to be `unsubscribe`d, as this action is automatic.
+  - Example:
+```typescript
+  // ...
+  ngOnInit() {
+    this._projectList$ = this.projectsService.projectListing$
+      .pipe(takeUntil(this.ngDestroy$));
+
+    this._projectList$.subscribe(list => {
+      this._projectListValue = list;
+    });
+  }
+  // ...
+```
   
 ## Minimum Component Requirements
 All components should include the following in their `.ts` file.

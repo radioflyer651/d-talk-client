@@ -1,7 +1,7 @@
 ---
 mode: agent
 description: 'Refactor ReadonlySubject into normal observable.'
-tools: ['codebase', 'usages', 'problems', 'search']
+tools: ['codebase', 'usages', 'problems', 'editFiles', 'search']
 ---
 
 # Purpose
@@ -9,6 +9,9 @@ tools: ['codebase', 'usages', 'problems', 'search']
 
 ## Information
 `ReadonlySubjects` were meant to be an observable that could be subscribed to, and also maintained a readonly value which updated anytime the source observable changed.
+
+### Inclusion
+  - Load the [Component Instructions](../instructions/component-ts.instructions.md) file for information when performing these tasks.
 
 ### Features of `ReadonlySubject`
   - The constructor took 2 observables as input.

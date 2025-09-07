@@ -3,14 +3,14 @@ import { CardModule } from 'primeng/card';
 import { PanelModule } from 'primeng/panel';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject, lastValueFrom, map, switchMap } from 'rxjs';
+import { BehaviorSubject, lastValueFrom, map, Subscription, switchMap } from 'rxjs';
 import { ButtonModule } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
 import { ProjectListing } from '../../../../../model/shared-models/chat-core/project-listing.model';
-import { ReadonlySubject } from '../../../../../utils/readonly-subject';
+import { takeUntil } from 'rxjs';
 import { MessagingService } from '../../../../services/messaging.service';
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
 import { ComponentBase } from '../../../component-base/component-base.component';
@@ -47,19 +47,29 @@ export class ProjectListComponent extends ComponentBase {
     super();
   }
 
+
   ngOnInit() {
-    this._projectList = new ReadonlySubject(this.ngDestroy$, this.projectsService.projectListing$);
+    // Create an observable that completes when ngDestroy$ emits, and updates the value property.
+    this._projectList$ = this.projectsService.projectListing$
+      .pipe(takeUntil(this.ngDestroy$));
+
+    // Subscribe to keep the latest value in _projectListValue
+    this._projectList$.subscribe(list => {
+      list.sort((a, b) => a.name.localeCompare(b.name));
+      this._projectListValue = list;
+    });
   }
 
   // #region projectList
-  private _projectList!: ReadonlySubject<ProjectListing[]>;
+  private _projectList$!: import('rxjs').Observable<ProjectListing[]>;
+  private _projectListValue: ProjectListing[] = [];
 
   get projectList$() {
-    return this._projectList.observable$;
+    return this._projectList$;
   }
 
   get projectList(): ProjectListing[] {
-    return this._projectList.value;
+    return this._projectListValue;
   }
   // #endregion
 
