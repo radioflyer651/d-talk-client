@@ -18,6 +18,8 @@ import { positionableMessageLocationOptions } from '../../../../../model/positio
 import { CheckboxModule } from 'primeng/checkbox';
 import { MonacoEditorComponent, MonacoEditorOptions } from "../../../monaco-editor/monaco-editor.component";
 import { Dialog } from "primeng/dialog";
+import { PageSizeService } from '../../../../services/page-size.service';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-positionable-message-detail',
@@ -40,7 +42,9 @@ import { Dialog } from "primeng/dialog";
   styleUrl: './positionable-message-detail.component.scss'
 })
 export class PositionableMessageDetailComponent extends ComponentBase {
-  constructor() {
+  constructor(
+    readonly pageSizeService: PageSizeService,
+  ) {
     super();
   }
 
@@ -58,6 +62,20 @@ export class PositionableMessageDetailComponent extends ComponentBase {
       this.messageController = undefined;
     }
   }
+
+  ngOnInit() {
+    this.pageSizeService.pageResized$.pipe(
+      takeUntil(this.ngDestroy$)
+    ).subscribe(newSize => {
+      if (newSize.width <= 600 || newSize.height <= 600) {
+        this.editDialogStyle = { width: '100vw', height: '100vh', };
+      } else {
+        this.editDialogStyle = { width: '70vw', height: '80vh', };
+      }
+    });
+  }
+
+  editDialogStyle = { width: '70vw', height: '80vh', };
 
   /** Options for the agent type in the select box. */
   agentTypeOptions = storedMessageAgentTypeOptions;

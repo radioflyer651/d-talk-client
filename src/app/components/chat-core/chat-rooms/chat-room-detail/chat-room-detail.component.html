@@ -1,5 +1,5 @@
 <div class="chat-room-detail-component">
-    <p-tabs [(value)]="selectedTabId">
+    <p-tabs [(value)]="selectedTabId" scrollable>
         <p-tablist>
             <p-tab [value]="0">
                 Room Info
@@ -12,6 +12,11 @@
             </p-tab>
             <p-tab [value]="3">
                 Documents
+            </p-tab>
+            <p-tab *ngIf="!!chatRoom?._id && projectService?.currentProjectId && chatButtonVisibility.showInline">
+                <a [routerLink]="['/chatting', 'project', projectService.currentProjectId, 'chat-room', chatRoom!._id]">
+                    <p-button size="small" [rounded]="true" severity="contrast" icon="fa-solid fa-comments"></p-button>
+                </a>
             </p-tab>
         </p-tablist>
     </p-tabs>
@@ -199,3 +204,11 @@
 </p-dialog>
 
 <p-confirmdialog />
+
+
+<div class="chat-button-container"
+    *ngIf="!!chatRoom?._id && projectService?.currentProjectId && chatButtonVisibility.showFloating">
+    <a [routerLink]="['/chatting', 'project', projectService.currentProjectId, 'chat-room', chatRoom!._id]">
+        <p-button size="small" [rounded]="true" severity="contrast" icon="fa-solid fa-comments"></p-button>
+    </a>
+</div>

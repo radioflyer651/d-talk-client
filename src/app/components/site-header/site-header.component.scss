@@ -39,7 +39,8 @@
     z-index: 1;
   }
 
-  h1, h3 {
+  h1,
+  h3 {
     position: relative;
     z-index: 2;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); // Add text shadow for better readability
@@ -58,12 +59,20 @@
   .header-gutter {
     width: $sidebar-width;
   }
+
+  // Add missing class from HTML: .site-header-title (not in global styles)
+  .site-header-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 @keyframes moveBackground {
   0% {
     transform: translate(-50%, -50%) rotate(0deg);
   }
+
   100% {
     transform: translate(-50%, -50%) rotate(360deg);
   }
@@ -79,9 +88,10 @@
   z-index: 2;
 }
 
-header p-button {
-  margin-right: 15px;
-}
+
+// The following selectors are not directly referenced in the HTML, but may be used by Angular or PrimeNG:
+// .button-panel: Not found in HTML. If not used in the component's template or TypeScript, consider removing.
+// header p-button: Not found in HTML, but p-button is a PrimeNG component and may be used dynamically.
 
 header nav {
   display: flex;
@@ -95,7 +105,7 @@ header nav {
   position: relative;
   z-index: 2;
 
-  > * {
+  >* {
     cursor: pointer;
     color: white;
     text-decoration: none;

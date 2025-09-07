@@ -2,7 +2,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { ChatRoomsService } from '../../../../services/chat-core/chat-rooms.service';
 import { BehaviorSubject, map, Observable, switchMap, takeUntil } from 'rxjs';
-import { ReadonlySubject } from '../../../../../utils/readonly-subject';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { lastValueFrom } from 'rxjs';

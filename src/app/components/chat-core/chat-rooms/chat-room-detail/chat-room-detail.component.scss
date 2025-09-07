@@ -76,12 +76,15 @@
         &.agent-template {
             background-color: hsl(105, 20%, 80%);
         }
+
         &.job-template {
             background-color: hsl(291, 20%, 80%);
         }
+
         &.agent-instance {
             background-color: hsl(105, 80%, 80%);
         }
+
         &.job-instance {
             background-color: hsl(291, 80%, 80%);
         }
@@ -102,10 +105,6 @@
         display: flex;
         align-items: center;
         gap: 8px;
-
-        app-chat-job-order-control {
-            // flex: 0 0 0;
-        }
 
         .job-instance-name {
             flex: 1 1 auto;
@@ -131,8 +130,10 @@
         padding: 10px 12px 8px 12px;
         font-size: 0.97em;
 
-        margin: 0 12px; /* Add horizontal margin only */
-        padding-left: 2px; /* Add a little left padding to avoid hugging edge */
+        margin: 0 12px;
+        /* Add horizontal margin only */
+        padding-left: 2px;
+        /* Add a little left padding to avoid hugging edge */
     }
 
     .object-panel-content-empty {
@@ -163,23 +164,29 @@
     .agent-icon {
         font-size: 1.2em;
     }
+
     .agent-present {
         color: #6c63ff;
     }
+
     .agent-missing {
         color: #bdbdbd;
     }
+
     .agent-name {
         font-weight: 600;
         color: #2a3a4b;
     }
+
     .agent-placeholder-text {
         color: #888;
         font-style: italic;
     }
+
     .add-agent-btn {
         color: #388e3c;
     }
+
     .remove-agent-btn {
         color: #c0392b;
     }
@@ -193,4 +200,10 @@
             border 0.2s,
             background 0.2s;
     }
+}
+
+.chat-button-container {
+    position: absolute;
+    right: 1em;
+    bottom: 1em;
 }

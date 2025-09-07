@@ -16,7 +16,7 @@ import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
 import { InputText } from 'primeng/inputtext';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { LinkedJobInstance } from '../../../../../model/linked-job-instance.model';
@@ -28,6 +28,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { DocumentPermissionsComponent } from "../../chat-documents/document-permissions/document-permissions.component";
 import { SelectModule } from 'primeng/select';
 import { ChatJobOrderControlComponent } from "../../chat-job-order-control/chat-job-order-control.component";
+import { PageSizeService } from '../../../../services/page-size.service';
 
 @Component({
   selector: 'app-chat-room-detail',
@@ -45,7 +46,8 @@ import { ChatJobOrderControlComponent } from "../../chat-job-order-control/chat-
     PositionableMessageListComponent,
     DocumentPermissionsComponent,
     SelectModule,
-    ChatJobOrderControlComponent
+    ChatJobOrderControlComponent,
+    RouterModule,
   ],
   templateUrl: './chat-room-detail.component.html',
   styleUrl: './chat-room-detail.component.scss',
@@ -75,6 +77,7 @@ export class ChatRoomDetailComponent extends ComponentBase {
     readonly route: ActivatedRoute,
     readonly router: Router,
     readonly confirmationService: ConfirmationService,
+    readonly pageSizeService: PageSizeService,
   ) {
     super();
   }
@@ -154,7 +157,17 @@ export class ChatRoomDetailComponent extends ComponentBase {
       }
       this.chatRoom = room;
     });
+
+    this.pageSizeService.pageResized$.pipe(
+      takeUntil(this.ngDestroy$)
+    ).subscribe(newSize => {
+      const showInline = newSize.width > 600;
+      this.chatButtonVisibility.showInline = showInline;
+      this.chatButtonVisibility.showFloating = !showInline;
+    });
   }
+
+  chatButtonVisibility = { showInline: true, showFloating: false };
 
   selectedTabId = 1;
 
