@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ChatDocumentsService } from '../../../../services/chat-core/chat-documents/chat-documents.service';
@@ -85,11 +85,11 @@ export class DocumentTreeListComponent extends ComponentBase {
       this.router.navigate(['chat-documents'], { relativeTo: this.route.parent });
     }
     if (value) {
+    this.itemClicked.next();
       this.selectedDocumentId = value.key;
       this.router.navigate([value.key], { relativeTo: this.route });
     }
   }
-
 
   newDocumentName: string = '';
   newDocumentDescription: string = '';
@@ -179,4 +179,8 @@ export class DocumentTreeListComponent extends ComponentBase {
       f.expanded = true;
     });
   }
+
+  /** Event risen when an item has been clicked in the tree. */
+  @Output()
+  readonly itemClicked = new EventEmitter<void>();
 }

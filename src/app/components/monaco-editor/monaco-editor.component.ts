@@ -9,6 +9,8 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { SelectModule } from 'primeng/select';
 import { IStandaloneCodeEditor, MonacoEditorRootService, monacoLoader } from '../../../types/monaco.typedevs';
+import { PageSizeService } from '../../services/page-size.service';
+import { distinctUntilChanged, takeUntil } from 'rxjs';
 
 /** Since the properties of the MonacoEditor may need to be stored outside of the
  *   the component, we need to define the properties it might require. */
@@ -37,7 +39,9 @@ export interface MonacoEditorOptions {
   styleUrl: './monaco-editor.component.scss'
 })
 export class MonacoEditorComponent extends ComponentBase {
-  constructor() {
+  constructor(
+    readonly pageSizeService: PageSizeService,
+  ) {
     super();
 
     this.uniqueId = Math.random().toString(36).slice(2, 9);
@@ -121,7 +125,18 @@ export class MonacoEditorComponent extends ComponentBase {
   ngAfterViewInit() {
     setTimeout(() => {
       this.createEditor();
-    });
+
+      // This doesn't work if it's not on a timeout.  This sucks, but it's just the way of things.
+      //  It also doesn't work (100% of the time ??) without a timeout value.
+      setTimeout(() => {
+        this.pageSizeService.isSkinnyPage$.pipe(
+          takeUntil(this.ngDestroy$),
+          distinctUntilChanged(),
+        ).subscribe(value => {
+          this.editor.updateOptions({ minimap: { enabled: !value } });
+        });
+      });
+    }, 50);
   }
 
   ngOnDestory() {

@@ -31,7 +31,7 @@ export class PageSizeService extends ComponentBase {
       this.ngDestroy$,
       this.pageResized$.pipe(
       map(newSize => {
-        return newSize.width < 1400;
+        return newSize.width <=768;
       })
     ));
 

@@ -5,13 +5,19 @@
     display: flex;
 
     .document-list {
-    @extend %_fit-container-scroll;
+        @extend %_fit-container-scroll;
         max-width: 25%;
         width: 25em;
     }
 
     .document-details {
-    @extend %_fit-container-scroll;
+        @extend %_fit-container-scroll;
         flex: 1 1 auto;
     }
+}
+
+.controls {
+    position: absolute;
+    left: 1em;
+    bottom: 1em;
 }

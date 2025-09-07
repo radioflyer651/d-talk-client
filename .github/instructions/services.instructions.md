@@ -1,3 +1,17 @@
+### Page Size Service
+**File:** `src/app/services/page-size.service.ts`
+
+**Purpose:**
+Provides observables for the current browser window size and whether the page is considered "skinny" (narrow), enabling responsive UI behavior throughout the application.
+
+**Features:**
+- Emits the current page size (`pageResized$`) as an observable of `{ width, height }` objects, updating on window resize.
+- Exposes a reactive boolean (`isSkinnyPage$`) and value (`isSkinnyPage`) indicating if the page width is 768px or less.
+- Designed for use in components and services that need to react to page size changes or adapt layouts responsively.
+
+**Usage:**
+- Subscribe to `pageResized$` to get the latest window size.
+- Use `isSkinnyPage$` or `isSkinnyPage` to adjust UI for narrow screens (e.g., hide gutters, change layouts).
 
 
 # Frequently Used Angular Services
