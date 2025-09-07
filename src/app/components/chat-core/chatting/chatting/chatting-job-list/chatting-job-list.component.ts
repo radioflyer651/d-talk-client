@@ -6,13 +6,11 @@ import { ChatJobsService } from '../../../../../services/chat-core/chat-jobs.ser
 import { ActivatedRoute } from '@angular/router';
 import { combineLatestWith, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { ChatJobInstance } from '../../../../../../model/shared-models/chat-core/chat-job-instance.model';
 import { AgentInstanceService } from '../../../../../services/chat-core/agent-instance.service';
 import { ProjectsService } from '../../../../../services/chat-core/projects.service';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { ChatJobOrderControlComponent } from "../../../chat-job-order-control/chat-job-order-control.component";
-import { LinkedJobInstance } from '../../../../../../model/linked-job-instance.model';
 import { ClientApiService } from '../../../../../services/chat-core/api-clients/api-client.service';
 import { PositionableMessage } from '../../../../../../model/shared-models/chat-core/positionable-message.model';
 import { StoredMessage } from '@langchain/core/messages';
@@ -22,6 +20,7 @@ import { AgentConfigurationService } from '../../../../../services/chat-core/age
 import { ChatLinkingService } from '../../../../../services/chat-core/chat-linking.service';
 import { ChatJobLink } from '../../../../../../model/chat-element-links.models';
 import { ChatAgentIdentityConfiguration } from '../../../../../../model/shared-models/chat-core/agent-configuration.model';
+import { PanelModule } from "primeng/panel";
 
 @Component({
   selector: 'app-chatting-job-list',
@@ -29,7 +28,8 @@ import { ChatAgentIdentityConfiguration } from '../../../../../../model/shared-m
     CommonModule,
     FormsModule,
     CheckboxModule,
-    ChatJobOrderControlComponent
+    ChatJobOrderControlComponent,
+    PanelModule,
   ],
   templateUrl: './chatting-job-list.component.html',
   styleUrl: './chatting-job-list.component.scss'

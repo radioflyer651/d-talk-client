@@ -46,7 +46,7 @@
           <div class="row">
             <ng-container *ngTemplateOutlet="pageControls"></ng-container>
           </div>
-          
+
           <textarea class="chat-input" id="user-message" pTextarea placeholder="Your chat message...."
             [(ngModel)]="chatMessage"></textarea>
 
@@ -60,7 +60,8 @@
   <ng-container *ngTemplateOutlet="pageControls"></ng-container>
 </div> -->
 
-<p-drawer *ngIf="pageSizeService.isSkinnyPage" [(visible)]="showDrawer" header="Chat Tasks">
+<p-drawer *ngIf="pageSizeService.isSkinnyPage" [(visible)]="showDrawer" header="Chat Tasks"
+  [style]="pageSizeService.standardDrawerStyle" [fullScreen]="pageSizeService.isFullScreenDialogs">
   <div class="checkbox-container">
     <p-checkbox [binary]="true" [(ngModel)]="autoScroll"></p-checkbox>
     <label>Auto-scroll To Bottom</label>
