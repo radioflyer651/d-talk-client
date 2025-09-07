@@ -2,41 +2,44 @@
     <div *ngIf="!!message && !!messageController">
         <div class="content-container">
             <div class="display-name">
-                <!-- <textarea pTextarea [(ngModel)]="messageController.content"></textarea> -->
                 <h4>{{displayName}}</h4>
             </div>
 
-            <div class="controls-container">
-                <div class="button-container">
+            <div class="controls-container d-flex flex-wrap flex-md-nowrap align-items-baseline w-100">
+                <!-- Control Buttons -->
+                <div class="button-container d-flex align-items-baseline mb-2 mb-md-0 me-md-3">
                     <p-button icon="fa fa-x" severity="danger" size="small" [rounded]="true"
                         (click)="onDeleteClicked()"></p-button>
 
                     <p-button icon="fa-solid fa-pencil" severity="info" size="small" [rounded]="true"
                         (click)="editMessage()"></p-button>
 
-                    <div class="checkbox-container">
+                    <div class="checkbox-container ms-2">
                         <p-checkbox [binary]="true" [(ngModel)]="messageController.disabled"></p-checkbox>
                         <label>Disabled</label>
                     </div>
                 </div>
 
-                <p-floatlabel>
-                    <p-select [options]="agentTypeOptions" [(ngModel)]="messageController.agent"
-                        id="position-type"></p-select>
-                    <label for="position-type">Agent Type</label>
-                </p-floatlabel>
-
-                <p-floatlabel class="column-width">
-                    <p-select class="column-width" [options]="positioningTypeOptions" [(ngModel)]="message.location"
-                        id="position-type"></p-select>
-                    <label for="position-type">Position Type</label>
-                </p-floatlabel>
-
-                <div class="column-width">
-                    <p-floatlabel *ngIf="showOffset">
-                        <p-inputnumber id="offset" autocomplete="off" [(ngModel)]="message.offset" />
-                        <label for="offset">Offset</label>
+                <!-- Inputs -->
+                <div class="inputs-container d-flex flex-column flex-md-row gap-2 w-100">
+                    <p-floatlabel class="me-md-2 flex-fill">
+                        <p-select [options]="agentTypeOptions" [(ngModel)]="messageController.agent"
+                            id="position-type"></p-select>
+                        <label for="position-type">Agent Type</label>
                     </p-floatlabel>
+
+                    <p-floatlabel class="column-width me-md-2 flex-fill">
+                        <p-select class="column-width" [options]="positioningTypeOptions" [(ngModel)]="message.location"
+                            id="position-type"></p-select>
+                        <label for="position-type">Position Type</label>
+                    </p-floatlabel>
+
+                    <div class="column-width flex-fill">
+                        <p-floatlabel *ngIf="showOffset">
+                            <p-inputnumber id="offset" autocomplete="off" [(ngModel)]="message.offset" />
+                            <label for="offset">Offset</label>
+                        </p-floatlabel>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,7 +60,7 @@
 
     <ng-template #footer>
         <div class="footer-button-controls">
-            <p-button label="Cancel" severity="secondary" (click)="closeEditDialog(true)"></p-button>
+            <p-button label="Cancel" severity="secondary" tabindex="-1" (click)="closeEditDialog(true)"></p-button>
             <p-button label="OK" severity="primary" (click)="closeEditDialog(false)"></p-button>
         </div>
     </ng-template>

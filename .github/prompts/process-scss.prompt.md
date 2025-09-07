@@ -18,6 +18,9 @@ Styles found in the following files should be considered to exist in the current
   - `src/layout.scss`
   - `src/buttons.scss`
 
+## Bootstrap and Tailwind
+The project also has references to bootstrap and tailwind.  Any classes defined by those should be ignored, and considered to exist in the current style sheet.
+
 ## Instructions
 1. Load the global sheet styles into context, listed below.
   - **IMPORTANT** These styles should be considered as existing in the current style sheet, and should NOT be added to it.

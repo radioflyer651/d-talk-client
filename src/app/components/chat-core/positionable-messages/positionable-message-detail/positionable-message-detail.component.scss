@@ -12,6 +12,8 @@
         width: 100%;
         align-items: baseline;
 
+        .inputs-container {}
+
         .button-container {
             display: flex;
             align-items: baseline;
@@ -28,12 +30,6 @@
             >* {
                 margin-right: 0.75em;
             }
-
-            // input,
-            // p-select {
-            //     width: 100%;
-            // }
-
         }
 
         .display-name {

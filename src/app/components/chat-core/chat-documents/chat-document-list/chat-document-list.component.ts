@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ConfirmationService } from 'primeng/api';
 import { ComponentBase } from '../../../component-base/component-base.component';
 import { ChatDocumentsService } from '../../../../services/chat-core/chat-documents/chat-documents.service';
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
@@ -49,6 +50,7 @@ export class ChatDocumentListComponent extends ComponentBase {
     readonly userService: UserService,
     readonly router: Router,
     readonly route: ActivatedRoute,
+    readonly confirmationService: ConfirmationService,
   ) {
     super();
   }
@@ -94,8 +96,14 @@ export class ChatDocumentListComponent extends ComponentBase {
   }
 
   deleteDocument(doc: IChatDocumentData) {
-    if (doc._id) {
-      this.chatDocumentsService.deleteDocument(doc._id).subscribe();
+    if (!doc._id) {
+      return;
     }
+    this.confirmationService.confirm({
+      message: `Are you sure you wish to delete the document "${doc.name}"?`,
+      accept: () => {
+        this.chatDocumentsService.deleteDocument(doc._id).subscribe();
+      }
+    });
   }
 }
