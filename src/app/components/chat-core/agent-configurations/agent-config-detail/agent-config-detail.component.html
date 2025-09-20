@@ -20,8 +20,8 @@
         <div class="row">
             <div class="form-group col-6 full-width">
                 <p-floatlabel>
-                    <input pInputText id="agent-group" class="full-width" name="group"
-                        [(ngModel)]="agentConfig.group" autocomplete="off" />
+                    <input pInputText id="agent-group" class="full-width" name="group" [(ngModel)]="agentConfig.group"
+                        autocomplete="off" />
                     <label for="agent-group">Group Name</label>
                 </p-floatlabel>
             </div>
@@ -34,7 +34,8 @@
             <p-tab [value]="1">Identity</p-tab>
             <p-tab [value]="2">Instructions</p-tab>
             <p-tab [value]="3">Plugins</p-tab>
-            <p-tab [value]="4">Documents</p-tab>
+            <p-tab [value]="4">Voice</p-tab>
+            <p-tab [value]="5">Documents</p-tab>
         </p-tablist>
 
         <p-tabpanels>
@@ -84,6 +85,12 @@
             </p-tabpanel>
 
             <p-tabpanel [value]="4">
+                <div class="tab-panel-container">
+                    <app-voice-configuration [agentConfiguration]="agentConfig"></app-voice-configuration>
+                </div>
+            </p-tabpanel>
+
+            <p-tabpanel [value]="5">
                 <div class="tab-panel-container">
                     <app-document-permissions
                         [permissions]="agentConfig.chatDocumentReferences"></app-document-permissions>

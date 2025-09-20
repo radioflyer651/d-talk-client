@@ -1,0 +1,25 @@
+<div class="hume-voice-parameters" *ngIf="humeVoiceParameters && humeProviderType && humeProviderType !== 'none'">
+    <div class="provider-type-toggle">
+        <div class="radiobutton-container">
+            <p-radioButton name="providerType" value="HUME_AI" [(ngModel)]="humeProviderType"
+                label="Hume AI"></p-radioButton>
+            <label>Hume AI</label>
+        </div>
+
+        <div class="radiobutton-container">
+            <p-radioButton name="providerType" value="CUSTOM_VOICE" [(ngModel)]="humeProviderType"
+                label="Custom Voice"></p-radioButton>
+            <label>Custom</label>
+        </div>
+    </div>
+
+    <div class="voice-select">
+        <p-dropdown [options]="(voices$ | async)!" [(ngModel)]="humeVoiceParameters.voice" optionLabel="name"
+            dataKey="id" placeholder="Select Voice">
+
+            <ng-template let-voice pTemplate="item">
+                <span>{{ voice.name }}</span>
+            </ng-template>
+        </p-dropdown>
+    </div>
+</div>

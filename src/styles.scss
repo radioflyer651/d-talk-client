@@ -56,6 +56,14 @@ body {
     }
 }
 
+.radiobutton-container {
+    display: flex;
+
+    p-radioButton {
+        margin-right: 1em;
+    }
+}
+
 .footer-button-controls {
     display: flex;
     width: 100%;

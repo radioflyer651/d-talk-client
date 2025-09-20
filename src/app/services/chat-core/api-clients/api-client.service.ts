@@ -1,3 +1,4 @@
+// ...existing code...
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ObjectId } from 'mongodb';
@@ -15,8 +16,11 @@ import { TokenService } from '../../token.service';
 import { ClientApiServiceBase } from './api-client-base.service';
 import { IChatDocumentCreationParams, IChatDocumentData } from '../../../../model/shared-models/chat-core/documents/chat-document.model';
 import { OllamaModelConfiguration } from '../../../../model/shared-models/chat-core/chat-model-params/ollama.model-params';
-
-
+import { ReturnVoice } from 'hume/api/resources/tts';
+/**
+ * Type for Hume voice type options.
+ */
+export type HumeVoiceType = 'HUME_AI' | 'CUSTOM_VOICE';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +31,32 @@ export class ClientApiService extends ClientApiServiceBase {
     tokenService: TokenService,
   ) {
     super(http, tokenService);
+  }
+
+  /**
+   * Gets the list of available voices from the Hume voice chat service.
+   * @param voiceType The type of voice to fetch ('HUME_AI' or 'CUSTOM_VOICE')
+   * @returns Observable<{ voices: ReturnVoice[] }>
+   */
+  getHumeVoices(voiceType: HumeVoiceType) {
+    return this.http.get<ReturnVoice[]>(
+      this.constructUrl(`hume/voices?voiceType=${voiceType}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Requests a voice message URL for a given message in a chat room.
+   * @param chatRoomId The chat room ID
+   * @param messageId The message ID
+   * @returns Observable<{ url: string }>
+   */
+  requestVoiceMessage(chatRoomId: string, messageId: string) {
+    return this.http.post<{ url: string; }>(
+      this.constructUrl('message-voice'),
+      { chatRoomId, messageId },
+      this.optionsBuilder.withAuthorization()
+    );
   }
 
   /** Makes a call to attempt to login the user with their credentials. */

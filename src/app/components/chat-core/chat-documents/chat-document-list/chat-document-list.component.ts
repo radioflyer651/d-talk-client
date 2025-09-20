@@ -5,7 +5,7 @@ import { ChatDocumentsService } from '../../../../services/chat-core/chat-docume
 import { ProjectsService } from '../../../../services/chat-core/projects.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CurrentRouteParamsService } from '../../../../services/current-route-params.service';
-import { map, Observable, startWith, takeUntil } from 'rxjs';
+import { map, Observable, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -36,7 +36,7 @@ import { NewDocumentComponent } from "../document-creation/new-document/new-docu
     ConfirmDialogModule,
     DialogModule,
     NewDocumentComponent,
-],
+  ],
   templateUrl: './chat-document-list.component.html',
   styleUrl: './chat-document-list.component.scss'
 })

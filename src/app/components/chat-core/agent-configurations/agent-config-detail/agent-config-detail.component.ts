@@ -21,6 +21,7 @@ import { PositionableMessageListComponent } from "../../positionable-messages/po
 import { ActivatedRoute } from '@angular/router';
 import { PluginSelectorComponent } from "../../plugins/plugin-selector/plugin-selector.component";
 import { DocumentPermissionsComponent } from "../../chat-documents/document-permissions/document-permissions.component";
+import { VoiceConfigurationComponent } from "../voice/voice-configuration/voice-configuration.component";
 
 @Component({
   selector: 'app-agent-config-detail',
@@ -39,6 +40,7 @@ import { DocumentPermissionsComponent } from "../../chat-documents/document-perm
     PositionableMessageListComponent,
     PluginSelectorComponent,
     DocumentPermissionsComponent,
+    VoiceConfigurationComponent
   ],
   templateUrl: './agent-config-detail.component.html',
   styleUrl: './agent-config-detail.component.scss'

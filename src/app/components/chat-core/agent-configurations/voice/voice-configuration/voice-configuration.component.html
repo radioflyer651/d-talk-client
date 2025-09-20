@@ -1,0 +1,8 @@
+<div>
+    <p-dropdown [options]="voiceTypes" [(ngModel)]="selectedVoiceType" optionLabel="label" optionValue="value"
+        placeholder="Select Voice Type">
+    </p-dropdown>
+
+    <app-hume-voice-parameters *ngIf="selectedVoiceType === 'hume'"
+        [humeVoiceParameters]="$any(agentConfiguration.voiceMessageParams)"></app-hume-voice-parameters>
+</div>
