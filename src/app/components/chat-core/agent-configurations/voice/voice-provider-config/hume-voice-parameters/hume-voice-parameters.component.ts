@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ComponentBase } from '../../../../../component-base/component-base.component';
 import { VoiceService } from '../../../../../../services/chat-core/voice.service';
-import { HumeVoiceType } from '../../../../../../services/chat-core/api-clients/api-client.service';
 import { ReturnVoice, VoiceProvider } from 'hume/api/resources/tts';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
