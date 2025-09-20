@@ -11,6 +11,11 @@
     <div class="message-content-container" [innerText]="message.data.content"></div>
 
     <div class="button-container">
+      <div *ngIf="!!wrapper.voiceUrl">
+        hi
+      </div>
+      <p-button *ngIf="canPlayVoiceMessage" [disabled]="isVoiceMessageBusy" size="small" (click)="playVoiceMessage()"
+        [rounded]="true" icon="fa fa-play"></p-button>
       <p-button size="small" (click)="copyMessageContent()" [rounded]="true" icon="fa fa-copy"
         severity="info"></p-button>
       <p-button size="small" (click)="editMessage()" [rounded]="true" icon="fa fa-pencil" severity="primary"></p-button>

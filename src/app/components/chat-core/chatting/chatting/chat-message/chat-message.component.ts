@@ -1,13 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { StoredMessage } from '@langchain/core/messages';
 import { StoredMessageWrapper } from '../../../../../../model/shared-models/chat-core/stored-message-wrapper.utils';
-import { StoredMessageAgentTypes } from '../../../../../../model/shared-models/chat-core/stored-message-agent-types.data';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ChattingService } from '../../../../../services/chat-core/chatting.service';
 import { ButtonModule } from 'primeng/button';
-import { combineLatestWith, map, Observable, of, Subject, takeUntil } from 'rxjs';
-import { AgentInstanceConfiguration } from '../../../../../../model/shared-models/chat-core/agent-instance-configuration.model';
+import { combineLatestWith, map, startWith, Subject, takeUntil } from 'rxjs';
 import { ComponentBase } from '../../../../component-base/component-base.component';
 import { AgentInstanceService } from '../../../../../services/chat-core/agent-instance.service';
 import { ConfirmationService } from 'primeng/api';
@@ -15,7 +13,11 @@ import { DialogModule } from 'primeng/dialog';
 import { TextareaModule } from 'primeng/textarea';
 import { FormsModule } from '@angular/forms';
 import { MonacoEditorComponent, MonacoEditorOptions } from "../../../../monaco-editor/monaco-editor.component";
-import { getMessageDateTime } from '../../../../../../model/shared-models/chat-core/utils/messages.utils';
+import { getMessageDateTime, getMessageVoiceUrl, getMessageVoiceId } from '../../../../../../model/shared-models/chat-core/utils/messages.utils';
+import { AgentConfigurationService } from '../../../../../services/chat-core/agent-configuration.service';
+import { AgentInstanceConfiguration } from '../../../../../../model/shared-models/chat-core/agent-instance-configuration.model';
+import { ChatAgentIdentityConfiguration } from '../../../../../../model/shared-models/chat-core/agent-configuration.model';
+import { VoiceService } from '../../../../../services/chat-core/voice.service';
 
 @Component({
   selector: 'app-chat-message',
@@ -36,17 +38,14 @@ export class ChatMessageComponent extends ComponentBase {
     readonly sanitizer: DomSanitizer,
     readonly chattingService: ChattingService,
     readonly agentsService: AgentInstanceService,
+    readonly agentConfigService: AgentConfigurationService,
     readonly confirmationService: ConfirmationService,
+    readonly voiceService: VoiceService,
   ) {
     super();
-
-  }
-
-  private _message!: StoredMessage;
-  private _agentId$ = new Subject<string | undefined>();
-
-  ngOnInit() {
-    this._agentId$.pipe(
+    // We need to do these things here, because the need to exist
+    //  when the message gets set.
+    const agent$ = this._agentId$.pipe(
       combineLatestWith(this.agentsService.agentInstances$),
       map(([agentId, agents]) => {
         if (!agentId) {
@@ -55,21 +54,46 @@ export class ChatMessageComponent extends ComponentBase {
 
         return agents.find(a => a._id === agentId);
       }),
-      takeUntil(this.ngDestroy$),
-    ).subscribe(agent => {
+    );
+
+    agent$.pipe(takeUntil(this.ngDestroy$))
+      .subscribe(agent => {
+        if (agent) {
+          this._name = agent.name;
+        } else {
+          this._name = '';
+        }
+      });
+
+    this.agentConfigService.agentConfigurations$.pipe(
+      startWith([]),
+      combineLatestWith(agent$),
+      takeUntil(this.ngDestroy$)
+    ).subscribe(([agents, agent]) => {
       if (agent) {
-        this._name = agent?.name;
+        // Set the agent's configuration.
+        this.agentConfig = agents.find(c => c._id === agent.identity);
       } else {
-        this._name = '';
+        this.agentConfig = undefined;
       }
     });
   }
 
-  @Input()
-  get message(): StoredMessage {
-    return this._message;
+  private _message!: StoredMessage;
+  private _agentId$ = new Subject<string | undefined>();
+
+  ngOnInit() {
   }
 
+  private _agentConfig: ChatAgentIdentityConfiguration | undefined = undefined;
+  get agentConfig(): ChatAgentIdentityConfiguration | undefined {
+    return this._agentConfig;
+  }
+  set agentConfig(value: ChatAgentIdentityConfiguration | undefined) {
+    this._agentConfig = value;
+  }
+
+  @Input()
   set message(value: StoredMessage) {
     this._message = value;
 
@@ -78,8 +102,12 @@ export class ChatMessageComponent extends ComponentBase {
       this._agentId$.next(undefined);
     } else {
       this.wrapper = new StoredMessageWrapper(value);
-      this._agentId$.next(this.wrapper.id);
+      this._agentId$.next(this.wrapper.agentId);
     }
+  }
+
+  get message(): StoredMessage {
+    return this._message;
   }
 
   private _name: string | undefined;
@@ -168,6 +196,51 @@ export class ChatMessageComponent extends ComponentBase {
         document.execCommand('copy');
         document.body.removeChild(textarea);
       }
+    }
+  }
+
+  /** Returns a boolean value indicating whether or not we
+   *   can play the chat message through voice. */
+  get canPlayVoiceMessage() {
+    // Humans can't do this.
+    if (this.wrapper?.agent === 'human') {
+      return false;
+    }
+
+    // Check for a URL - if we have one, case solved.
+    if (getMessageVoiceUrl(this.message)) {
+      return true;
+    }
+
+    // If we have a reference ID, then we can't actually press the button - it's still processing.
+    if (getMessageVoiceId(this.message)) {
+      return false;
+    }
+
+    // Now, check if we can generate one through the agent.
+    if (!this.agentConfig) {
+      return false;
+    }
+
+    return !!this.agentConfig.voiceMessageParams;
+  }
+
+  isVoiceMessageBusy: boolean = false;
+
+  async playVoiceMessage() {
+    const chatRoomId = this.chattingService.chatRoom?._id;
+    if (!chatRoomId) {
+      return;
+    }
+
+    this.isVoiceMessageBusy = true;
+    try {
+      const url = await this.voiceService.getVoiceUrl(chatRoomId, this.message);
+
+      console.log(`Voice Message Url: ${url}`);
+
+    } finally {
+      this.isVoiceMessageBusy = false;
     }
   }
 }

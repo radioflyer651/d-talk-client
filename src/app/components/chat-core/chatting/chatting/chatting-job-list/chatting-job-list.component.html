@@ -6,7 +6,7 @@
         (dragend)="onJobInstanceDragEnd($event, job, i)">
         
         <div class="job-header">
-            <div class="header-title">{{ job.configuration?.name }} <span>({{ job.agent?.name }})</span></div>
+            <div class="header-title">{{ job.configuration?.name }} <span>({{ job.agent?.chatName }})</span></div>
             <app-chat-job-order-control [targetChatJob]="job.jobLink.jobInstance"></app-chat-job-order-control>
         </div>
 

@@ -8,6 +8,8 @@ import { StoredMessageWrapper } from '../../../model/shared-models/chat-core/sto
 import { ObjectId } from 'mongodb';
 import { ENTER_CHAT_ROOM, EnterChatRoomMessage, EXIT_CHAT_ROOM, ExitChatRoomMessage } from '../../../model/shared-models/chat-core/socket-messaging/general-messaging.socket-model';
 import { ChattingService } from './chatting.service';
+import { ChatMessageUpdatedMessage, MESSAGE_UPDATED_MESSAGE } from '../../../model/shared-models/chat-core/socket-messaging/chat-message-updated-message.socket-model';
+import { getMessageId } from '../../../model/shared-models/chat-core/utils/messages.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +32,7 @@ export class ChatSocketService {
   }
 
   initialize() {
-    // Subscription 1: Handle joining/leaving rooms
+    // Subscription 1: Handle joining/leaving rooms.
     let previousRoomId: ObjectId | null = null;
 
     const connectedRoom$ = this.socketService.reconnected$.pipe(
@@ -67,7 +69,7 @@ export class ChatSocketService {
       }
     });
 
-    // Subscription 2: Handle incoming messages for the selected room
+    // Subscription 2: Handle incoming messages for the selected room.
     connectedRoom$.pipe(
       switchMap(room => {
         // If there's no room, then there's nothing to do here.
@@ -107,6 +109,37 @@ export class ChatSocketService {
 
       this.chattingService.refreshChatHistory();
     });
+
+    // Subscription 3: Handle updates to messages.
+    connectedRoom$.pipe(
+      switchMap(room => {
+        // If there's no room, then there's nothing to do here.
+        if (!room) {
+          return EMPTY;
+        }
+
+        // Emit the room and the event/chunk with any changes.
+        return this.socketService.subscribeToSocketEvent(MESSAGE_UPDATED_MESSAGE).pipe(
+          filter(ev => (ev.args[0] as ChatMessageUpdatedMessage).chatRoomId === room._id),
+          map(ev => ({ eventArgs: ev.args[0] as ChatMessageUpdatedMessage, room }))
+        );
+      })
+    ).subscribe(({ eventArgs, room }) => {
+      // Get the ID of the message we're looking for.
+      const messageId = getMessageId(eventArgs.message);
+
+      // Check for the message within the room.
+      const messageIndex = room.conversation.findIndex(m => getMessageId(m) === messageId);
+
+      // If not found, then exit.
+      if (messageIndex < 0) {
+        return;
+      }
+
+      // Update the message with the new one.
+      room.conversation.splice(messageIndex, 1, eventArgs.message);
+    });
+
 
   }
 }

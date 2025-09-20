@@ -225,7 +225,6 @@ export class SocketService {
 
           socket.io.on('reconnect', emitFn);
 
-
           return () => {
             socket.io.off('reconnect', emitFn);
             subscriber.complete();

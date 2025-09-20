@@ -1,6 +1,6 @@
 import { StoredMessage } from "@langchain/core/messages";
 import { StoredMessageAgentTypes } from "./stored-message-agent-types.data";
-import { getDtalkParams, getSpeakerFromStoredMessage, MESSAGE_SPEAKER_KEY } from "./utils/messages.utils";
+import { getDtalkParams, getMessageVoiceUrl, getSpeakerFromStoredMessage, MESSAGE_SPEAKER_KEY } from "./utils/messages.utils";
 
 export class StoredMessageWrapper {
     constructor(
@@ -87,5 +87,11 @@ export class StoredMessageWrapper {
     set disabled(value: boolean) {
         const params = getDtalkParams(this.message);
         params.disabled = value;
+    }
+
+    /** If this message has a voice url attached to it, then it is returned.
+     *   Otherwise, undefined is returned. */
+    get voiceUrl() {
+        return getMessageVoiceUrl(this.message);
     }
 }
