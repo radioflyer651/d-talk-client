@@ -17,6 +17,8 @@ This project is an Angular 19 front-end for DTalk2, a multi-agent chat applicati
   - Clear separation of UI, state, and API logic.
 
 ## Project-Specific Conventions
+- **TypeScript Standards:**
+  - Always reference the [TypeScript Standards](./instructions/typescript-standards.instructions.md)
 - **Component Base Class:**
   - All major components extend `ComponentBase` for consistent lifecycle/teardown (`component-base.component.ts`).
 - **Reactive State:**
