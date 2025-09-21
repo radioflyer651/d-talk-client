@@ -38,6 +38,10 @@ export class UserService extends ComponentBase {
     );
     this.user$ = this._user.observable$;
 
+    this.user$.subscribe(u => {
+      console.log(u);
+    });
+
     this._isUserLoggedIn = new ReadonlySubject(
       this.ngDestroy$,
       this.user$.pipe(
@@ -68,6 +72,11 @@ export class UserService extends ComponentBase {
 
   public get isUserLoggedIn(): boolean {
     return this._isUserLoggedIn.value;
+  }
+
+  /** Returns a boolean value indicating whether or not the current user has voice permissions. */
+  get userHasVoicePermission() {
+    return !!this.user?.permissions?.canUseVoice;
   }
 
 

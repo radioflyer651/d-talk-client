@@ -18,6 +18,7 @@ import { AgentConfigurationService } from '../../../../../services/chat-core/age
 import { ChatAgentIdentityConfiguration } from '../../../../../../model/shared-models/chat-core/agent-configuration.model';
 import { VoiceService } from '../../../../../services/chat-core/voice.service';
 import { VoicePlayService } from '../../../../../services/chat-core/voice-play.service';
+import { UserService } from '../../../../../services/user.service';
 
 type VoicePlayStateTypes = 'can-play' | 'busy-playing-self' | 'busy' | 'no-play';
 
@@ -44,6 +45,7 @@ export class ChatMessageComponent extends ComponentBase {
     readonly confirmationService: ConfirmationService,
     readonly voiceService: VoiceService,
     readonly voicePlayService: VoicePlayService,
+    readonly userService: UserService,
   ) {
     super();
     // We need to do these things here, because the need to exist
@@ -229,6 +231,10 @@ export class ChatMessageComponent extends ComponentBase {
   }
 
   isVoiceMessageBusy: boolean = false;
+
+  get hasVoicePermission() {
+    return this.userService.userHasVoicePermission;
+  }
 
   get hasGeneratedVoiceUrl() {
     return !!getMessageVoiceUrl(this.message);

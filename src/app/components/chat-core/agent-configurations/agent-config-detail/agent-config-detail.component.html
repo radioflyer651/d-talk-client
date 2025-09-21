@@ -34,7 +34,7 @@
             <p-tab [value]="1">Identity</p-tab>
             <p-tab [value]="2">Instructions</p-tab>
             <p-tab [value]="3">Plugins</p-tab>
-            <p-tab [value]="4">Voice</p-tab>
+            <p-tab [value]="4" *ngIf="userService.userHasVoicePermission">Voice</p-tab>
             <p-tab [value]="5">Documents</p-tab>
         </p-tablist>
 
@@ -84,7 +84,7 @@
                 </div>
             </p-tabpanel>
 
-            <p-tabpanel [value]="4">
+            <p-tabpanel [value]="4" *ngIf="userService.userHasVoicePermission">
                 <div class="tab-panel-container">
                     <app-voice-configuration [agentConfiguration]="agentConfig"></app-voice-configuration>
                 </div>

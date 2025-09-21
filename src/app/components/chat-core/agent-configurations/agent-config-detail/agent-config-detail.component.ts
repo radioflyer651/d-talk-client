@@ -22,6 +22,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PluginSelectorComponent } from "../../plugins/plugin-selector/plugin-selector.component";
 import { DocumentPermissionsComponent } from "../../chat-documents/document-permissions/document-permissions.component";
 import { VoiceConfigurationComponent } from "../voice/voice-configuration/voice-configuration.component";
+import { UserService } from '../../../../services/user.service';
 
 @Component({
   selector: 'app-agent-config-detail',
@@ -50,6 +51,7 @@ export class AgentConfigDetailComponent extends ComponentBase {
     readonly projectsService: ProjectsService,
     readonly agentConfigService: AgentConfigurationService,
     readonly route: ActivatedRoute,
+    readonly userService: UserService,
   ) {
     super();
   }

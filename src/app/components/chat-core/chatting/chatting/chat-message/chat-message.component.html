@@ -11,15 +11,16 @@
     <div class="message-content-container" [innerText]="message.data.content"></div>
 
     <div class="button-container">
-      <p-button *ngIf="hasGeneratedVoiceUrl" [disabled]="!canRegenerateVoiceUrl" size="small"
+      <p-button *ngIf="hasGeneratedVoiceUrl && hasVoicePermission" [disabled]="!canRegenerateVoiceUrl" size="small"
         (click)="playVoiceMessage(true)" [rounded]="true" [style]="{backgroundColor: 'red'}"
         icon="fa fa-circle"></p-button>
 
-      <p-button *ngIf="canPlayVoiceMessage && mediaState!=='busy-playing-self'" [disabled]="mediaState!=='can-play'"
-        size="small" (click)="playVoiceMessage(false)" [rounded]="true" icon="fa fa-play"></p-button>
+      <p-button *ngIf="canPlayVoiceMessage && hasVoicePermission && mediaState!=='busy-playing-self'"
+        [disabled]="mediaState!=='can-play'" size="small" (click)="playVoiceMessage(false)" [rounded]="true"
+        icon="fa fa-play"></p-button>
 
-      <p-button *ngIf="mediaState==='busy-playing-self'" size="small" (click)="stopVoicePlayback()" [rounded]="true"
-        icon="fa fa-square"></p-button>
+      <p-button *ngIf="mediaState==='busy-playing-self' && hasVoicePermission" size="small"
+        (click)="stopVoicePlayback()" [rounded]="true" icon="fa fa-square"></p-button>
 
       <p-button size="small" (click)="copyMessageContent()" [rounded]="true" icon="fa fa-copy"
         severity="info"></p-button>
