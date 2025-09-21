@@ -15,9 +15,11 @@ import { FormsModule } from '@angular/forms';
 import { MonacoEditorComponent, MonacoEditorOptions } from "../../../../monaco-editor/monaco-editor.component";
 import { getMessageDateTime, getMessageVoiceUrl, getMessageVoiceId } from '../../../../../../model/shared-models/chat-core/utils/messages.utils';
 import { AgentConfigurationService } from '../../../../../services/chat-core/agent-configuration.service';
-import { AgentInstanceConfiguration } from '../../../../../../model/shared-models/chat-core/agent-instance-configuration.model';
 import { ChatAgentIdentityConfiguration } from '../../../../../../model/shared-models/chat-core/agent-configuration.model';
 import { VoiceService } from '../../../../../services/chat-core/voice.service';
+import { VoicePlayService } from '../../../../../services/chat-core/voice-play.service';
+
+type VoicePlayStateTypes = 'can-play' | 'busy-playing-self' | 'busy' | 'no-play';
 
 @Component({
   selector: 'app-chat-message',
@@ -41,6 +43,7 @@ export class ChatMessageComponent extends ComponentBase {
     readonly agentConfigService: AgentConfigurationService,
     readonly confirmationService: ConfirmationService,
     readonly voiceService: VoiceService,
+    readonly voicePlayService: VoicePlayService,
   ) {
     super();
     // We need to do these things here, because the need to exist
@@ -227,20 +230,59 @@ export class ChatMessageComponent extends ComponentBase {
 
   isVoiceMessageBusy: boolean = false;
 
-  async playVoiceMessage() {
+  get hasGeneratedVoiceUrl() {
+    return !!getMessageVoiceUrl(this.message);
+  }
+
+  get canRegenerateVoiceUrl() {
+    return this.hasGeneratedVoiceUrl && this.mediaState !== 'busy' && this.mediaState !== 'no-play';
+  }
+
+  get mediaState(): VoicePlayStateTypes {
+    if (this.isVoiceMessageBusy) {
+      return 'busy-playing-self';
+    }
+
+    if (this.voicePlayService.isPlaying) {
+      return 'busy';
+    }
+
+    if (this.canPlayVoiceMessage) {
+      return 'can-play';
+    }
+
+    return 'no-play';
+  }
+
+  stopVoicePlayback() {
+    this.voicePlayService.stop();
+  }
+
+  async playVoiceMessage(forceRegeneration: boolean) {
     const chatRoomId = this.chattingService.chatRoom?._id;
     if (!chatRoomId) {
       return;
     }
 
     this.isVoiceMessageBusy = true;
+
     try {
-      const url = await this.voiceService.getVoiceUrl(chatRoomId, this.message);
+      await this.voicePlayService.playMessage(chatRoomId, this.message, forceRegeneration);
 
-      console.log(`Voice Message Url: ${url}`);
-
-    } finally {
+      const playingSub = this.voicePlayService.isPlaying$.subscribe(value => {
+        // Just to be sure that we have a subscription before we try to cancel it.
+        setTimeout(() => {
+          if (!value) {
+            this.isVoiceMessageBusy = false;
+            playingSub.unsubscribe();
+          }
+        });
+      });
+    } catch (err) {
+      // We probably have an error trying to get the file (403 or 404 maybe).
+      //  Either way, we have to re-enable the play button.
       this.isVoiceMessageBusy = false;
     }
+
   }
 }

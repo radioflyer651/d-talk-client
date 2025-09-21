@@ -51,10 +51,10 @@ export class ClientApiService extends ClientApiServiceBase {
    * @param messageId The message ID
    * @returns Observable<{ url: string }>
    */
-  requestVoiceMessage(chatRoomId: string, messageId: string) {
+  requestVoiceMessage(chatRoomId: string, messageId: string, forceRegeneration: boolean) {
     return this.http.post<{ url: string; }>(
       this.constructUrl('message-voice'),
-      { chatRoomId, messageId },
+      { chatRoomId, messageId, forceRegeneration },
       this.optionsBuilder.withAuthorization()
     );
   }

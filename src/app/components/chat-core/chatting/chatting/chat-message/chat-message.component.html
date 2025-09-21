@@ -11,13 +11,19 @@
     <div class="message-content-container" [innerText]="message.data.content"></div>
 
     <div class="button-container">
-      <div *ngIf="!!wrapper.voiceUrl">
-        hi
-      </div>
-      <p-button *ngIf="canPlayVoiceMessage" [disabled]="isVoiceMessageBusy" size="small" (click)="playVoiceMessage()"
-        [rounded]="true" icon="fa fa-play"></p-button>
+      <p-button *ngIf="hasGeneratedVoiceUrl" [disabled]="!canRegenerateVoiceUrl" size="small"
+        (click)="playVoiceMessage(true)" [rounded]="true" [style]="{backgroundColor: 'red'}"
+        icon="fa fa-circle"></p-button>
+
+      <p-button *ngIf="canPlayVoiceMessage && mediaState!=='busy-playing-self'" [disabled]="mediaState!=='can-play'"
+        size="small" (click)="playVoiceMessage(false)" [rounded]="true" icon="fa fa-play"></p-button>
+
+      <p-button *ngIf="mediaState==='busy-playing-self'" size="small" (click)="stopVoicePlayback()" [rounded]="true"
+        icon="fa fa-square"></p-button>
+
       <p-button size="small" (click)="copyMessageContent()" [rounded]="true" icon="fa fa-copy"
         severity="info"></p-button>
+
       <p-button size="small" (click)="editMessage()" [rounded]="true" icon="fa fa-pencil" severity="primary"></p-button>
       <p-button size="small" (click)="deleteMessage()" [rounded]="true" icon="fa fa-minus" severity="danger"></p-button>
     </div>

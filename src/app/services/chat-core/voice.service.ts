@@ -3,7 +3,7 @@ import { ClientApiService, HumeVoiceType } from './api-clients/api-client.servic
 import { lastValueFrom } from 'rxjs';
 import { StoredMessage } from '@langchain/core/messages';
 import { ObjectId } from 'mongodb';
-import { getMessageId, getMessageVoiceUrl } from '../../../model/shared-models/chat-core/utils/messages.utils';
+import { getMessageId, getMessageVoiceUrl, setMessageVoiceUrl } from '../../../model/shared-models/chat-core/utils/messages.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -29,15 +29,18 @@ export class VoiceService {
    * @param messageId The message ID
    * @returns Observable<{ url: string }>
    */
-  protected requestVoiceMessage(chatRoomId: ObjectId, messageId: ObjectId) {
-    return this.apiClient.requestVoiceMessage(chatRoomId, messageId);
+  protected requestVoiceMessage(chatRoomId: ObjectId, messageId: ObjectId, forceRegeneration: boolean) {
+    return this.apiClient.requestVoiceMessage(chatRoomId, messageId, forceRegeneration);
   }
 
-  async getVoiceUrl(chatRoomId: ObjectId, message: StoredMessage): Promise<string | undefined> {
-    // Try to get the result from the message itself, and return that.
-    const staticUrl = getMessageVoiceUrl(message);
-    if (staticUrl) {
-      return staticUrl;
+  async getVoiceUrl(chatRoomId: ObjectId, message: StoredMessage, forceRegeneration: boolean): Promise<string | undefined> {
+    if (!forceRegeneration) {
+      // Try to get the result from the message itself, and return that.
+      const staticUrl = getMessageVoiceUrl(message);
+      if (staticUrl) {
+        return staticUrl;
+      }
+
     }
 
     // Get the ID from the message.  If we don't have one, then we can't do much.
@@ -47,14 +50,19 @@ export class VoiceService {
     }
 
     // Get the value from the server.
-    const result = await lastValueFrom(this.requestVoiceMessage(chatRoomId, messageId));
+    const result = await lastValueFrom(this.requestVoiceMessage(chatRoomId, messageId, forceRegeneration));
 
     // Not sure why this wouldn't be set, but let's be careful.
-    if (result?.url) {
-      return result.url;
+    if (!result?.url) {
+      // HAH, (assuming we reached this point), we really DIDN'T have a URL!
+      return undefined;
     }
 
-    // HAH, (assuming we reached this point), we really DIDN'T have a URL!
-    return undefined;
+    // Set the URL on the message.  It should be done through
+    //  Socket.io, but in case it wasn't, we don't want to be regenerating the voice file.
+    setMessageVoiceUrl(message, result.url);
+
+    // Return the url.
+    return result.url;
   }
 }
