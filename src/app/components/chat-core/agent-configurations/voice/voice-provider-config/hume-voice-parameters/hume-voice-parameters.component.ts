@@ -8,6 +8,9 @@ import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { BehaviorSubject, distinctUntilChanged, Observable, of, switchMap, takeUntil } from 'rxjs';
 import { HumeVoiceParameters } from '../../../../../../../model/shared-models/chat-core/voice/hume-voice-parameters.model';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-hume-voice-parameters',
@@ -16,6 +19,9 @@ import { HumeVoiceParameters } from '../../../../../../../model/shared-models/ch
     FormsModule,
     DropdownModule,
     RadioButtonModule,
+    InputNumberModule,
+    FloatLabelModule,
+    ButtonModule,
   ],
   templateUrl: './hume-voice-parameters.component.html',
   styleUrls: ['./hume-voice-parameters.component.scss']
@@ -85,6 +91,10 @@ export class HumeVoiceParametersComponent extends ComponentBase {
     ).subscribe(type => {
       this.humeVoiceParameters.voiceProvider = type as VoiceProvider;
     });
+  }
+
+  setDefaultSpeed() {
+    this.humeVoiceParameters.speed = undefined;
   }
 
   voices$!: Observable<ReturnVoice[]>;

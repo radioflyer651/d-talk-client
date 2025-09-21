@@ -9,7 +9,7 @@
         <div class="radiobutton-container">
             <p-radioButton name="providerType" value="CUSTOM_VOICE" [(ngModel)]="humeProviderType"
                 label="Custom Voice"></p-radioButton>
-            <label>Custom</label>
+            <label>Custom Voice</label>
         </div>
     </div>
 
@@ -21,5 +21,16 @@
                 <span>{{ voice.name }}</span>
             </ng-template>
         </p-dropdown>
+    </div>
+
+    <div>
+        <small>Talk speed is a range between 0.5 and 2. Extreme values are below 1 and above 1.5.</small>
+        <p-floatlabel>
+            <p-inputnumber id="speed" autocomplete="off" [maxFractionDigits]="2" [minFractionDigits]="2" [min]="0.5"
+                [max]="2" [(ngModel)]="humeVoiceParameters.speed" />
+            <label for="speed">Talk Speed</label>
+        </p-floatlabel>
+        <p-button label="Default Speed" (click)="setDefaultSpeed()"
+            [disabled]="humeVoiceParameters.speed === undefined"></p-button>
     </div>
 </div>

@@ -5,4 +5,48 @@
 
     <app-hume-voice-parameters *ngIf="selectedVoiceType === 'hume'"
         [humeVoiceParameters]="$any(agentConfiguration.voiceMessageParams)"></app-hume-voice-parameters>
+
+    <div>
+        <div>
+            <div class="radiobutton-container">
+                <p-radioButton name="providerType" value="none" [(ngModel)]="actingParametersHelper.instructionsType"
+                    label="None"></p-radioButton>
+                <label>None</label>
+            </div>
+
+            <div class="radiobutton-container">
+                <p-radioButton name="providerType" value="static" [(ngModel)]="actingParametersHelper.instructionsType"
+                    label="Static Instructions"></p-radioButton>
+                <label>Static Instructions</label>
+            </div>
+
+            <div class="radiobutton-container">
+                <p-radioButton name="providerType" value="ai-generated"
+                    [(ngModel)]="actingParametersHelper.instructionsType"
+                    label="AI Generated Instructions"></p-radioButton>
+                <label>AI Generated Instructions</label>
+            </div>
+        </div>
+
+        <div>
+            <div *ngIf="actingParametersHelper.instructionsType === 'static'">
+                <textarea pTextarea [rows]="4" [style]="{width: '100%'}"
+                    [(ngModel)]="actingParametersHelper.staticInstructionsValue"></textarea>
+            </div>
+
+            <div *ngIf="actingParametersHelper.instructionsType === 'ai-generated'">
+                <div class="checkbox-container">
+                    <p-checkbox [binary]="true"
+                        [(ngModel)]="actingParametersHelper.aiGeneratedValue.excludeFinalInstructionForActingResponse"></p-checkbox>
+                    <label>Exclude Internal Final Instruction</label>
+                </div>
+
+                <app-agent-type-selector
+                    [(value)]="actingParametersHelper.aiGeneratedValue.modelParams"></app-agent-type-selector>
+                <!-- <app-agent-config-editor *ngIf="actingParametersHelper?.aiGeneratedValue?.modelParams"
+                    [params]="actingParametersHelper.aiGeneratedValue.modelParams"></app-agent-config-editor> -->
+            </div>
+        </div>
+    </div>
+
 </div>

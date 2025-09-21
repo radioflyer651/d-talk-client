@@ -38,10 +38,6 @@ export class UserService extends ComponentBase {
     );
     this.user$ = this._user.observable$;
 
-    this.user$.subscribe(u => {
-      console.log(u);
-    });
-
     this._isUserLoggedIn = new ReadonlySubject(
       this.ngDestroy$,
       this.user$.pipe(
