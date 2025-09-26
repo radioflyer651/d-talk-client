@@ -41,12 +41,22 @@
                     <label>Exclude Internal Final Instruction</label>
                 </div>
 
+                <div>
+                    <div class="footer-controls">
+                        <p-button label="add" (click)="actingParametersHelper.addInstruction()"></p-button>
+                    </div>
+
+                    <div class="instruction-row"
+                        *ngFor="let msg of actingParametersHelper.instructionList; let index = index">
+                        <p-button label="delete" (click)="actingParametersHelper.deleteInstruction(index)"></p-button>
+                        <textarea pTextarea [(ngModel)]="msg.message"></textarea>
+                    </div>
+                </div>
+
                 <app-agent-type-selector
                     [(value)]="actingParametersHelper.aiGeneratedValue.modelParams"></app-agent-type-selector>
-                <!-- <app-agent-config-editor *ngIf="actingParametersHelper?.aiGeneratedValue?.modelParams"
-                    [params]="actingParametersHelper.aiGeneratedValue.modelParams"></app-agent-config-editor> -->
+
             </div>
         </div>
     </div>
-
 </div>

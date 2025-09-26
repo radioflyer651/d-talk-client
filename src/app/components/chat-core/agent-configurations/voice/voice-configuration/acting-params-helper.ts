@@ -80,10 +80,12 @@ export class ActingParamsHelper {
                 break;
             case 'static':
                 this._aiGeneratedValue = this.getDefaultGeneratedValue();
+                this._instructionList = this._aiGeneratedValue.modelInstructions.map((m, i) => new InstructionHelper(i, this._aiGeneratedValue.modelInstructions));
                 this._staticInstructionsValue = this.voiceParams!.staticActingInstructions!;
                 break;
             case 'none':
                 this._aiGeneratedValue = this.getDefaultGeneratedValue();
+                this._instructionList = this._aiGeneratedValue.modelInstructions.map((m, i) => new InstructionHelper(i, this._aiGeneratedValue.modelInstructions));
                 this._staticInstructionsValue = '';
                 break;
             default:
@@ -126,6 +128,7 @@ export class ActingParamsHelper {
             switch (this.instructionsType) {
                 case 'ai-generated':
                     this.voiceParams.aiActingInstructions = this._aiGeneratedValue;
+                    this._instructionList = this._aiGeneratedValue.modelInstructions.map((m, i) => new InstructionHelper(i, this._aiGeneratedValue.modelInstructions));
                     this.voiceParams.staticActingInstructions = '';
                     break;
                 case 'static':
@@ -144,6 +147,11 @@ export class ActingParamsHelper {
 
     private _aiGeneratedValue!: AiActingInstructionsConfiguration;
     private _staticInstructionsValue = '';
+
+    private _instructionList: InstructionHelper[] = [];
+    get instructionList() {
+        return this._instructionList;
+    }
 
     get aiGeneratedValue(): AiActingInstructionsConfiguration {
         return this._aiGeneratedValue;
@@ -177,5 +185,44 @@ export class ActingParamsHelper {
 
     set instructionsType(newVal: ActingParameterTypes) {
         this._instructionsType.next(newVal);
+    }
+
+    deleteInstruction(index: number) {
+        this.instructionList.splice(index, 1);
+        this.aiGeneratedValue.modelInstructions.splice(index, 1);
+        this.instructionList.forEach((item, i) => {
+            item.index = i;
+        });
+    }
+
+    addInstruction() {
+        let newMsg = this.aiGeneratedValue.modelInstructions.length > 0
+            ? ''
+            : `
+    # Instructions:
+      - Keep your reply short - no more than 2 sentences.
+      - State the emotion and tone of the voice.
+      - If applicable to the situation, include any structural elements for the speech pattern.
+      - **IMPORTANT** DO NOT include text from the conversation into these instructions.
+
+    **Now, generate the "acting instructions" for the generation, based on the context of your conversation.**`;
+
+        this.aiGeneratedValue.modelInstructions.push(newMsg);
+        this.instructionList.push(new InstructionHelper(this.aiGeneratedValue.modelInstructions.length - 1, this.aiGeneratedValue.modelInstructions));
+    }
+}
+
+
+export class InstructionHelper {
+    constructor(
+        public index: number,
+        readonly instructionList: string[]
+    ) { }
+
+    get message(): string {
+        return this.instructionList[this.index];
+    }
+    set message(newVal: string) {
+        this.instructionList[this.index] = newVal;
     }
 }

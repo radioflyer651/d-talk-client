@@ -16,6 +16,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { AgentConfigEditorComponent } from "../../agent-config-editors/agent-config-editor/agent-config-editor.component";
 import { Checkbox } from "primeng/checkbox";
 import { AgentTypeSelectorComponent } from "../../agent-type-selector/agent-type-selector.component";
+import { ButtonModule } from 'primeng/button';
 
 export type VoiceOptionTypes = 'hume' | 'openai' | 'none';
 
@@ -29,8 +30,9 @@ export type VoiceOptionTypes = 'hume' | 'openai' | 'none';
     RadioButtonModule,
     AgentConfigEditorComponent,
     Checkbox,
-    AgentTypeSelectorComponent
-],
+    AgentTypeSelectorComponent,
+    ButtonModule,
+  ],
   templateUrl: './voice-configuration.component.html',
   styleUrls: ['./voice-configuration.component.scss']
 })
@@ -115,3 +117,4 @@ export class VoiceConfigurationComponent extends ComponentBase {
     this.initializeOptions();
   }
 }
+
