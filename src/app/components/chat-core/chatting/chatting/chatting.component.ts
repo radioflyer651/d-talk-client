@@ -16,9 +16,10 @@ import { TextareaModule } from 'primeng/textarea';
 import { SplitterModule } from 'primeng/splitter';
 import { ChattingJobListComponent } from "./chatting-job-list/chatting-job-list.component";
 import { StoredMessage } from '@langchain/core/messages';
-import { MonacoEditorOptions } from "../../../monaco-editor/monaco-editor.component";
+import { MonacoEditorComponent, MonacoEditorOptions } from "../../../monaco-editor/monaco-editor.component";
 import { CheckboxModule } from "primeng/checkbox";
 import { ConfirmationService } from 'primeng/api';
+import { Dialog, DialogModule } from "primeng/dialog";
 
 @Component({
   selector: 'app-chatting',
@@ -32,8 +33,10 @@ import { ConfirmationService } from 'primeng/api';
     SplitterModule,
     ChattingJobListComponent,
     CheckboxModule,
-    DrawerModule
-  ],
+    DrawerModule,
+    DialogModule,
+    MonacoEditorComponent,
+],
   templateUrl: './chatting.component.html',
   styleUrl: './chatting.component.scss'
 })
@@ -110,12 +113,6 @@ export class ChattingComponent extends ComponentBase {
   cancelLlmMessage!: () => void | Promise<void>;
   isLoading = false;
 
-  monacoEditorOptions: MonacoEditorOptions = {
-    currentLanguage: 'plaintext',
-    wordWrapOn: true,
-    showToolbar: false,
-  };
-
   sendMessage() {
     this.isLoading = true;
 
@@ -155,6 +152,21 @@ export class ChattingComponent extends ComponentBase {
         this.setMessageInputFocus();
       }
     });
+  }
+
+  messageMonacoEditorOptions: MonacoEditorOptions = {
+    currentLanguage: 'plaintext',
+    wordWrapOn: true
+  };
+
+  isMonacoEditorVisible = false;
+
+  showMonacoEditor() {
+    this.isMonacoEditorVisible = true;
+  }
+
+  closeMonacoEditor() {
+    this.isMonacoEditorVisible = false;
   }
 
   autoScroll = true;

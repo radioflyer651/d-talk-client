@@ -8,6 +8,9 @@
     <div class="other-buttons">
       <p-button size="small" [rounded]="true" *ngIf="isLoading" label="Cancel" severity="danger"
         (click)="cancelLlmMessage()"></p-button>
+        
+      <p-button size="small" [rounded]="true" icon="fa-solid fa-message-pen" severity="info"
+        (click)="showMonacoEditor()"></p-button>
 
       <p-button size="small" [rounded]="true" icon="fa-solid fa-arrow-down" severity="primary"
         (click)="scrollChatToBottom()"></p-button>
@@ -60,10 +63,20 @@
     </p-splitter>
   </div>
 </div>
-<!-- 
-<div class="floating-page-controls">
-  <ng-container *ngTemplateOutlet="pageControls"></ng-container>
-</div> -->
+
+<p-dialog header="Edit Message" [(visible)]="isMonacoEditorVisible" [closeOnEscape]="false" [maximizable]="true"
+  [style]="{width: '60vw', height: '70vh'}" appendTo="body">
+  <div class="edit-message-content">
+    <app-monaco-editor *ngIf="isMonacoEditorVisible" [editorOptions]="messageMonacoEditorOptions"
+      [(content)]="chatMessage"></app-monaco-editor>
+  </div>
+
+  <ng-template #footer>
+    <div class="footer-button-controls">
+      <p-button label="Close" (click)="closeMonacoEditor()"></p-button>
+    </div>
+  </ng-template>
+</p-dialog>
 
 <p-drawer *ngIf="pageSizeService.isSkinnyPage" [(visible)]="showDrawer" header="Chat Tasks"
   [style]="pageSizeService.standardDrawerStyle" [fullScreen]="pageSizeService.isFullScreenDialogs">
