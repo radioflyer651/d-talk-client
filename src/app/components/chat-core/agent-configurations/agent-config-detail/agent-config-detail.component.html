@@ -1,5 +1,7 @@
 <form #agentConfigForm="ngForm" *ngIf="agentConfig">
-
+    <h4 class="detail-header">
+        Partner: {{agentConfig.name}} / {{agentConfig.chatName}}
+    </h4>
     <div class="grid">
         <div class="row">
             <div class="form-group col-6 full-width">

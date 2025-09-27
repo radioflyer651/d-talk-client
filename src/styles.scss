@@ -73,3 +73,19 @@ body {
         margin-left: 1.5em;
     }
 }
+
+/** This is used on detail pages for the header of the page.
+     i.e. Document Editor, Chat Room Detail
+ */
+%detail-header {
+    width: 100%;
+    margin: 0.25em 0;
+    padding: 0.25em 0;
+    text-align: center;
+
+    background-color: rgb(168, 168, 168);
+}
+
+.detail-header {
+        @extend %detail-header;
+}

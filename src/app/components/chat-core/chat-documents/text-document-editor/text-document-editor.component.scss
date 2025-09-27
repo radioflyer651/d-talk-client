@@ -1,9 +1,14 @@
 @import '../../../../../layout.scss';
+@import "../../../../../styles.scss";
 
 .editor-container {
     @extend %_fit-container-hidden;
     display: flex;
     flex-direction: column;
+
+    .document-title {
+        @extend %detail-header;
+    }
 
     .native-editor-container {
         @extend %_fit-container-hidden;

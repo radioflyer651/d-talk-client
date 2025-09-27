@@ -1,4 +1,8 @@
 <div class="chat-room-detail-component">
+    <h4 class="room-title">
+        Chat Room: {{chatRoom!.name}}
+    </h4>
+
     <p-tabs [(value)]="selectedTabId" scrollable>
         <p-tablist>
             <p-tab [value]="0">
@@ -21,7 +25,6 @@
         </p-tablist>
     </p-tabs>
 
-
     <div class="fit-container-scroll" *ngIf="selectedTabId===0">
         <div *ngIf="chatRoom">
             <p-floatlabel>
@@ -29,6 +32,10 @@
                 <label for="room-name">Room Name</label>
             </p-floatlabel>
 
+            <div class="chat-room-description">
+                <label>Description</label>
+                <textarea pTextarea [(ngModel)]="chatRoom.description" [rows]="6"></textarea>
+            </div>
 
             <div class="footer-button-controls">
                 <p-button label="Save" (click)="saveName()"></p-button>

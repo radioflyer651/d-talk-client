@@ -29,6 +29,7 @@ import { DocumentPermissionsComponent } from "../../chat-documents/document-perm
 import { SelectModule } from 'primeng/select';
 import { ChatJobOrderControlComponent } from "../../chat-job-order-control/chat-job-order-control.component";
 import { PageSizeService } from '../../../../services/page-size.service';
+import { TextareaModule } from 'primeng/textarea';
 
 @Component({
   selector: 'app-chat-room-detail',
@@ -39,6 +40,7 @@ import { PageSizeService } from '../../../../services/page-size.service';
     FormsModule,
     DialogModule,
     InputText,
+    TextareaModule,
     ConfirmDialogModule,
     CheckboxModule,
     TabsModule,

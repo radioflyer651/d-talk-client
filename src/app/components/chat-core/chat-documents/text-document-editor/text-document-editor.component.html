@@ -1,4 +1,7 @@
 <div *ngIf="!!wrapper" class="editor-container" [ngClass]="{popout: inPopoutScreen}">
+    <h3 class="document-title">
+        Document: {{wrapper.name}}
+    </h3>
 
     <div>
         <p-selectbutton [options]="modeOptions" [(ngModel)]="mode"></p-selectbutton>

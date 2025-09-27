@@ -1,9 +1,23 @@
 @import "../../../../../layout.scss";
+@import "../../../../../styles.scss";
 
 .chat-room-detail-component {
     @extend %_fit-container-hidden;
     display: flex;
     flex-direction: column;
+
+    .room-title {
+        @extend %detail-header;
+    }
+
+    .chat-room-description {
+        width: 100%;
+        margin-top: 0.5em;
+        
+        textarea {
+            width: 100%;
+        }
+    }
 
     .tab-content {
         @extend %_fit-container-hidden;
