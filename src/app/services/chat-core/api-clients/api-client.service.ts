@@ -628,5 +628,4 @@ export class ClientApiService extends ClientApiServiceBase {
       { messageIndex, newDisabledValue }, this.optionsBuilder.withAuthorization()
     );
   }
-
 }

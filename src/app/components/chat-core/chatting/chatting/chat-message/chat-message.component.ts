@@ -187,6 +187,15 @@ export class ChatMessageComponent extends ComponentBase {
     });
   }
 
+  deleteMessageAndAfter() {
+    this.confirmationService.confirm({
+      header: 'Confirm Message Deletion',
+      message: 'Are you sure you wish to delete this message AND ALL AFTER IT?',
+      accept: () => this.chattingService.deleteChatMessageInChatRoomAndAfter(this.wrapper!.id)
+    });
+
+  }
+
   copyMessageContent() {
     if (this.wrapper) {
       const content = this.wrapper.content;

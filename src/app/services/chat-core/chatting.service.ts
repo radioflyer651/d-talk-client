@@ -147,6 +147,23 @@ export class ChattingService {
     this.reloadChatHistory();
   }
 
+  
+  /**
+   * Deletes a chat message in the current chat room and refreshes chat history.
+   * @param messageId The message ID
+   */
+  async deleteChatMessageInChatRoomAndAfter(messageId: string) {
+    if (!this.chatRoom) {
+      throw new Error('No chat room is selected.');
+    }
+
+    await lastValueFrom(
+      this.chattingApiClient.deleteChatMessageAndAfter(this.chatRoom._id, messageId)
+    );
+
+    this.reloadChatHistory();
+  }
+
   /** Returns an agent instance for a specified ID. */
   getAgentInstance(agentId: ObjectId): AgentInstanceConfiguration | undefined {
     return this._agents.find(i => i._id === agentId);

@@ -41,7 +41,7 @@ export class ChattingApiClientService extends ClientApiServiceBase {
       this.optionsBuilder.withAuthorization()
     );
   }
-  
+
   /**
    * Deletes a chat message in a chat room.
    * @param roomId The chat room ID
@@ -50,6 +50,19 @@ export class ChattingApiClientService extends ClientApiServiceBase {
   deleteChatMessageInChatRoom(roomId: ObjectId, messageId: string) {
     return this.http.delete<{ success: boolean; }>(
       this.constructUrl(`chat-room/${roomId}/conversation/message/${messageId}`),
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+
+  /**
+   * Deletes a chat message and all messages after it from a conversation.
+   * @param roomId The chat room ID
+   * @param messageId The message ID to delete (along with all messages after it)
+   */
+  deleteChatMessageAndAfter(roomId: ObjectId, messageId: string) {
+    return this.http.delete<{ success: boolean; }>(
+      this.constructUrl(`chat-room/${roomId}/conversation/message/${messageId}/and-after`),
       this.optionsBuilder.withAuthorization()
     );
   }
