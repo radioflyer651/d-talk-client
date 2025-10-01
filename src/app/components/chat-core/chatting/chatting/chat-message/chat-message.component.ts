@@ -19,6 +19,7 @@ import { ChatAgentIdentityConfiguration } from '../../../../../../model/shared-m
 import { VoiceService } from '../../../../../services/chat-core/voice.service';
 import { VoicePlayService } from '../../../../../services/chat-core/voice-play.service';
 import { UserService } from '../../../../../services/user.service';
+import { ChatJobConfiguration } from '../../../../../../model/shared-models/chat-core/chat-job-data.model';
 
 type VoicePlayStateTypes = 'can-play' | 'busy-playing-self' | 'busy' | 'no-play';
 
@@ -138,6 +139,19 @@ export class ChatMessageComponent extends ComponentBase {
     }
 
     return '';
+  }
+
+  /** Returns the ChatJobConfiguration for the message. */
+  get job(): ChatJobConfiguration | undefined {
+    return this.chattingService.getChatJob(this.wrapper?.taskId);
+  }
+
+  /** Returns a boolean value indicating whether or not this chat
+   *   message is supposed to be hidden, based on criteria. */
+  get isMessageHidden() {
+    // console.log(this.job?.hideMessages, this.agentConfig?.hideMessages, this.wrapper?.taskId);
+
+    return !!(this.job?.hideMessages || this.agentConfig?.hideMessages);
   }
 
   wrapper: StoredMessageWrapper | undefined;

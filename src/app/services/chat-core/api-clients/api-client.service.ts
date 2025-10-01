@@ -456,6 +456,19 @@ export class ClientApiService extends ClientApiServiceBase {
   }
 
   /**
+   * Sets the 'messagesHidden' property of a chat job configuration.
+   * @param jobId The job configuration ID
+   * @param messagesHidden Whether messages should be hidden
+   */
+  setJobMessagesHidden(jobId: ObjectId | string, messagesHidden: boolean) {
+    return this.http.put<{ success: boolean; }>(
+      this.constructUrl(`chat-room/job-instance/${jobId}/messages-hidden`),
+      { messagesHidden },
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
    * Sets the order of a job instance in a chat room.
    */
   setJobInstanceOrder(roomId: ObjectId, jobId: ObjectId | string, newPosition: number) {

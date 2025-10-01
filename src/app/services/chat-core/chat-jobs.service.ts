@@ -1,5 +1,5 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { BehaviorSubject, Subject, of, startWith, switchMap, distinctUntilChanged } from 'rxjs';
+import { BehaviorSubject, Subject, of, startWith, switchMap, distinctUntilChanged, lastValueFrom } from 'rxjs';
 import { ProjectsService } from './projects.service';
 import { ClientApiService } from './api-clients/api-client.service';
 import { ObjectId } from 'mongodb';
@@ -92,6 +92,17 @@ export class ChatJobsService implements OnDestroy {
   }
   set selectedJobId(id: ObjectId | undefined) {
     this._selectedJobId.next(id);
+  }
+
+  /** Sets the messages hidden status on a specified job configuration, and updates the value on the server. */
+  async setJobMessagesHidden(jobId: ObjectId, messagesHidden: boolean): Promise<void> {
+    const job = this.jobs.find(j => j._id === jobId);
+    if (!job) {
+      throw new Error(`Job not found with ID: ${jobId}`);
+    }
+
+    // Update the server.
+    await lastValueFrom(this.apiClient.setJobMessagesHidden(jobId, messagesHidden));
   }
 
   // CRUD operations

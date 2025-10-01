@@ -7,7 +7,6 @@ import { ProjectsService } from './projects.service';
 import { LinkedJobInstance } from '../../../model/linked-job-instance.model';
 import { ChatJobsService } from './chat-jobs.service';
 import { AgentInstanceService } from './agent-instance.service';
-import { ChatJobInstance } from '../../../model/shared-models/chat-core/chat-job-instance.model';
 import { PositionableMessage } from '../../../model/shared-models/chat-core/positionable-message.model';
 import { StoredMessage } from '@langchain/core/messages';
 

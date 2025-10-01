@@ -1,4 +1,4 @@
-<div *ngIf="!!wrapper" class="chat-message-container" [class.human]="wrapper.agent === 'human'"
+<div *ngIf="!!wrapper && !isMessageHidden" class="chat-message-container" [class.human]="wrapper.agent === 'human'"
   [class.ai]="wrapper.agent === 'ai'">
 
   <div class="chat-message-bubble">

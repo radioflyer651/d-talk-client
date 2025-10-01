@@ -8,6 +8,8 @@ import { ChattingApiClientService } from './api-clients/chatting-api-client.serv
 import { AgentInstanceService } from './agent-instance.service';
 import { ObjectId } from 'mongodb';
 import { AgentInstanceConfiguration } from '../../../model/shared-models/chat-core/agent-instance-configuration.model';
+import { ChatJobsService } from './chat-jobs.service';
+import { ChatJobConfiguration } from '../../../model/shared-models/chat-core/chat-job-data.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +20,7 @@ export class ChattingService {
     readonly chatRoomService: ChatRoomsService,
     readonly chattingApiClient: ChattingApiClientService,
     readonly agentInstanceService: AgentInstanceService,
+    readonly chatJobsService: ChatJobsService,
   ) {
     this.initialize();
   }
@@ -25,6 +28,7 @@ export class ChattingService {
   private _refreshChatHistory$ = new Subject<void>();
   private _reloadChatHistory$ = new Subject<void>();
   private _agents: AgentInstanceConfiguration[] = [];
+  private _jobs: ChatJobConfiguration[] = [];
 
   initialize() {
     this._reloadChatHistory$.subscribe(() => {
@@ -47,6 +51,10 @@ export class ChattingService {
 
     this.agentInstanceService.agentInstances$.subscribe(instances => {
       this._agents = instances;
+    });
+
+    this.chatJobsService.jobs$.subscribe(jobs => {
+      this._jobs = jobs;
     });
   }
 
@@ -147,7 +155,7 @@ export class ChattingService {
     this.reloadChatHistory();
   }
 
-  
+
   /**
    * Deletes a chat message in the current chat room and refreshes chat history.
    * @param messageId The message ID
@@ -167,5 +175,14 @@ export class ChattingService {
   /** Returns an agent instance for a specified ID. */
   getAgentInstance(agentId: ObjectId): AgentInstanceConfiguration | undefined {
     return this._agents.find(i => i._id === agentId);
+  }
+
+  /** Returns a ChatJob, with a specified ID. */
+  getChatJob(jobId: ObjectId | undefined): ChatJobConfiguration | undefined {
+    if (!jobId) {
+      return undefined;
+    }
+
+    return this._jobs.find(j => j._id === jobId);
   }
 }

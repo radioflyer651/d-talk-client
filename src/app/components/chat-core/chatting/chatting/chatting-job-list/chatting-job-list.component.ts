@@ -85,6 +85,10 @@ export class ChattingJobListComponent extends ComponentBase {
     await this.chatRoomService.setDisabledChatRoomJob(job.jobLink.jobInstance.id, !job.isEnabled);
   }
 
+  async setJobHidden(job: JobWrapper): Promise<void> {
+    await this.chatJobsService.setJobMessagesHidden(job.jobLink.jobConfiguration!._id, job.isJobMessagesHidden);
+  }
+
   onJobInstanceDragStart(event: DragEvent, job: JobWrapper, index: number) {
     this.draggedJobIndex = index;
     if (event.dataTransfer) {
@@ -188,6 +192,15 @@ export class JobWrapper {
   }
   set isEnabled(value: boolean) {
     this.jobLink.jobInstance.disabled = !value;
+  }
+
+  get isJobMessagesHidden(): boolean {
+    return !!this.jobLink.jobConfiguration?.hideMessages;
+  }
+  set isJobMessagesHidden(value: boolean) {
+    if (this.jobLink.jobConfiguration) {
+      this.jobLink.jobConfiguration.hideMessages = value;
+    }
   }
 }
 

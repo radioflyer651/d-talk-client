@@ -4,7 +4,7 @@
         (dragenter)="onJobInstanceDragEnter($event, i)" (dragleave)="onJobInstanceDragLeave($event, i)"
         [class.drag-over]="dragOverIndex === i" draggable="true" (dragstart)="onJobInstanceDragStart($event, job, i)"
         (dragend)="onJobInstanceDragEnd($event, job, i)">
-        
+
         <div class="job-header">
             <div class="header-title">{{ job.configuration?.name }} <span>({{ job.agent?.chatName }})</span></div>
             <app-chat-job-order-control [targetChatJob]="job.jobLink.jobInstance"></app-chat-job-order-control>
@@ -14,6 +14,12 @@
             <div class="checkbox-container mt-1">
                 <p-checkbox [binary]="true" [(ngModel)]="job.isEnabled" (onChange)="setJobDisabled(job)"></p-checkbox>
                 <label>Enabled</label>
+            </div>
+
+            <div class="checkbox-container mt-1">
+                <p-checkbox [binary]="true" [(ngModel)]="job.isJobMessagesHidden"
+                    (onChange)="setJobHidden(job)"></p-checkbox>
+                <label>Hide Messages</label>
             </div>
 
             <p-panel [toggleable]="true" [collapsed]="true" [style]="{backgroundColor: 'transparent',}">

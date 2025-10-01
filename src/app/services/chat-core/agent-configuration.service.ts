@@ -1,4 +1,4 @@
-import { Subject, BehaviorSubject, of, startWith, switchMap, distinctUntilChanged, takeUntil } from 'rxjs';
+import { Subject, BehaviorSubject, of, startWith, switchMap, distinctUntilChanged, takeUntil, shareReplay } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { ChatAgentIdentityConfiguration } from '../../../model/shared-models/chat-core/agent-configuration.model';
 import { ProjectsService } from './projects.service';
@@ -49,7 +49,8 @@ export class AgentConfigurationService {
         );
       }),
       startWith([]),
-      distinctUntilChanged()
+      distinctUntilChanged(),
+      shareReplay(1)
     );
   }
 
