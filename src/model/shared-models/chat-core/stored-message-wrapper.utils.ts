@@ -1,6 +1,7 @@
 import { StoredMessage } from "@langchain/core/messages";
 import { StoredMessageAgentTypes } from "./stored-message-agent-types.data";
 import { getDtalkParams, getMessageTaskId, getSpeakerFromStoredMessage, MESSAGE_SPEAKER_KEY, setMessageTaskId } from "./utils/messages.utils";
+import { ObjectId } from "mongodb";
 
 export class StoredMessageWrapper {
     constructor(
