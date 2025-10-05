@@ -19,24 +19,30 @@ This project is an Angular 19 front-end for DTalk2, a multi-agent chat applicati
 ## Project-Specific Conventions
 - **TypeScript Standards:**
   - Always reference the [TypeScript Standards](./instructions/typescript-standards.instructions.md)
+  - Never use single-line `if` statements - always use blocks
+  - Avoid `any` type; use interfaces over classes for data models
+  - Export items individually, never use default exports
+  - Use JSDOC comments for all functions/methods
 - **Component Base Class:**
-  - All major components extend `ComponentBase` for consistent lifecycle/teardown (`component-base.component.ts`).
+  - All major components extend `ComponentBase` (`src/app/components/component-base/component-base.component.ts`)
+  - Provides `ngDestroy$` observable for automatic subscription cleanup with `takeUntil()`
 - **Reactive State:**
-  - Use RxJS for all shared state (user, page size, chat history, etc).
-  - `ReadonlySubject` has been used in the past, and is a pattern we wish to remove over time, and avoid.
-    - Standard RXJS patterns will replace this.
+  - Use standard RxJS patterns (BehaviorSubject, switchMap, etc.)
+  - **DEPRECATING:** `ReadonlySubject` pattern - migrate to standard RxJS over time
+  - Services emit observables; components subscribe with `takeUntil(this.ngDestroy$)`
 - **Service Injection:**
   - Services are provided in root and injected via constructors for testability/singleton behavior.
 - **SCSS Styles:**
   - All components use SCSS. Global styles in `src/styles.scss` and variables/mixins in root SCSS files.
 - **Routing:**
   - Deeply nested routes for project/agent/chat navigation (`app.routes.ts`).
+  - Uses `authenticatedGuard` for protected routes
 - **Socket Communication:**
   - Real-time features use `ChatSocketService` and `SocketService` for room join/leave and message streaming.
 
 ## Common Services
 Use these services to find/store application data:
-- `src/app/services/chat-core/api-client.service.ts`: All API calls to the server.
+- `src/app/services/chat-core/api-clients/api-client.service.ts`: All API calls to the server (as `ClientApiService`).
 - `src/app/services/chat-core/projects.service.ts`: Current project and user project list.
 - `src/app/services/chat-core/chat-rooms.service.ts`: Selected chat room and chat rooms for current project.
 - `src/app/services/chat-core/agent-configuration.service.ts`: Current agent config and list for current project.
@@ -117,6 +123,31 @@ When building or updating chat room details, ensure the user can:
 - Instantiate chat agents and jobs from those project definitions.
 - Assign instantiated agents to instantiated jobs.
 
+## Development Workflows
+
+### Local Development Setup
+- **Port Configuration:** Client runs on port `54647` (configured in `angular.json`)
+- **Environment Files:** 
+  - Development: `src/environments/environment.development.ts` (API at localhost:1062)
+  - Production: `src/environments/environment.ts`
+- **CORS:** Ensure server allows `http://localhost:54647` for local development
+- **Socket.IO:** Uses path `/chat-io/` for real-time communication
+
+### Build & Run Commands
+```bash
+npm start          # Development server on port 54647
+npm run build      # Production build
+npm run watch      # Development build with file watching
+npm test           # Run unit tests
+```
+
+### Component Development Pattern
+1. Extend `ComponentBase` for lifecycle management
+2. Import required PrimeNG modules in component `imports` array
+3. Use `takeUntil(this.ngDestroy$)` for subscription cleanup
+4. Follow service injection pattern via constructor
+5. Use SCSS for styling with component-specific `.scss` files
+
 ## Integration Points
 - **Back-End:**
   - Communicates with DTalk2 server ([server repo](https://github.com/radioflyer651/d-talk-server)).
@@ -124,7 +155,15 @@ When building or updating chat room details, ensure the user can:
 - **LLM/Model Services:**
   - Extend `ILlmModelServiceBase` for new model integrations.
 - **External Libraries:**
-  - Uses PrimeNG for UI, Monaco Editor for code, and RxJS for state.
+  - **PrimeNG 19:** Primary UI component library with themes
+  - **Monaco Editor:** Code editing capabilities (`@monaco-editor/loader`)
+  - **Socket.io-client:** Real-time communication
+  - **RxJS:** Reactive programming and state management
+  - **MongoDB:** MongoDB is NOT actually imported.  See notes above regarding its use.
+- **Angular 19 Features:**
+  - Uses standalone components (no NgModules)
+  - Component `imports` array for module dependencies
+  - Signal-based change detection patterns where applicable
 
 ## Examples
 - **Adding a New Chat Feature:**
