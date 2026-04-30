@@ -1,0 +1,67 @@
+<div class="sub-agent-plugin-params">
+
+    <section>
+        <h4>Allowed Sub-Agents</h4>
+        <p class="info-text">Select which agent identities this agent is permitted to spawn.</p>
+        <div *ngFor="let option of agentOptions" class="checkbox-row">
+            <p-checkbox [binary]="true" [(ngModel)]="option.isAllowed"></p-checkbox>
+            <label>{{ option.agentName }}</label>
+        </div>
+        <div *ngIf="agentOptions.length < 1" class="info-text">No agents available in this project.</div>
+    </section>
+
+    <section>
+        <h4>Behaviour</h4>
+
+        <div class="field-row">
+            <p-floatLabel>
+                <p-input-number id="max-spawn-depth" [(ngModel)]="params.maxSpawnDepth" [min]="1" [max]="10" />
+                <label for="max-spawn-depth">Max Spawn Depth</label>
+            </p-floatLabel>
+            <small class="info-text">Prevents infinite spawning loops. Maximum nesting depth allowed.</small>
+        </div>
+
+        <div class="field-row">
+            <p-floatLabel>
+                <p-input-number id="timeout-ms" [(ngModel)]="params.timeoutMs" [min]="1000" [step]="1000" />
+                <label for="timeout-ms">Timeout (ms)</label>
+            </p-floatLabel>
+            <small class="info-text">Abort the sub-agent if it takes longer than this. Default: 120000 (2 min).</small>
+        </div>
+
+        <div class="checkbox-row">
+            <p-checkbox [binary]="true" [(ngModel)]="params.deleteRoomOnCompletion" inputId="delete-room"></p-checkbox>
+            <label for="delete-room">Delete sub-room after completion</label>
+        </div>
+    </section>
+
+    <section>
+        <h4>Context</h4>
+
+        <div class="checkbox-row">
+            <p-checkbox [binary]="true" [(ngModel)]="params.passContextToSubAgent" inputId="pass-context"></p-checkbox>
+            <label for="pass-context">Pass parent conversation context to sub-agent</label>
+        </div>
+
+        <div class="field-row" *ngIf="params.passContextToSubAgent">
+            <p-floatLabel>
+                <p-input-number id="context-message-count" [(ngModel)]="params.contextMessageCount" [min]="1" [max]="100" />
+                <label for="context-message-count">Context Message Count</label>
+            </p-floatLabel>
+            <small class="info-text">How many recent parent messages to include as context.</small>
+        </div>
+    </section>
+
+    <section>
+        <h4>Sub-Room</h4>
+
+        <div class="field-row">
+            <p-floatLabel>
+                <input pInputText id="sub-room-name-prefix" [(ngModel)]="params.subRoomNamePrefix" />
+                <label for="sub-room-name-prefix">Sub-Room Name Prefix</label>
+            </p-floatLabel>
+            <small class="info-text">Spawned rooms will be named <em>{{ params.subRoomNamePrefix }}-&lt;timestamp&gt;</em>.</small>
+        </div>
+    </section>
+
+</div>

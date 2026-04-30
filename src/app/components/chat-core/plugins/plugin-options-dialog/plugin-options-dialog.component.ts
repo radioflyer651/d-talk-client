@@ -13,6 +13,7 @@ import { ManageDocFolderParamsComponent } from "../plugin-params/manage-doc-fold
 import { LabelMemory2PluginParamsComponent } from "../plugin-params/label-memory2-plugin-params/label-memory2-plugin-params.component";
 import { InnerVoicePluginParamsComponent } from "../plugin-params/inner-voice-plugin-params/inner-voice-plugin-params.component";
 import { ShortenedChatHistoryPluginParamsComponent } from "../plugin-params/shortened-chat-history-plugin-params/shortened-chat-history-plugin-params.component";
+import { SubAgentPluginParamsComponent } from "../plugin-params/sub-agent-plugin-params/sub-agent-plugin-params.component";
 
 @Component({
   selector: 'app-plugin-options-dialog',
@@ -29,6 +30,7 @@ import { ShortenedChatHistoryPluginParamsComponent } from "../plugin-params/shor
     LabelMemory2PluginParamsComponent,
     InnerVoicePluginParamsComponent,
     ShortenedChatHistoryPluginParamsComponent,
+    SubAgentPluginParamsComponent,
   ],
   templateUrl: './plugin-options-dialog.component.html',
   styleUrl: './plugin-options-dialog.component.scss'
