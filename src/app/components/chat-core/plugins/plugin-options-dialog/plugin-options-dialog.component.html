@@ -22,6 +22,8 @@
                 [params]="pluginParams"></app-shortened-chat-history-plugin-params>
             <app-sub-agent-plugin-params *ngIf="pluginType==='sub-agent-plugin'"
                 [params]="pluginParams"></app-sub-agent-plugin-params>
+            <app-prompt-tool-calling-plugin-params *ngIf="pluginType==='prompt-tool-calling-plugin'"
+                [params]="pluginParams"></app-prompt-tool-calling-plugin-params>
         </div>
 
         <ng-template #footer>

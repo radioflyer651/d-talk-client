@@ -1,0 +1,45 @@
+<div class="prompt-tool-calling-plugin-params">
+
+    <section>
+        <h4>Tool Call Tags</h4>
+        <p class="info-text">The model must wrap its tool call JSON in these tags. Change them if the default tags conflict with the model's output style.</p>
+
+        <div class="field-row">
+            <p-floatLabel>
+                <input pInputText id="open-tag" [(ngModel)]="params.toolCallOpenTag" />
+                <label for="open-tag">Opening Tag</label>
+            </p-floatLabel>
+            <small class="info-text">Default: <code>&lt;tool_call&gt;</code></small>
+        </div>
+
+        <div class="field-row">
+            <p-floatLabel>
+                <input pInputText id="close-tag" [(ngModel)]="params.toolCallCloseTag" />
+                <label for="close-tag">Closing Tag</label>
+            </p-floatLabel>
+            <small class="info-text">Default: <code>&lt;/tool_call&gt;</code></small>
+        </div>
+
+        <div class="preview-box info-text" *ngIf="params.toolCallOpenTag && params.toolCallCloseTag">
+            Expected format: {{ params.toolCallOpenTag }}{{"{"}}\"name\": \"tool_name\", \"args\": {}{{ "}" }}{{ params.toolCallCloseTag }}
+        </div>
+    </section>
+
+    <section>
+        <h4>Behaviour</h4>
+
+        <div class="field-row">
+            <p-floatLabel>
+                <p-input-number id="max-retries" [(ngModel)]="params.maxRetries" [min]="0" [max]="10" />
+                <label for="max-retries">Max Retries</label>
+            </p-floatLabel>
+            <small class="info-text">How many times to re-prompt the model if it produces a malformed tool call. Set to 0 to disable retries.</small>
+        </div>
+
+        <div class="checkbox-row">
+            <p-checkbox [binary]="true" [(ngModel)]="params.includeExamples" inputId="include-examples"></p-checkbox>
+            <label for="include-examples">Include usage example in injected prompt</label>
+        </div>
+    </section>
+
+</div>

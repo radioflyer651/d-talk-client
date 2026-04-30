@@ -14,6 +14,7 @@ import { LabelMemory2PluginParamsComponent } from "../plugin-params/label-memory
 import { InnerVoicePluginParamsComponent } from "../plugin-params/inner-voice-plugin-params/inner-voice-plugin-params.component";
 import { ShortenedChatHistoryPluginParamsComponent } from "../plugin-params/shortened-chat-history-plugin-params/shortened-chat-history-plugin-params.component";
 import { SubAgentPluginParamsComponent } from "../plugin-params/sub-agent-plugin-params/sub-agent-plugin-params.component";
+import { PromptToolCallingPluginParamsComponent } from "../plugin-params/prompt-tool-calling-plugin-params/prompt-tool-calling-plugin-params.component";
 
 @Component({
   selector: 'app-plugin-options-dialog',
@@ -31,6 +32,7 @@ import { SubAgentPluginParamsComponent } from "../plugin-params/sub-agent-plugin
     InnerVoicePluginParamsComponent,
     ShortenedChatHistoryPluginParamsComponent,
     SubAgentPluginParamsComponent,
+    PromptToolCallingPluginParamsComponent,
   ],
   templateUrl: './plugin-options-dialog.component.html',
   styleUrl: './plugin-options-dialog.component.scss'
