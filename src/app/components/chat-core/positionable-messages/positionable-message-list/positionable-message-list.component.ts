@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ComponentBase } from '../../../component-base/component-base.component';
-import { MessagePositionTypes, PositionableMessage } from '../../../../../model/shared-models/chat-core/positionable-message.model';
+import { MessagePositionTypes, PositionableMessage, PositionableMessageWithId } from '../../../../../model/shared-models/chat-core/positionable-message.model';
 import { StoredMessage } from '@langchain/core/messages';
 import { PositionableMessageDetailComponent } from "../positionable-message-detail/positionable-message-detail.component";
 import { CommonModule } from '@angular/common';
@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { createStoredMessage } from '../../../../../utils/create-stored-message.utils';
 import { ConfirmationService } from 'primeng/api';
+import { generateObjectId } from '../../../../../utils/generate-object-id.utils';
 
 @Component({
   selector: 'app-positionable-message-list',
@@ -35,10 +36,11 @@ export class PositionableMessageListComponent extends ComponentBase {
   addMessage() {
     // Create a new message, and add it to the list.
     const newMessage = createStoredMessage();
-    const newPositionableMessage: PositionableMessage<StoredMessage> = {
+    const newPositionableMessage: PositionableMessageWithId<StoredMessage> = {
       location: MessagePositionTypes.Instructions,
       message: newMessage,
-      offset: 0
+      offset: 0,
+      _id: generateObjectId(),
     };
 
     this.messages.push(newPositionableMessage);

@@ -14,7 +14,6 @@ import { CurrentRouteParamsService } from '../../../services/current-route-param
     CommonModule,
     FormsModule,
     RouterModule,
-    ProjectListComponent,
   ],
   templateUrl: './projects.component.html',
   styleUrl: './projects.component.scss'

@@ -34,6 +34,19 @@ export class ClientApiService extends ClientApiServiceBase {
   }
 
   /**
+   * Clones an agent identity by its ID.
+   * @param agentConfigId The ID of the agent identity to clone
+   * @returns Observable<{ newId: ObjectId }>
+   */
+  cloneAgentIdentity(agentConfigId: ObjectId) {
+    return this.http.post<{ newId: ObjectId; }>(
+      this.constructUrl(`clone-agent-identity/${agentConfigId}`),
+      {},
+      this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
    * Gets the list of available voices from the Hume voice chat service.
    * @param voiceType The type of voice to fetch ('HUME_AI' or 'CUSTOM_VOICE')
    * @returns Observable<{ voices: ReturnVoice[] }>
@@ -639,6 +652,19 @@ export class ClientApiService extends ClientApiServiceBase {
   ) {
     return this.http.patch<{ success: boolean; }>(this.constructUrl(`job/${jobId}/message-disabled`),
       { messageIndex, newDisabledValue }, this.optionsBuilder.withAuthorization()
+    );
+  }
+
+  /**
+   * Clones a chat job configuration by its ID.
+   * @param jobId The ID of the job to clone
+   * @returns Observable<ChatJobConfiguration> (the full cloned job object)
+   */
+  cloneChatJobConfiguration(jobId: ObjectId): Observable<ChatJobConfiguration> {
+    return this.http.post<ChatJobConfiguration>(
+      this.constructUrl(`job/${jobId}/clone`),
+      {},
+      this.optionsBuilder.withAuthorization()
     );
   }
 }

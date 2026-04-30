@@ -1,4 +1,4 @@
-import { Subject, BehaviorSubject, of, startWith, switchMap, distinctUntilChanged, takeUntil, shareReplay } from 'rxjs';
+import { Subject, BehaviorSubject, of, startWith, switchMap, distinctUntilChanged, takeUntil, shareReplay, from, map } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { ChatAgentIdentityConfiguration } from '../../../model/shared-models/chat-core/agent-configuration.model';
 import { ProjectsService } from './projects.service';
@@ -141,6 +141,19 @@ export class AgentConfigurationService {
         }
         this.reloadAgentConfigurations();
         return of(result);
+      })
+    );
+  }
+
+  /** Copies a specified agent configuration on the server, and reloads the agents. */
+  cloneAgentIdentity(agentConfigId: ObjectId) {
+    return this.apiClient.cloneAgentIdentity(agentConfigId).pipe(
+      map((newIdContainer) => {
+        // Trigger a refresh.
+        this.reloadAgentConfigurations();
+
+        // Return the ID of the newly cloned agent.
+        return newIdContainer.newId;
       })
     );
   }

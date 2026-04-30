@@ -133,7 +133,7 @@ export class MonacoEditorComponent extends ComponentBase {
           takeUntil(this.ngDestroy$),
           distinctUntilChanged(),
         ).subscribe(value => {
-          this.editor.updateOptions({ minimap: { enabled: !value } });
+          this.editor?.updateOptions({ minimap: { enabled: !value } });
         });
       });
     }, 50);

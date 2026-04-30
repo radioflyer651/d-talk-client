@@ -2,6 +2,9 @@
 
 This project is an Angular 19 front-end for DTalk2, a multi-agent chat application. It is structured for modularity, maintainability, and real-time chat, with agent orchestration and project-based workflows.
 
+## Other References
+Reference the [Instruction File Reference](./instructions/instruction-file-reference.instructions.md) for details on when to reference other instruction files.
+
 ## Architecture Overview
 - **Major Components:**
   - `src/app/components/`: UI components by feature (chat, login, registration, project management).

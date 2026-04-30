@@ -10,9 +10,11 @@
         <ng-container *ngIf="agentGroups">
             <ng-container *ngIf="agentGroups.length < 2; else groupList">
                 <div *ngFor="let agent of agentList" class="chat-agent-card-container">
-                    <div chat-job-card-controls>
+                    <div class="chat-agent-card-controls">
                         <p-button icon="fa fa-trash" severity="danger" size="small" [rounded]="true"
                             (click)="deleteAgentConfig(agent)"></p-button>
+                        <p-button icon="fa fa-copy" severity="info" size="small" [rounded]="true"
+                            (click)="copyAgent(agent)"></p-button>
                     </div>
                     <div (click)="selectAgentConfig(agent)">
                         <h5>
@@ -33,6 +35,8 @@
                                 <div class="chat-agent-card-controls">
                                     <p-button icon="fa fa-trash" severity="danger" size="small" [rounded]="true"
                                         (click)="deleteAgentConfig(agent)"></p-button>
+                                    <p-button icon="fa fa-copy" severity="info" size="small" [rounded]="true"
+                                        (click)="copyAgent(agent)"></p-button>
                                 </div>
                                 <div (click)="selectAgentConfig(agent)">
                                     <h5>

@@ -22,6 +22,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AccordionModule } from 'primeng/accordion';
 import { ToolbarModule } from "primeng/toolbar";
+import { ObjectId } from 'mongodb';
 
 interface ChatAgentGroup {
   group: string,
@@ -157,4 +158,15 @@ export class AgentConfigListComponent extends ComponentBase {
 
   @Output()
   readonly itemClicked = new EventEmitter<void>();
+
+  copyAgent(agent: ChatAgentIdentityConfiguration) {
+    this.confirmationService.confirm({
+      header: `Are you sure you wish to clone the agent ${agent.name}?`,
+      accept: () => {
+        this.agentConfigService.cloneAgentIdentity(agent._id).subscribe(() => {
+          // dummy so this will complete.
+        });
+      }
+    });
+  }
 }
