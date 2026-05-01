@@ -21,7 +21,7 @@
         </div>
 
         <div class="preview-box info-text" *ngIf="params.toolCallOpenTag && params.toolCallCloseTag">
-            Expected format: {{ params.toolCallOpenTag }}{{"{"}}\"name\": \"tool_name\", \"args\": {}{{ "}" }}{{ params.toolCallCloseTag }}
+            Expected format: {{ params.toolCallOpenTag }}{{"{"}}\"name\": \"tool_name\", \"args\": {{"{}"}}{{ "}" }}{{ params.toolCallCloseTag }}
         </div>
     </section>
 

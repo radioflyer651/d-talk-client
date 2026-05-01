@@ -1,6 +1,26 @@
 <div class="sub-agent-plugin-params">
 
     <section>
+        <h4>Tool Instructions</h4>
+        <p class="info-text">Appended to the <code>spawn_subagent</code> tool description that the parent agent reads. Use this to tell the agent <em>when</em> and <em>how</em> to use the sub-agent — for example, which kinds of tasks to delegate, how to phrase task descriptions, or when not to spawn at all.</p>
+        <div class="field-row">
+            <textarea pTextarea id="tool-instructions" [(ngModel)]="params.toolInstructions"
+                rows="5" autoResize="true"
+                placeholder="e.g. Use this tool when the user asks for data analysis. Always phrase the task as a clear, self-contained question."></textarea>
+        </div>
+    </section>
+
+    <section>
+        <h4>Additional Instructions</h4>
+        <p class="info-text">These instructions are prepended to every task the parent agent sends to the sub-agent. Use them to set the sub-agent's persona, constrain its behaviour, or provide domain context that should always apply regardless of the task.</p>
+        <div class="field-row">
+            <textarea pTextarea id="additional-instructions" [(ngModel)]="params.additionalInstructions"
+                rows="5" autoResize="true"
+                placeholder="e.g. Always respond in formal English. Focus only on data analysis tasks."></textarea>
+        </div>
+    </section>
+
+    <section>
         <h4>Allowed Sub-Agents</h4>
         <p class="info-text">Select which agent identities this agent is permitted to spawn.</p>
         <div *ngFor="let option of agentOptions" class="checkbox-row">

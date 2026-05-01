@@ -6,6 +6,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
 import { takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { AgentConfigurationService } from '../../../../../services/chat-core/agent-configuration.service';
@@ -22,6 +23,7 @@ import { SubAgentPluginConfiguration } from '../../../../../../model/shared-mode
         FloatLabelModule,
         InputNumberModule,
         InputTextModule,
+        TextareaModule,
     ],
     templateUrl: './sub-agent-plugin-params.component.html',
     styleUrl: './sub-agent-plugin-params.component.scss',
