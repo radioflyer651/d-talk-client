@@ -13,7 +13,7 @@ import { DialogModule } from 'primeng/dialog';
 import { TextareaModule } from 'primeng/textarea';
 import { FormsModule } from '@angular/forms';
 import { MonacoEditorComponent, MonacoEditorOptions } from "../../../../monaco-editor/monaco-editor.component";
-import { getMessageDateTime, getMessageVoiceUrl, getMessageVoiceId } from '../../../../../../model/shared-models/chat-core/utils/messages.utils';
+import { getMessageDateTime, getMessageVoiceUrl, getMessageVoiceId, getIsToolCall } from '../../../../../../model/shared-models/chat-core/utils/messages.utils';
 import { AgentConfigurationService } from '../../../../../services/chat-core/agent-configuration.service';
 import { ChatAgentIdentityConfiguration } from '../../../../../../model/shared-models/chat-core/agent-configuration.model';
 import { VoiceService } from '../../../../../services/chat-core/voice.service';
@@ -149,9 +149,15 @@ export class ChatMessageComponent extends ComponentBase {
   /** Returns a boolean value indicating whether or not this chat
    *   message is supposed to be hidden, based on criteria. */
   get isMessageHidden() {
-    // console.log(this.job?.hideMessages, this.agentConfig?.hideMessages, this.wrapper?.taskId);
+    if (this.job?.hideMessages || this.agentConfig?.hideMessages) {
+      return true;
+    }
 
-    return !!(this.job?.hideMessages || this.agentConfig?.hideMessages);
+    if (this.message && getIsToolCall(this.message)) {
+      return true;
+    }
+
+    return false;
   }
 
   wrapper: StoredMessageWrapper | undefined;

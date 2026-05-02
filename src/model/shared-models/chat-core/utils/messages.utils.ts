@@ -268,6 +268,12 @@ export function setMessageId(message: BaseMessage | StoredMessage, newId: string
     data[MESSAGE_ID_KEY] = newId;
 }
 
+/** Returns true if the message was flagged as a tool-call invocation by the server. */
+export function getIsToolCall(message: BaseMessage | StoredMessage): boolean {
+    const data = getKwargs(message);
+    return !!data['isToolCall'];
+}
+
 /** Returns the agent ID that a message is visible only to, if any. */
 export function getVisibleOnlyToAgent(message: BaseMessage | StoredMessage): string | undefined {
     // Get the additional kwargs.
