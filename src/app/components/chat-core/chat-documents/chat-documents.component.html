@@ -1,17 +1,5 @@
-<div class="content-container">
-    <div class="document-list" *ngIf="!pageSizeService.isSkinnyPage">
-        <app-document-tree-list></app-document-tree-list>
-    </div>
-    <div class="document-details">
-        <app-chat-document-detail *ngIf="!!document" [document]="document"></app-chat-document-detail>
-    </div>
-</div>
-
-<div class="controls" *ngIf="pageSizeService.isSkinnyPage">
-    <p-button icon="fa-solid fa-list-tree" [rounded]="true" size="small" (click)="openDrawer()"></p-button>
-</div>
-
-<p-drawer *ngIf="pageSizeService.isSkinnyPage" header="Document List" [(visible)]="showDrawer" [style]="pageSizeService.standardDrawerStyle"
-    [fullScreen]="pageSizeService.isFullWidthDrawers">
-    <app-document-tree-list (itemClicked)="closeDrawer()"></app-document-tree-list>
-</p-drawer>
+<app-list-detail-shell #shell drawerTitle="Document List">
+  <app-document-tree-list list></app-document-tree-list>
+  <app-document-tree-list drawerList (itemClicked)="shell.closeDrawer()"></app-document-tree-list>
+  <app-chat-document-detail *ngIf="!!document" [document]="document" detail></app-chat-document-detail>
+</app-list-detail-shell>

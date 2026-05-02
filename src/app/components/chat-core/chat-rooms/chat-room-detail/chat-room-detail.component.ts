@@ -18,7 +18,6 @@ import { DialogModule } from 'primeng/dialog';
 import { InputText } from 'primeng/inputtext';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { LinkedJobInstance } from '../../../../../model/linked-job-instance.model';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TabsModule } from 'primeng/tabs';
@@ -41,7 +40,6 @@ import { TextareaModule } from 'primeng/textarea';
     DialogModule,
     InputText,
     TextareaModule,
-    ConfirmDialogModule,
     CheckboxModule,
     TabsModule,
     FloatLabelModule,
@@ -53,7 +51,7 @@ import { TextareaModule } from 'primeng/textarea';
   ],
   templateUrl: './chat-room-detail.component.html',
   styleUrl: './chat-room-detail.component.scss',
-  providers: [ConfirmationService]
+  providers: []
 })
 export class ChatRoomDetailComponent extends ComponentBase {
   agentConfigurations$!: Observable<ChatAgentIdentityConfiguration[]>;

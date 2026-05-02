@@ -28,9 +28,7 @@ import { SiteHeaderComponent } from "../site-header/site-header.component";
     ConfirmDialogModule,
     SiteHeaderComponent
 ],
-  providers: [
-    ConfirmationService,
-  ],
+  providers: [ConfirmationService],
   templateUrl: './app-home.component.html',
   styleUrl: './app-home.component.scss'
 })

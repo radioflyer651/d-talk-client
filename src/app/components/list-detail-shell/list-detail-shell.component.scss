@@ -1,0 +1,44 @@
+@import "../../../layout.scss";
+
+:host {
+  display: block;
+  height: 100%;
+  position: relative;
+
+  // Override the default list panel width from the parent component's SCSS:
+  //   app-list-detail-shell { --shell-list-width: 340px; }
+  --shell-list-width: 300px;
+}
+
+.shell-container {
+  @extend %_fit-container-hidden;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+}
+
+.shell-list {
+  @extend %_fit-container-scroll;
+  flex: 0 0 var(--shell-list-width);
+  min-width: 200px;
+  max-width: 420px;
+  background: var(--color-surface-panel, #f7f7f7);
+  border-right: 1px solid var(--color-border, #e0e0e0);
+  box-sizing: border-box;
+}
+
+.shell-detail {
+  @extend %_fit-container-hidden;
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-left: 1rem;
+  box-sizing: border-box;
+}
+
+.shell-drawer-trigger {
+  position: absolute;
+  left: 1em;
+  bottom: 1em;
+  z-index: 10;
+}

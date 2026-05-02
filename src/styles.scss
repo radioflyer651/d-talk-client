@@ -1,6 +1,33 @@
 @import "primeicons/primeicons.css";
 @import "./layout.scss";
 
+// ─── Design Tokens ────────────────────────────────────────────────────────────
+// All hard-coded colors should reference these variables.
+// Component SCSS can override locally; global changes go here.
+:root {
+  // Surfaces
+  --color-surface-panel: #f7f7f7;       // sidebar / left-panel backgrounds
+  --color-surface-page: #ffffff;        // main content area background
+  --color-surface-chat: #fafbfc;        // chat history background
+
+  // Borders
+  --color-border: #e0e0e0;              // panel dividers, card borders
+
+  // Detail header bar (e.g. "Chat Room: Foo")
+  --color-detail-header: rgb(168, 168, 168);
+
+  // Chat message bubbles
+  --color-message-human: #e8f4fd;       // human/user message bubble
+  --color-message-ai: #f0f0f0;          // AI message bubble
+
+  // Brand
+  --color-brand-primary: var(--p-primary-color, #3b82f6);
+
+  // Typography
+  --font-family-base: "Segoe UI", Arial, sans-serif;
+}
+// ─────────────────────────────────────────────────────────────────────────────
+
 html {
     height: 100%;
     // This controls the size of the entire site through the
@@ -91,7 +118,7 @@ a.action-only {
     padding: 0.25em 0;
     text-align: center;
 
-    background-color: rgb(168, 168, 168);
+    background-color: var(--color-detail-header);
 }
 
 .detail-header {

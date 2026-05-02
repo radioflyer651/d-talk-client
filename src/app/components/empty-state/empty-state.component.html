@@ -1,0 +1,14 @@
+<div class="empty-state">
+  <i [class]="icon + ' empty-state-icon'"></i>
+
+  <div class="empty-state-title" *ngIf="title">{{ title }}</div>
+
+  <div class="empty-state-message" *ngIf="message">{{ message }}</div>
+
+  <p-button *ngIf="actionLabel"
+    [label]="actionLabel"
+    icon="fa fa-plus"
+    size="small"
+    (click)="action.emit()">
+  </p-button>
+</div>

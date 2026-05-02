@@ -8,7 +8,7 @@
     <div class="other-buttons">
       <p-button size="small" [rounded]="true" *ngIf="isLoading" label="Cancel" severity="danger"
         (click)="cancelLlmMessage()"></p-button>
-        
+
       <p-button size="small" [rounded]="true" icon="fa-solid fa-message-pen" severity="info"
         (click)="showMonacoEditor()"></p-button>
 
@@ -16,7 +16,7 @@
         (click)="scrollChatToBottom()"></p-button>
 
       <p-button icon="fa-solid fa-list-tree" severity="contrast" [rounded]="true" size="small"
-        *ngIf="pageSizeService.isSkinnyPage" (click)="openDrawer()"></p-button>
+        *ngIf="pageSizeService.isSkinnyPage" (click)="shell.openDrawer()"></p-button>
 
       <a [routerLink]="['/projects', projectId, 'chat-rooms', chatRoomId]">
         <p-button size="small" [rounded]="true" severity="help" icon="fa-solid fa-gears"></p-button>
@@ -30,9 +30,9 @@
   </div>
 </ng-template>
 
-<div class="chatting-container">
+<app-list-detail-shell #shell drawerTitle="Chat Tasks" [showFloatingTrigger]="false">
 
-  <div class="chatting-pane left" *ngIf="!pageSizeService.isSkinnyPage">
+  <div list class="chat-left-panel">
     <div class="checkbox-container">
       <p-checkbox [binary]="true" [(ngModel)]="autoScroll"></p-checkbox>
       <label>Auto-Scroll To Bottom</label>
@@ -40,17 +40,24 @@
     <app-chatting-job-list></app-chatting-job-list>
   </div>
 
-  <div class="chatting-pane" [ngClass]="{'right': !pageSizeService.isSkinnyPage}">
+  <div drawerList>
+    <div class="checkbox-container">
+      <p-checkbox [binary]="true" [(ngModel)]="autoScroll"></p-checkbox>
+      <label>Auto-Scroll To Bottom</label>
+    </div>
+    <app-chatting-job-list (itemClicked)="shell.closeDrawer()"></app-chatting-job-list>
+  </div>
+
+  <div detail style="height:100%">
     <p-splitter layout="vertical" [minSizes]="[20, 20]" [panelSizes]="[80, 20]" [style]="{height: '100%'}">
 
       <ng-template #panel>
-        <div class="chat-history-area" *ngIf="(chatHistory$ | async ) as messages">
+        <div class="chat-history-area" *ngIf="(chatHistory$ | async) as messages">
           <app-chat-message *ngFor="let message of messages" [message]="message"></app-chat-message>
         </div>
       </ng-template>
 
       <ng-template #panel>
-
         <div class="chat-input-area row">
           <textarea class="chat-input row" id="user-message" pTextarea placeholder="Your chat message...."
             [(ngModel)]="chatMessage"></textarea>
@@ -60,9 +67,11 @@
           </div>
         </div>
       </ng-template>
+
     </p-splitter>
   </div>
-</div>
+
+</app-list-detail-shell>
 
 <p-dialog header="Edit Message" [(visible)]="isMonacoEditorVisible" [closeOnEscape]="false" [maximizable]="true"
   [style]="{width: '60vw', height: '70vh'}" appendTo="body">
@@ -77,12 +86,3 @@
     </div>
   </ng-template>
 </p-dialog>
-
-<p-drawer *ngIf="pageSizeService.isSkinnyPage" [(visible)]="showDrawer" header="Chat Tasks"
-  [style]="pageSizeService.standardDrawerStyle" [fullScreen]="pageSizeService.isFullScreenDialogs">
-  <div class="checkbox-container">
-    <p-checkbox [binary]="true" [(ngModel)]="autoScroll"></p-checkbox>
-    <label>Auto-scroll To Bottom</label>
-  </div>
-  <app-chatting-job-list (itemClicked)="closeDrawer()"></app-chatting-job-list>
-</p-drawer>

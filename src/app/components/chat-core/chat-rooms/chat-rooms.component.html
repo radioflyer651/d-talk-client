@@ -1,16 +1,5 @@
-<div class="chat-rooms-container">
-  <div class="chat-room-list-column" *ngIf="!pageSizeService.isSkinnyPage">
-    <app-chat-room-list></app-chat-room-list>
-  </div>
-  <div class="chat-room-detail-column">
-    <router-outlet></router-outlet>
-  </div>
-</div>
-<div class="controls" *ngIf="pageSizeService.isSkinnyPage">
-  <p-button icon="fa-solid fa-list-tree" [rounded]="true" size="small" (click)="openDrawer()"></p-button>
-</div>
-
-<p-drawer header="Chat Room List" *ngIf="pageSizeService.isSkinnyPage" [(visible)]="showDrawer"
-  [fullScreen]="pageSizeService.isFullWidthDrawers" [style]="pageSizeService.standardDrawerStyle">
-  <app-chat-room-list (itemClicked)="closeDrawer()"></app-chat-room-list>
-</p-drawer>
+<app-list-detail-shell #shell drawerTitle="Chat Room List">
+  <app-chat-room-list list></app-chat-room-list>
+  <app-chat-room-list drawerList (itemClicked)="shell.closeDrawer()"></app-chat-room-list>
+  <router-outlet detail></router-outlet>
+</app-list-detail-shell>

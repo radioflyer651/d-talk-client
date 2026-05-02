@@ -32,7 +32,7 @@
 
 
                 <div *ngIf="job.jobInstructions.length > 0">
-                    <div class="instruction-header">Job Instructions</div>
+                    <div class="instruction-header">Task Instructions</div>
                     <div *ngFor="let msg of job.jobInstructions">
                         <div class="checkbox-container">
                             <p-checkbox [binary]="true" [(ngModel)]="msg.isEnabled"></p-checkbox>
@@ -43,7 +43,7 @@
 
 
                 <div *ngIf="job.identityInstructions.length > 0">
-                    <div class="instruction-header">Agent Identity</div>
+                    <div class="instruction-header">Partner Identity</div>
                     <div *ngFor="let msg of job.identityInstructions">
                         <div class="checkbox-container">
                             <p-checkbox [binary]="true" [(ngModel)]="msg.isEnabled"></p-checkbox>

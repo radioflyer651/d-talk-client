@@ -1,6 +1,7 @@
+<ng-container *ngIf="chatRoom; else noRoom">
 <div class="chat-room-detail-component">
     <h4 class="room-title">
-        Chat Room: {{chatRoom!.name}}
+        Chat Room: {{chatRoom.name}}
     </h4>
 
     <p-tabs [(value)]="selectedTabId" scrollable>
@@ -179,13 +180,18 @@
         </div>
     </div>
 </div>
+</ng-container>
 
-<p-dialog header="Instantiate Partner for Chat Room" [(visible)]="agentNameDialogVisible" [modal]="true"
+<ng-template #noRoom>
+    <div class="no-room-placeholder"></div>
+</ng-template>
+
+<p-dialog header="Add Partner to Chat Room" [(visible)]="agentNameDialogVisible" [modal]="true"
     [closable]="false" [dismissableMask]="true" [style]="{width: '350px'}">
     <div class="p-fluid">
         <p-floatlabel>
             <input id="agent-instance-name" autocomplete="off" pInputText [(ngModel)]="agentNameDialogValue" />
-            <label for="agent-instance-name">Agent Name</label>
+            <label for="agent-instance-name">Partner Name</label>
         </p-floatlabel>
     </div>
 
@@ -209,9 +215,6 @@
         <p-button label="OK" (click)="partnerSelectionClosed(false)"></p-button>
     </ng-template>
 </p-dialog>
-
-<p-confirmdialog />
-
 
 <div class="chat-button-container"
     *ngIf="!!chatRoom?._id && projectService?.currentProjectId && chatButtonVisibility.showFloating">

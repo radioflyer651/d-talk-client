@@ -1,0 +1,22 @@
+<div class="shell-container">
+  <div class="shell-list" *ngIf="!pageSizeService.isSkinnyPage">
+    <ng-content select="[list]"></ng-content>
+  </div>
+  <div class="shell-detail">
+    <ng-content select="[detail]"></ng-content>
+  </div>
+</div>
+
+<div class="shell-drawer-trigger"
+  *ngIf="pageSizeService.isSkinnyPage && showFloatingTrigger">
+  <p-button icon="fa-solid fa-list-tree" [rounded]="true" size="small"
+    (click)="openDrawer()"></p-button>
+</div>
+
+<p-drawer *ngIf="pageSizeService.isSkinnyPage"
+  [(visible)]="showDrawer"
+  [header]="drawerTitle"
+  [style]="pageSizeService.standardDrawerStyle"
+  [fullScreen]="pageSizeService.isFullWidthDrawers">
+  <ng-content select="[drawerList]"></ng-content>
+</p-drawer>

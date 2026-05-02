@@ -35,12 +35,12 @@ export class ChatJobOrderControlComponent extends ComponentBase {
 
   }
 
-  get chatRoom(): ChatRoomData {
-    return this.chatRoomService.selectedChatRoom!;
+  get chatRoom(): ChatRoomData | undefined {
+    return this.chatRoomService.selectedChatRoom;
   }
 
   get chatJobs(): ChatJobInstance[] {
-    return this.chatRoom.jobs;
+    return this.chatRoom?.jobs ?? [];
   }
 
   private _targetChatJob!: ChatJobInstance;
@@ -66,11 +66,12 @@ export class ChatJobOrderControlComponent extends ComponentBase {
   }
 
   get jobIndex() {
-    return this.chatRoom.jobs.findIndex(j => j.id === this.targetChatJob.id);
+    return this.chatRoom?.jobs?.findIndex(j => j.id === this.targetChatJob.id) ?? -1;
   }
 
   get isMoveForwardDisabled() {
-    return this.jobIndex >= this.chatRoom.jobs.length - 1;
+    const jobs = this.chatRoom?.jobs;
+    return !jobs || this.jobIndex >= jobs.length - 1;
   }
 
   get isMoveBackDisabled() {

@@ -2,7 +2,7 @@
     <p-card class="h-100 d-block top-panel">
         <p-toolbar>
             <ng-template #start>
-                <p-button size="small" [rounded]="true" icon="fa fa-plus" label="New Job"
+                <p-button size="small" [rounded]="true" icon="fa fa-plus" label="New Task Template"
                     (click)="showNewJobDialog()"></p-button>
             </ng-template>
         </p-toolbar>
@@ -48,11 +48,11 @@
     </p-card>
 
     <!-- New Job Dialog -->
-    <p-dialog header="Create New Job" appendTo="body" [(visible)]="isNewJobDialogVisible" [modal]="true"
+    <p-dialog header="Create Task Template" appendTo="body" [(visible)]="isNewJobDialogVisible" [modal]="true"
         [closable]="true" [dismissableMask]="true">
         <div class="p-fluid">
             <div class="p-field">
-                <label for="newJobName">Job Name</label>
+                <label for="newJobName">Task Name</label>
                 <input id="newJobName" autocomplete="off" type="text" pInputText [(ngModel)]="newJobName" />
             </div>
         </div>

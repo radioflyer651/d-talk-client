@@ -1,17 +1,5 @@
-<div class="content-container">
-    <div class="job-list" *ngIf="!pageSizeService.isSkinnyPage">
-        <app-chat-job-list></app-chat-job-list>
-    </div>
-    <div class="job-details">
-        <router-outlet></router-outlet>
-    </div>
-</div>
-
-<div class="controls" *ngIf="pageSizeService.isSkinnyPage">
-    <p-button icon="fa-solid fa-list-tree" [rounded]="true" size="small" (click)="openDrawer()"></p-button>
-</div>
-
-<p-drawer *ngIf="pageSizeService.isSkinnyPage" [(visible)]="showDrawer" [style]="pageSizeService.standardDrawerStyle"
-    [fullScreen]="pageSizeService.isFullWidthDrawers" header="Chat Tasks">
-    <app-chat-job-list (itemClicked)="closeDrawer()"></app-chat-job-list>
-</p-drawer>
+<app-list-detail-shell #shell drawerTitle="Chat Tasks">
+  <app-chat-job-list list></app-chat-job-list>
+  <app-chat-job-list drawerList (itemClicked)="shell.closeDrawer()"></app-chat-job-list>
+  <router-outlet detail></router-outlet>
+</app-list-detail-shell>
