@@ -16,10 +16,23 @@ export class ChattingApiClientService extends ClientApiServiceBase {
     super(http, tokenService);
   }
 
-  sendChatMessage(roomId: ObjectId, message: string) {
-    return this.http.post<StoredMessage[]>(this.constructUrl(`chat-room/${roomId}/message`),
-      { message },
-      this.optionsBuilder.withAuthorization());
+  /**
+   * Sends a chat message to the specified room.
+   * @param roomId The ID of the target chat room.
+   * @param message The user message text. May be an empty string for a prompt-less agent turn.
+   * @param jobInstanceId When provided, only this job instance executes its turn, bypassing
+   *   its disabled flag. All other jobs are skipped.
+   */
+  sendChatMessage(roomId: ObjectId, message: string, jobInstanceId?: ObjectId) {
+    const body: { message: string; jobInstanceId?: string; } = { message };
+    if (jobInstanceId !== undefined) {
+      body.jobInstanceId = jobInstanceId;
+    }
+    return this.http.post<StoredMessage[]>(
+      this.constructUrl(`chat-room/${roomId}/message`),
+      body,
+      this.optionsBuilder.withAuthorization(),
+    );
   }
 
   clearChatRoomConversation(roomId: ObjectId) {

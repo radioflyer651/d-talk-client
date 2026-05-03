@@ -4,7 +4,7 @@ import { ChattingService } from '../../../../../services/chat-core/chatting.serv
 import { ChatRoomsService } from '../../../../../services/chat-core/chat-rooms.service';
 import { ChatJobsService } from '../../../../../services/chat-core/chat-jobs.service';
 import { ActivatedRoute } from '@angular/router';
-import { combineLatestWith, takeUntil } from 'rxjs';
+import { combineLatestWith, lastValueFrom, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { AgentInstanceService } from '../../../../../services/chat-core/agent-instance.service';
 import { ProjectsService } from '../../../../../services/chat-core/projects.service';
@@ -21,6 +21,7 @@ import { ChatLinkingService } from '../../../../../services/chat-core/chat-linki
 import { ChatJobLink } from '../../../../../../model/chat-element-links.models';
 import { ChatAgentIdentityConfiguration } from '../../../../../../model/shared-models/chat-core/agent-configuration.model';
 import { PanelModule } from "primeng/panel";
+import { ButtonModule } from "primeng/button";
 
 @Component({
   selector: 'app-chatting-job-list',
@@ -30,6 +31,7 @@ import { PanelModule } from "primeng/panel";
     CheckboxModule,
     ChatJobOrderControlComponent,
     PanelModule,
+    ButtonModule,
   ],
   templateUrl: './chatting-job-list.component.html',
   styleUrl: './chatting-job-list.component.scss'
@@ -87,6 +89,21 @@ export class ChattingJobListComponent extends ComponentBase {
 
   async setJobHidden(job: JobWrapper): Promise<void> {
     await this.chatJobsService.setJobMessagesHidden(job.jobLink.jobConfiguration!._id, job.isJobMessagesHidden);
+  }
+
+  /**
+   * Triggers a single prompt-less LLM turn for the given job, bypassing its disabled
+   * state. Only this job executes; all other jobs in the room are skipped.
+   * Loading state and cancellation are owned by ChattingService so the chat panel's
+   * Cancel button also works for turns triggered from here.
+   * @param job The job wrapper whose agent should take a turn.
+   */
+  async takeTurnForJob(job: JobWrapper): Promise<void> {
+    if (this.chattingService.isLoading) {
+      return;
+    }
+
+    await lastValueFrom(this.chattingService.takeTurnForJob(job.jobLink.jobInstance.id));
   }
 
   onJobInstanceDragStart(event: DragEvent, job: JobWrapper, index: number) {

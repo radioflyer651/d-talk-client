@@ -82,33 +82,16 @@ export class ChattingComponent extends ComponentBase {
 
   chatMessage: string = '';
 
-  cancelLlmMessage!: () => void | Promise<void>;
-  isLoading = false;
-
   sendMessage() {
-    this.isLoading = true;
-
-    const onComplete = () => {
-      this.isLoading = false;
-      this.cancelLlmMessage = () => undefined;
-      if (this.autoScroll) {
-        this.scrollChatToBottom();
-      }
-    };
-
-    let subscription = this.chattingService.sendChatMessage(this.chatMessage).subscribe({
-      next: onComplete,
-      error: onComplete,
-      complete: onComplete,
+    // Delegate loading state and cancellation to the service so the job list
+    // panel shares the same busy flag and cancel action.
+    this.chattingService.sendChatMessage(this.chatMessage).subscribe({
+      next: () => {
+        if (this.autoScroll) {
+          this.scrollChatToBottom();
+        }
+      },
     });
-
-    this.cancelLlmMessage = async () => {
-      subscription.unsubscribe();
-      setTimeout(async () => {
-        await this.chattingService.reloadChatHistory();
-        onComplete();
-      }, 1000);
-    };
 
     this.chatMessage = '';
     this.setMessageInputFocus();

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ProjectsService } from './projects.service';
 import { ChatRoomsService } from './chat-rooms.service';
-import { lastValueFrom, map, Observable, shareReplay, startWith, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { lastValueFrom, map, Observable, share, shareReplay, startWith, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { StoredMessage } from '@langchain/core/messages';
 import { ChatRoomData } from '../../../model/shared-models/chat-core/chat-room-data.model';
 import { ChattingApiClientService } from './api-clients/chatting-api-client.service';
@@ -62,13 +62,20 @@ export class ChattingService {
 
   chatHistory$!: Observable<StoredMessage[]>;
 
+  /** Whether a chat request is currently in flight. */
+  isLoading = false;
+
+  /** Cancels the in-flight chat request, if any. Replaced each time a request starts. */
+  cancelMessage: () => void = () => undefined;
+
   sendChatMessage(message: string) {
     if (!this.chatRoom) {
       throw new Error(`No chat room is selected.`);
     }
 
-    // Make the API call, and get the response.
-    let response$ = this.chattingApiClient.sendChatMessage(this.chatRoom._id, message);
+    // Make the API call. share() ensures a single HTTP request even when multiple
+    // subscribers exist (the service's internal subscription + the caller's subscription).
+    const response$ = this.chattingApiClient.sendChatMessage(this.chatRoom._id, message).pipe(share());
 
     let completed = false;
 
@@ -96,15 +103,103 @@ export class ChattingService {
       }
     };
 
-    response$ = response$.pipe(
+    // Mark the service as busy and wire up cancellation before returning.
+    this.isLoading = true;
+    const subscription = response$.pipe(
       tap({
         next: (response) => onSuccess(response),
         error: () => reloadHistory(),
-        complete: () => reloadHistory() // In case of abort.
-      })
-    );
+        complete: () => reloadHistory(),
+      }),
+    ).subscribe({
+      next: () => this._finishLoading(),
+      error: () => this._finishLoading(),
+      complete: () => this._finishLoading(),
+    });
+
+    this.cancelMessage = () => {
+      subscription.unsubscribe();
+      setTimeout(() => {
+        this.reloadChatHistory();
+        this._finishLoading();
+      }, 1000);
+    };
+
+    // Return the underlying observable so callers can still react to completion.
+    return response$;
+  }
+
+  /**
+   * Triggers a single prompt-less LLM turn for the specified job instance.
+   * No user message is added to the conversation. The job executes even if
+   * it is currently disabled; all other jobs are skipped.
+   * Sets isLoading and wires cancelMessage identically to sendChatMessage.
+   * @param jobInstanceId The ID of the ChatJobInstance that should take a turn.
+   * @returns An Observable that emits the resulting stored messages on completion.
+   */
+  takeTurnForJob(jobInstanceId: ObjectId): Observable<StoredMessage[]> {
+    if (!this.chatRoom) {
+      throw new Error('No chat room is selected.');
+    }
+
+    // Send an empty message with the target job ID — no HumanMessage will be added.
+    const response$ = this.chattingApiClient.sendChatMessage(this.chatRoom._id, '', jobInstanceId);
+
+    let completed = false;
+
+    const onSuccess = (response: StoredMessage[]) => {
+      completed = true;
+      if (!this.chatRoom) {
+        return;
+      }
+
+      // Add the response to the chat history.
+      if (!this.chatRoom.conversation) {
+        this.chatRoom.conversation = [];
+      }
+
+      // Remove any duplicate messages by ID before appending the new ones.
+      this.chatRoom.conversation = this.chatRoom.conversation.filter(t => !t.data.id || !response.some(r => r.data.id === t.data.id));
+      this.chatRoom.conversation.push(...response);
+      this._refreshChatHistory$.next();
+    };
+
+    const reloadHistory = () => {
+      if (!completed) {
+        completed = true;
+        this.reloadChatHistory();
+      }
+    };
+
+    // Mark the service as busy and wire up cancellation before returning.
+    this.isLoading = true;
+    const subscription = response$.pipe(
+      tap({
+        next: (response) => onSuccess(response),
+        error: () => reloadHistory(),
+        complete: () => reloadHistory(),
+      }),
+    ).subscribe({
+      next: () => this._finishLoading(),
+      error: () => this._finishLoading(),
+      complete: () => this._finishLoading(),
+    });
+
+    this.cancelMessage = () => {
+      subscription.unsubscribe();
+      setTimeout(() => {
+        this.reloadChatHistory();
+        this._finishLoading();
+      }, 1000);
+    };
 
     return response$;
+  }
+
+  /** Clears the loading state and resets the cancel function. */
+  private _finishLoading(): void {
+    this.isLoading = false;
+    this.cancelMessage = () => undefined;
   }
 
   async clearMessages() {
