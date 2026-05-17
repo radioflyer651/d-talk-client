@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ComponentBase } from '../../../../../component-base/component-base.component';
@@ -6,11 +6,14 @@ import { VoiceService } from '../../../../../../services/chat-core/voice.service
 import { ReturnVoice, VoiceProvider } from 'hume/api/resources/tts';
 import { DropdownModule } from 'primeng/dropdown';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { CheckboxModule } from 'primeng/checkbox';
 import { BehaviorSubject, distinctUntilChanged, Observable, of, switchMap, takeUntil } from 'rxjs';
 import { HumeVoiceParameters } from '../../../../../../../model/shared-models/chat-core/voice/hume-voice-parameters.model';
+import { ModelServiceParams } from '../../../../../../../model/shared-models/chat-core/model-service-params.model';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { ButtonModule } from 'primeng/button';
+import { AgentTypeSelectorComponent } from '../../../agent-type-selector/agent-type-selector.component';
 
 @Component({
   selector: 'app-hume-voice-parameters',
@@ -19,9 +22,11 @@ import { ButtonModule } from 'primeng/button';
     FormsModule,
     DropdownModule,
     RadioButtonModule,
+    CheckboxModule,
     InputNumberModule,
     FloatLabelModule,
     ButtonModule,
+    AgentTypeSelectorComponent,
   ],
   templateUrl: './hume-voice-parameters.component.html',
   styleUrls: ['./hume-voice-parameters.component.scss']
@@ -95,6 +100,30 @@ export class HumeVoiceParametersComponent extends ComponentBase {
 
   setDefaultSpeed() {
     this.humeVoiceParameters.speed = undefined;
+  }
+
+  /** Gets whether dialog extraction is currently enabled. */
+  get useDialogExtractionEnabled(): boolean {
+    return this.humeVoiceParameters?.useDialogExtraction ?? false;
+  }
+
+  /** Toggles dialog extraction on or off, initializing or clearing the model params accordingly. */
+  set useDialogExtractionEnabled(value: boolean) {
+    if (!this.humeVoiceParameters) {
+      return;
+    }
+
+    this.humeVoiceParameters.useDialogExtraction = value;
+
+    if (value && !this.humeVoiceParameters.dialogExtractionModelParams) {
+      // Seed a sensible default so the model selector has something to display.
+      this.humeVoiceParameters.dialogExtractionModelParams = {
+        llmService: 'open-ai',
+        serviceParams: { model: 'gpt-4.1-nano' },
+      } as ModelServiceParams;
+    } else if (!value) {
+      this.humeVoiceParameters.dialogExtractionModelParams = undefined;
+    }
   }
 
   voices$!: Observable<ReturnVoice[]>;

@@ -33,4 +33,24 @@
         <p-button label="Default Speed" (click)="setDefaultSpeed()"
             [disabled]="humeVoiceParameters.speed === undefined"></p-button>
     </div>
+
+    <div class="dialog-extraction">
+        <div class="checkbox-container">
+            <p-checkbox [binary]="true" [(ngModel)]="useDialogExtractionEnabled" inputId="dialogExtraction"></p-checkbox>
+            <label for="dialogExtraction">Use Dialog Extraction</label>
+        </div>
+        <small>When enabled, the AI analyzes the message to find each spoken utterance and generates a
+            per-utterance delivery description, enabling richer multi-utterance Hume synthesis.</small>
+
+        <div class="dialog-extraction-model" *ngIf="useDialogExtractionEnabled">
+            <label>Extraction Model</label>
+            <app-agent-type-selector
+                [(value)]="humeVoiceParameters.dialogExtractionModelParams"></app-agent-type-selector>
+            <label>Extraction Instructions</label>
+            <small>Optional extra instructions for the extraction LLM — e.g. character voice style, tone
+                conventions, or anything specific about how descriptions should be written.</small>
+            <textarea rows="4" [(ngModel)]="humeVoiceParameters.dialogExtractionStaticInstructions"
+                placeholder="e.g. This character speaks with a dry wit and rarely shows emotion. Descriptions should reflect restrained, deadpan delivery."></textarea>
+        </div>
+    </div>
 </div>

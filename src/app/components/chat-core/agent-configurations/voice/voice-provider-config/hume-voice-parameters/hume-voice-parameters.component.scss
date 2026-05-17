@@ -1,0 +1,42 @@
+.dialog-extraction {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .dialog-extraction-model {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+
+        label {
+            font-weight: 600;
+        }
+
+        textarea {
+            width: 100%;
+            resize: vertical;
+            padding: 0.5rem;
+            font-size: 0.875rem;
+            font-family: inherit;
+            border: 1px solid var(--p-inputtext-border-color, #ced4da);
+            border-radius: var(--p-border-radius, 4px);
+            background: var(--p-inputtext-background, #fff);
+            color: var(--p-inputtext-color, inherit);
+            box-sizing: border-box;
+
+            &:focus {
+                outline: none;
+                border-color: var(--p-primary-color, #6366f1);
+                box-shadow: 0 0 0 2px var(--p-primary-color-transparent, rgba(99, 102, 241, 0.2));
+            }
+        }
+    }
+}
